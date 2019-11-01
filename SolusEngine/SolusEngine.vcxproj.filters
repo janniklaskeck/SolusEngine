@@ -1,0 +1,218 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Utility">
+      <UniqueIdentifier>{8d32bba5-1a2e-4351-bcc6-bb7146054a64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility">
+      <UniqueIdentifier>{51a9524d-8e3c-4bae-9f64-04bb9f3a3fa8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Render">
+      <UniqueIdentifier>{da423617-9598-4836-9b4d-febc1cef07eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Render">
+      <UniqueIdentifier>{7a8ac93d-7894-4fe3-8869-ab12a0cea62f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Input">
+      <UniqueIdentifier>{80e41a30-ad2a-4ce9-9472-8c8ebf3645a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Input">
+      <UniqueIdentifier>{615047b8-ab5b-49c7-a4a2-fd5d0add380b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Render\OpenGL">
+      <UniqueIdentifier>{71c31b1c-837e-4a38-9896-3ee3ff539f55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Render\OpenGL">
+      <UniqueIdentifier>{99471d72-c6da-4561-b4bd-89b3a8b5a175}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Object">
+      <UniqueIdentifier>{024d5529-5a1f-4730-9a07-07f45488fabb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Object\World">
+      <UniqueIdentifier>{49a1d2df-3172-4461-8215-fe67ee69a33e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object">
+      <UniqueIdentifier>{b4fd74bd-d878-4bcc-b7a7-ba37b514bbd7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\World">
+      <UniqueIdentifier>{a51bff09-8e18-4d01-9011-36eabb2d1e59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gl3w">
+      <UniqueIdentifier>{eb9e1db0-bfdd-4679-abf7-81e76a2a2593}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Render\Camera">
+      <UniqueIdentifier>{0a60a6a9-e751-449f-b5c3-4109f4100a4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Render\Camera">
+      <UniqueIdentifier>{a1014588-9db7-499e-9651-02aef61c59a9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SolusEngine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MathUtil.h">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Window.h">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Helper.h">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="InputDevice.h">
+      <Filter>Header Files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderShader.h">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGLShader.h">
+      <Filter>Header Files\Render\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="FileUtils.h">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="World.h">
+      <Filter>Header Files\Object\World</Filter>
+    </ClInclude>
+    <ClInclude Include="SolusObject.h">
+      <Filter>Header Files\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Level.h">
+      <Filter>Header Files\Object\World</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Header Files\Object\World</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderMesh.h">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderDevice.h">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGLMesh.h">
+      <Filter>Header Files\Render\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGLDevice.h">
+      <Filter>Header Files\Render\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector.h">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Transform.h">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix.h">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Header Files\Render\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="FreeFlyCamera.h">
+      <Filter>Header Files\Render\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="InputListener.h">
+      <Filter>Header Files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderImage.h">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGLImage.h">
+      <Filter>Header Files\Render\OpenGL</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="MathUtil.cpp">
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Window.cpp">
+      <Filter>Source Files\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Helper.cpp">
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="InputDevice.cpp">
+      <Filter>Source Files\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderShader.cpp">
+      <Filter>Source Files\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenGLShader.cpp">
+      <Filter>Source Files\Render\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="FileUtils.cpp">
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="World.cpp">
+      <Filter>Source Files\Object\World</Filter>
+    </ClCompile>
+    <ClCompile Include="SolusObject.cpp">
+      <Filter>Source Files\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Source Files\Object\World</Filter>
+    </ClCompile>
+    <ClCompile Include="Level.cpp">
+      <Filter>Source Files\Object\World</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderMesh.cpp">
+      <Filter>Source Files\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderDevice.cpp">
+      <Filter>Source Files\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenGLMesh.cpp">
+      <Filter>Source Files\Render\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenGLDevice.cpp">
+      <Filter>Source Files\Render\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\gl3w\src\gl3w.c">
+      <Filter>gl3w</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Source Files\Render\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="FreeFlyCamera.cpp">
+      <Filter>Source Files\Render\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderImage.cpp">
+      <Filter>Source Files\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenGLImage.cpp">
+      <Filter>Source Files\Render\OpenGL</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DefaultFragmentShader.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Resources\DefaultVertexShader.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+</Project>
