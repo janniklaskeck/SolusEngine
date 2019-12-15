@@ -2,9 +2,7 @@
 #include "FileUtils.h"
 #include "Asset.h"
 
-#include <boost/filesystem.hpp>
-
-using namespace boost;
+#include <filesystem>
 
 namespace Solus
 {
@@ -15,16 +13,16 @@ namespace Solus
 
 	void AssetMeta::Initialize(Asset* asset)
 	{
-		filesystem::path filePath(asset->GetFilePath());
-		filesystem::path parentFolder = filePath.parent_path();
+		std::filesystem::path filePath(asset->GetFilePath());
+		std::filesystem::path parentFolder = filePath.parent_path();
 		std::string fileName = filePath.stem().string();
 		std::string fileExtension = filePath.extension().string();
 
-		filesystem::path metaDataFileName(fileName + fileExtension + Asset::ASSET_FILE_EXTENSION);
+		std::filesystem::path metaDataFileName(fileName + fileExtension + Asset::ASSET_FILE_EXTENSION);
 
-		filesystem::path metaDataFilePath = parentFolder / metaDataFileName;
+		std::filesystem::path metaDataFilePath = parentFolder / metaDataFileName;
 		std::string metaDataFilePathString = metaDataFilePath.relative_path().string();
-		if (filesystem::exists(metaDataFilePath))
+		if (std::filesystem::exists(metaDataFilePath))
 		{
 			ReadMetaData(metaDataFilePathString);
 		}

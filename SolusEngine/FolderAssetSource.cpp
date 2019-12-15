@@ -1,10 +1,10 @@
 #include "FolderAssetSource.h"
 #include "Asset.h"
 
-#include <boost/filesystem.hpp>
+#include <filesystem>
 #include <iostream>
 
-using namespace boost;
+using namespace std;
 
 namespace Solus
 {

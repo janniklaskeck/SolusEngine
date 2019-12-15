@@ -116,16 +116,17 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;SOLUSENGINE_EXPORT;GLFW_INCLUDE_NONE;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\Libraries\GLFW\include;..\Libraries\glm;..\Libraries\boost_1_71_0;..\Libraries\gl3w\include;..\Libraries\assimp-5.0.0\include;..\Libraries\assimp-5.0.0\out\build\x64-Debug\include;..\Libraries\json;..\Libraries\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Libraries\GLFW\include;..\Libraries\glm;..\Libraries\gl3w\include;..\Libraries\assimp-5.0.0\include;..\Libraries\assimp-5.0.0\out\build\x64-Debug\include;..\Libraries\json;..\Libraries\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DisableSpecificWarnings>4251;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>glfw3dll.lib;opengl32.lib;assimp-vc142-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
-      <AdditionalLibraryDirectories>..\Libraries\GLFW\lib-vc2017;..\Libraries\boost_1_71_0\lib64-msvc-14.2;..\Libraries\assimp-5.0.0\out\build\x64-Debug\code;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\Libraries\GLFW\lib-vc2017;..\Libraries\assimp-5.0.0\out\build\x64-Debug\code;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>$(OutDir)\$(TargetName).lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
@@ -161,15 +162,16 @@ xcopy /y $(SolutionDir)Libraries\assimp-5.0.0\out\build\x64-Debug\code\assimp-vc
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;SOLUSENGINE_EXPORT;GLFW_INCLUDE_NONE;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\Libraries\GLFW\include;..\Libraries\glm;..\Libraries\boost_1_71_0;..\Libraries\gl3w\include;..\Libraries\assimp-5.0.0\include;..\Libraries\assimp-5.0.0\out\build\x64-Debug\include;..\Libraries\json;..\Libraries\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Libraries\GLFW\include;..\Libraries\glm;..\Libraries\gl3w\include;..\Libraries\assimp-5.0.0\include;..\Libraries\assimp-5.0.0\out\build\x64-Debug\include;..\Libraries\json;..\Libraries\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\Libraries\GLFW\lib-vc2017;..\Libraries\boost_1_71_0\lib64-msvc-14.2;..\Libraries\assimp-5.0.0\out\build\x64-Debug\code;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\Libraries\GLFW\lib-vc2017;..\Libraries\assimp-5.0.0\out\build\x64-Debug\code;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>glfw3dll.lib;opengl32.lib;assimp-vc142-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>

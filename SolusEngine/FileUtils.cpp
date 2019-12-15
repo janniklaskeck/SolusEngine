@@ -1,20 +1,21 @@
 #include "FileUtils.h"
 #include "Engine.h"
 
-#include <boost/filesystem.hpp>
-#include <boost/filesystem/fstream.hpp>
-#include <boost/algorithm/string/replace.hpp>
+#include <filesystem>
 #include <sstream>
+#include <fstream>
 
 namespace Solus
 {
-	using namespace boost;
+	using namespace std;
 
 	std::string FileUtils::GetCurrentFolder()
 	{
+		
 		filesystem::path path = filesystem::current_path();
 		return path.string();
 	}
+
 	std::string FileUtils::ReadFile(const char* filePath)
 	{
 		filesystem::path _filePath(filePath);
@@ -26,7 +27,7 @@ namespace Solus
 			return "";
 		}
 
-		filesystem::ifstream fileStream;
+		std::ifstream fileStream;
 		fileStream.open(_filePath);
 		std::stringstream ss;
 		ss << fileStream.rdbuf();
@@ -47,7 +48,7 @@ namespace Solus
 		uintmax_t fileSize = filesystem::file_size(_filePath);
 		length = fileSize;
 		char* buffer = new char[fileSize];
-		filesystem::ifstream fileStream(_filePath, std::ios::binary);
+		std::ifstream fileStream(_filePath, std::ios::binary);
 		fileStream.seekg(std::ios::beg);
 		fileStream.read(buffer, fileSize);
 		fileStream.close();
@@ -65,7 +66,7 @@ namespace Solus
 			return false;
 		}
 
-		filesystem::ofstream fileStream{ _filePath };
+		std::ofstream fileStream{ _filePath };
 		fileStream << fileContent;
 
 
