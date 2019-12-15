@@ -1,6 +1,6 @@
 #include "InputDevice.h"
 #include "Engine.h"
-#include "Window.h"
+#include "RenderWindow.h"
 
 namespace Solus
 {
@@ -23,7 +23,7 @@ namespace Solus
 	void InputDevice::Update()
 	{
 		double xPos, yPos;
-		glfwGetCursorPos(Engine::Instance()->GetMainWindow()->GetGLFWWindow(), &xPos, &yPos);
+		gEngine->GetRenderWindow()->GetCursorPos(&xPos, &yPos);
 		previousMouseXPos = mouseXPos;
 		previousMouseYPos = mouseYPos;
 		mouseXPos = xPos;

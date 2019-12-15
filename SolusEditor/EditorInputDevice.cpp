@@ -17,7 +17,7 @@ namespace Editor
 		Solus::InputDevice::Update();
 		if (IsKeyDown(GLFW_KEY_ESCAPE))
 		{
-			Solus::Engine::Instance()->GetMainWindow()->Close();
+			Solus::gEngine->GetWindow()->Close();
 		}
 	}
 }

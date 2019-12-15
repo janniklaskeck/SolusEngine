@@ -5,10 +5,8 @@ namespace Editor
 	class EditorMainWindow : public Solus::Window
 	{
 	public:
-		EditorMainWindow(class Solus::InputDevice* inputDevice);
-		~EditorMainWindow();
 
-	protected:
+		virtual void Initialize() override;
 		virtual void Update() override;
 
 	private:

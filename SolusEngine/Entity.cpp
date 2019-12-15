@@ -16,12 +16,9 @@ namespace Solus
 		: mesh(nullptr)
 	{
 		mTransform = Mat4f(1.f);
-		mTransform = glm::rotate(mTransform, initialRotation.x, Vec3f(1, 0, 0));
-		mTransform = glm::rotate(mTransform, initialRotation.y, Vec3f(0, 1, 0));
-		mTransform = glm::rotate(mTransform, initialRotation.z, Vec3f(0, 0, 1));
-
-		mTransform = glm::translate(mTransform, initialPosition);
-		mTransform = glm::scale(mTransform, Vec3f(1, 1, 1));
+		position = initialPosition;
+		rotation = initialRotation;
+		scale = Vec3f(1.0f);
 
 		entityId = GenerateUUID();
 	}
@@ -31,7 +28,8 @@ namespace Solus
 
 	void Entity::TEMP()
 	{
-		mesh = Engine::Instance()->GetRenderDevice()->CreateMesh("");
+		auto* meshAsset = (MeshAsset*)gEngine->GetAssetManager()->GetAsset("editor/Model/suzanne.obj");
+		mesh = gEngine->GetRenderDevice()->CreateMesh(meshAsset);
 		mesh->owner = this;
 	}
 
@@ -49,94 +47,69 @@ namespace Solus
 
 	void Entity::SetPosition(Vec3f newPosition)
 	{
-		mTransform[3].x = newPosition.x;
-		mTransform[3].y = newPosition.y;
-		mTransform[3].z = newPosition.z;
+		position = newPosition;
+	}
+
+	void Entity::AddPosition(Vec3f newPosition)
+	{
+		position += newPosition;
 	}
 
 	void Entity::SetRotation(Vec3f newRotation)
 	{
-
+		rotation = newRotation;
 	}
 
 	void Entity::AddRotation(Vec3f deltaRotation)
 	{
-		mTransform = glm::rotate(mTransform, deltaRotation.x, Vec3f(1, 0, 0));
-		mTransform = glm::rotate(mTransform, deltaRotation.y, Vec3f(0, 1, 0));
-		mTransform = glm::rotate(mTransform, deltaRotation.z, Vec3f(0, 0, 1));
+		rotation += deltaRotation;
 	}
 
 	void Entity::SetScale(Vec3f newScale)
 	{
-		mTransform = glm::scale(mTransform, newScale);
+		scale = newScale;
+	}
+
+	void Entity::AddScale(Vec3f newScale)
+	{
+		scale += newScale;
 	}
 
 	Vec3f Entity::GetPosition() const
 	{
-		glm::vec3 scale;
-		glm::quat rotation;
-		glm::vec3 translation;
-		glm::vec3 skew;
-		glm::vec4 perspective;
-		glm::decompose(mTransform, scale, rotation, translation, skew, perspective);
-		return translation;
+		return Vec3f(position);
 	}
 
 	Vec3f Entity::GetRotation() const
 	{
-		glm::vec3 scale;
-		glm::quat rotation;
-		glm::vec3 translation;
-		glm::vec3 skew;
-		glm::vec4 perspective;
-		glm::decompose(mTransform, scale, rotation, translation, skew, perspective);
-		Vec3f rotationEuler = glm::eulerAngles(rotation);
-		return rotationEuler;
+		return Vec3f(rotation);
 	}
 
 	Vec3f Entity::GetScale() const
 	{
-		glm::vec3 scale;
-		glm::quat rotation;
-		glm::vec3 translation;
-		glm::vec3 skew;
-		glm::vec4 perspective;
-		glm::decompose(mTransform, scale, rotation, translation, skew, perspective);
-		return scale;
+		return Vec3f(scale);
 	}
 
 	Vec3f Entity::GetForward() const
 	{
-
-		Vec3f rotation = GetRotation();
-		float cosPitch = glm::cos(rotation.x);
-		float sinPitch = glm::sin(rotation.x);
-		float cosYaw = glm::cos(rotation.z);
-		float sinYaw = glm::sin(rotation.z);
-
-		glm::vec3 zaxis = { sinYaw * cosPitch, -sinPitch, cosPitch * cosYaw };
-		return zaxis;
+		return Vec3f(glm::cos(rotation.x) * glm::sin(rotation.y),
+					 glm::sin(rotation.x),
+					 glm::cos(rotation.x) * glm::cos(rotation.y));
 	}
 
 	Vec3f Entity::GetRight() const
 	{
-		Vec3f rotation = GetRotation();
-		float cosYaw = glm::cos(rotation.z);
-		float sinYaw = glm::sin(rotation.z);
-
-		glm::vec3 xaxis = { cosYaw, 0, -sinYaw };
-		return -xaxis;
+		return Vec3f(glm::sin(rotation.y - glm::half_pi<float>()),
+					 0.0f,
+					 glm::cos(rotation.y - glm::half_pi<float>()));
 	}
 
 	Vec3f Entity::GetUp() const
 	{
-		Vec3f rotation = GetRotation();
-		float cosPitch = glm::cos(rotation.x);
-		float sinPitch = glm::sin(rotation.x);
-		float cosYaw = glm::cos(rotation.z);
-		float sinYaw = glm::sin(rotation.z);
-
-		glm::vec3 yaxis = { sinYaw * sinPitch, cosPitch, cosYaw * sinPitch };
-		return -yaxis;
+		return Vec3f(glm::cross(GetRight(), GetForward()));
+	}
+	Mat4f Entity::GetTransform() const
+	{
+		return glm::lookAt(GetPosition(), GetPosition() + GetForward(), GetUp());
 	}
 }

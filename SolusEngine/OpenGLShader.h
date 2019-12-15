@@ -9,13 +9,13 @@ namespace Solus
 		OpenGLShader();
 		~OpenGLShader();
 
-		virtual bool Load(const char* vertexShaderFilePath, const char* fragmentShaderFilePath) override;
+		virtual bool Load(TextAsset* vertexShaderFilePath, TextAsset* fragmentShaderFilePath) override;
 
 		virtual unsigned int GetShaderProgram() const override;
 
 	private:
 
-		unsigned int shaderProgram;
+		unsigned int shaderProgram = 0;
 	};
 
 }

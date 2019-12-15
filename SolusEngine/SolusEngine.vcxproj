@@ -44,6 +44,7 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>NotSet</CharacterSet>
+    <EnableASAN>false</EnableASAN>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
@@ -51,6 +52,7 @@
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
+    <EnableASAN>false</EnableASAN>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -114,23 +116,21 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;SOLUSENGINE_EXPORT;GLFW_INCLUDE_NONE;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\Libraries\GLFW\include;..\Libraries\glm;..\Libraries\boost_1_71_0;..\Libraries\gl3w\include;..\Libraries\DevIL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Libraries\GLFW\include;..\Libraries\glm;..\Libraries\boost_1_71_0;..\Libraries\gl3w\include;..\Libraries\assimp-5.0.0\include;..\Libraries\assimp-5.0.0\out\build\x64-Debug\include;..\Libraries\json;..\Libraries\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DisableSpecificWarnings>4251;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glfw3dll.lib;opengl32.lib;DevIL.lib;ILU.lib;ILUT.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3dll.lib;opengl32.lib;assimp-vc142-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
-      <AdditionalLibraryDirectories>..\Libraries\GLFW\lib-vc2017;..\Libraries\boost_1_71_0\lib64-msvc-14.2;..\Libraries\DevIL\lib\x64\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\Libraries\GLFW\lib-vc2017;..\Libraries\boost_1_71_0\lib64-msvc-14.2;..\Libraries\assimp-5.0.0\out\build\x64-Debug\code;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>$(OutDir)\$(TargetName).lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /y $(SolutionDir)Libraries\GLFW\lib-vc2017\glfw3.dll  $(OutDir)
-xcopy /y $(SolutionDir)Libraries\DevIL\lib\x64\Release\DevIL.dll  $(OutDir)
-xcopy /y $(SolutionDir)Libraries\DevIL\lib\x64\Release\ILU.dll  $(OutDir)
-xcopy /y $(SolutionDir)Libraries\DevIL\lib\x64\Release\ILUT.dll  $(OutDir)</Command>
+xcopy /y $(SolutionDir)Libraries\assimp-5.0.0\out\build\x64-Debug\code\assimp-vc142-mtd.dll  $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -161,7 +161,7 @@ xcopy /y $(SolutionDir)Libraries\DevIL\lib\x64\Release\ILUT.dll  $(OutDir)</Comm
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;SOLUSENGINE_EXPORT;GLFW_INCLUDE_NONE;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\Libraries\GLFW\include;..\Libraries\glm;..\Libraries\boost_1_71_0;..\Libraries\gl3w\include;..\Libraries\DevIL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Libraries\GLFW\include;..\Libraries\glm;..\Libraries\boost_1_71_0;..\Libraries\gl3w\include;..\Libraries\assimp-5.0.0\include;..\Libraries\assimp-5.0.0\out\build\x64-Debug\include;..\Libraries\json;..\Libraries\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -169,69 +169,113 @@ xcopy /y $(SolutionDir)Libraries\DevIL\lib\x64\Release\ILUT.dll  $(OutDir)</Comm
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\Libraries\GLFW\lib-vc2017;..\Libraries\boost_1_71_0\lib64-msvc-14.2;..\Libraries\DevIL\lib\x64\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3dll.lib;opengl32.lib;DevIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\Libraries\GLFW\lib-vc2017;..\Libraries\boost_1_71_0\lib64-msvc-14.2;..\Libraries\assimp-5.0.0\out\build\x64-Debug\code;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3dll.lib;opengl32.lib;assimp-vc142-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /y $(SolutionDir)Libraries\GLFW\lib-vc2017\glfw3.dll  $(OutDir)
-xcopy /y $(SolutionDir)Libraries\DevIL\lib\x64\Release\DevIL.dll  $(OutDir)</Command>
+xcopy /y $(SolutionDir)Libraries\assimp-5.0.0\out\build\x64-Debug\code\assimp-vc142-mtd.dll  $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\Libraries\imgui\imconfig.h" />
+    <ClInclude Include="..\Libraries\imgui\imgui.h" />
+    <ClInclude Include="..\Libraries\imgui\imgui_impl_glfw.h" />
+    <ClInclude Include="..\Libraries\imgui\imgui_impl_opengl3.h" />
+    <ClInclude Include="..\Libraries\imgui\imgui_internal.h" />
+    <ClInclude Include="..\Libraries\imgui\imstb_rectpack.h" />
+    <ClInclude Include="..\Libraries\imgui\imstb_textedit.h" />
+    <ClInclude Include="..\Libraries\imgui\imstb_truetype.h" />
+    <ClInclude Include="Asset.h" />
+    <ClInclude Include="AssetManager.h" />
+    <ClInclude Include="AssetMeta.h" />
+    <ClInclude Include="AssetSource.h" />
+    <ClInclude Include="BinaryReader.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="FileUtils.h" />
+    <ClInclude Include="FolderAssetSource.h" />
     <ClInclude Include="FreeFlyCamera.h" />
+    <ClInclude Include="GLFWWindow.h" />
     <ClInclude Include="Helper.h" />
     <ClInclude Include="InputDevice.h" />
     <ClInclude Include="InputListener.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="MathUtil.h" />
     <ClInclude Include="Matrix.h" />
+    <ClInclude Include="MeshAsset.h" />
     <ClInclude Include="OpenGLDevice.h" />
-    <ClInclude Include="OpenGLImage.h" />
+    <ClInclude Include="OpenGLSurface.h" />
+    <ClInclude Include="OpenGLTexture.h" />
     <ClInclude Include="OpenGLMesh.h" />
     <ClInclude Include="OpenGLShader.h" />
     <ClInclude Include="RenderDevice.h" />
-    <ClInclude Include="RenderImage.h" />
+    <ClInclude Include="RenderSurface.h" />
+    <ClInclude Include="RenderTexture.h" />
     <ClInclude Include="RenderMesh.h" />
     <ClInclude Include="RenderShader.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="SolusEngine.h" />
     <ClInclude Include="SolusObject.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="TextAsset.h" />
+    <ClInclude Include="TextureAsset.h" />
+    <ClInclude Include="Timer.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="Vector.h" />
+    <ClInclude Include="RenderWindow.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Libraries\gl3w\src\gl3w.c" />
+    <ClCompile Include="..\Libraries\imgui\imgui.cpp" />
+    <ClCompile Include="..\Libraries\imgui\imgui_demo.cpp" />
+    <ClCompile Include="..\Libraries\imgui\imgui_draw.cpp" />
+    <ClCompile Include="..\Libraries\imgui\imgui_impl_glfw.cpp" />
+    <ClCompile Include="..\Libraries\imgui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="..\Libraries\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="Asset.cpp" />
+    <ClCompile Include="AssetManager.cpp" />
+    <ClCompile Include="AssetMeta.cpp" />
+    <ClCompile Include="AssetSource.cpp" />
+    <ClCompile Include="BinaryReader.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="FileUtils.cpp" />
+    <ClCompile Include="FolderAssetSource.cpp" />
     <ClCompile Include="FreeFlyCamera.cpp" />
+    <ClCompile Include="GLFWWindow.cpp" />
     <ClCompile Include="Helper.cpp" />
     <ClCompile Include="InputDevice.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="MathUtil.cpp" />
+    <ClCompile Include="MeshAsset.cpp" />
     <ClCompile Include="OpenGLDevice.cpp" />
-    <ClCompile Include="OpenGLImage.cpp" />
+    <ClCompile Include="OpenGLSurface.cpp" />
+    <ClCompile Include="OpenGLTexture.cpp" />
     <ClCompile Include="OpenGLMesh.cpp" />
     <ClCompile Include="OpenGLShader.cpp" />
     <ClCompile Include="RenderDevice.cpp" />
-    <ClCompile Include="RenderImage.cpp" />
+    <ClCompile Include="RenderSurface.cpp" />
+    <ClCompile Include="RenderTexture.cpp" />
     <ClCompile Include="RenderMesh.cpp" />
     <ClCompile Include="RenderShader.cpp" />
     <ClCompile Include="SolusObject.cpp" />
+    <ClCompile Include="TextAsset.cpp" />
+    <ClCompile Include="TextureAsset.cpp" />
+    <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="RenderWindow.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\DefaultFragmentShader.glsl" />
-    <None Include="Resources\DefaultVertexShader.glsl" />
+    <None Include="..\bin\bin64\Debug\editor\Shader\DefaultFragmentShader.glsl" />
+    <None Include="..\bin\bin64\Debug\editor\Shader\DefaultVertexShader.glsl" />
+    <None Include="..\bin\bin64\Debug\editor\Shader\ScreenFragmentShader.glsl" />
+    <None Include="..\bin\bin64\Debug\editor\Shader\ScreenVertexShader.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

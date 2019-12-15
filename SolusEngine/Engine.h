@@ -1,9 +1,13 @@
 #pragma once
 
 #include "SolusEngine.h"
+#include "AssetManager.h"
 
 #include "Entity.h"
 #include "Vector.h"
+
+#include "Window.h"
+#include "RenderWindow.h"
 
 #include <cstdint>
 
@@ -18,38 +22,70 @@ namespace Solus
 		LogError
 	};
 
+	class World;
+	class InputDevice;
+	class Camera;
+	class RenderDevice;
+	class AssetManager;
+	class Timer;
+
 	class SOLUS_API Engine
 	{
 		Engine();
 	public:
 		~Engine();
 
-		static Engine* Instance();
-		static bool Initialize(class Window* mainWindow);
+		static bool Initialize();
 
-		static void Log(LogLevel level, const char* msgFormat, ...);
+		void Log(LogLevel level, const char* msgFormat, ...);
 
 		void Update();
 
-		void InitMainWindow(Window* windowInstance);
-		Window* GetMainWindow() const;
+		void Render();
 
-		void SetWorld(class World* newWorld);
-		class World* GetWorld() const;
+	private:
+		void InitRenderWindow(RenderWindow* renderWindowInstance);
+	public:
+		void RegisterRenderWindow(RenderWindow* newRenderWindow);
+		RenderWindow* GetRenderWindow() const;
 
-		class RenderDevice* GetRenderDevice();
+		void InitWindow(Window* windowInstance);
+		Window* GetWindow() const;
 
-		class Camera* GetMainCamera() const;
+		void SetWorld(World* newWorld);
+		World* GetWorld() const;
+
+		RenderDevice* GetRenderDevice();
+
+		Camera* GetMainCamera() const;
 		void SetMainCamera(Camera* camera);
 
-		class InputDevice* GetInputDevice() const;
+		void RegisterInputDevice(InputDevice* newInputDevice);
+		InputDevice* GetInputDevice() const;
+
+		AssetManager* GetAssetManager() const;
+
+		Timer* GetMainTimer() const;
+
+		double DeltaTime() const;
 	private:
 		static Engine* engineInstance;
 		static const char* LogLevelToChar(LogLevel level);
 
-		class Window* mainWindow = nullptr;
-		class World* world = nullptr;
-		class RenderDevice* renderDevice = nullptr;
-		class Camera* mainCamera = nullptr;
+		RenderWindow* renderWindow = nullptr;
+		Window* window = nullptr;
+		RenderDevice* renderDevice = nullptr;
+		
+		InputDevice* inputDevice = nullptr;
+		World* world = nullptr;
+		Camera* mainCamera = nullptr;
+
+		AssetManager* assetManager = nullptr;
+
+		Timer* mainTimer = nullptr;
+	private:
+		int tickCounter = 0;
 	};
+
+	extern SOLUS_API Engine* gEngine;
 }

@@ -58,6 +58,21 @@
     <Filter Include="Source Files\Render\Camera">
       <UniqueIdentifier>{a1014588-9db7-499e-9651-02aef61c59a9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\AssetSystem">
+      <UniqueIdentifier>{0accc146-2a51-453d-ad0b-79df68f928ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\AssetSystem">
+      <UniqueIdentifier>{14e25692-f74a-4452-b29c-feeb856da2ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\AssetSystem\Types">
+      <UniqueIdentifier>{3baf439c-c53f-4507-921f-4a679a0aaf68}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\AssetSystem\Types">
+      <UniqueIdentifier>{3503e90b-a0a5-4234-9dfa-5f028d58b18c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="IMGUI">
+      <UniqueIdentifier>{40d6b279-11ff-4d8e-8ed0-9fa66d5a88a1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -71,9 +86,6 @@
     </ClInclude>
     <ClInclude Include="Engine.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Window.h">
-      <Filter>Header Files\Render</Filter>
     </ClInclude>
     <ClInclude Include="Helper.h">
       <Filter>Header Files\Utility</Filter>
@@ -135,10 +147,79 @@
     <ClInclude Include="InputListener.h">
       <Filter>Header Files\Input</Filter>
     </ClInclude>
-    <ClInclude Include="RenderImage.h">
+    <ClInclude Include="RenderTexture.h">
       <Filter>Header Files\Render</Filter>
     </ClInclude>
-    <ClInclude Include="OpenGLImage.h">
+    <ClInclude Include="OpenGLTexture.h">
+      <Filter>Header Files\Render\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="Asset.h">
+      <Filter>Header Files\AssetSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetManager.h">
+      <Filter>Header Files\AssetSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetSource.h">
+      <Filter>Header Files\AssetSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="FolderAssetSource.h">
+      <Filter>Header Files\AssetSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetMeta.h">
+      <Filter>Header Files\AssetSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureAsset.h">
+      <Filter>Header Files\AssetSystem\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="TextAsset.h">
+      <Filter>Header Files\AssetSystem\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshAsset.h">
+      <Filter>Header Files\AssetSystem\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="BinaryReader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\imgui\imconfig.h">
+      <Filter>IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\imgui\imgui.h">
+      <Filter>IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\imgui\imgui_impl_glfw.h">
+      <Filter>IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\imgui\imgui_impl_opengl3.h">
+      <Filter>IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\imgui\imgui_internal.h">
+      <Filter>IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\imgui\imstb_rectpack.h">
+      <Filter>IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\imgui\imstb_textedit.h">
+      <Filter>IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\imgui\imstb_truetype.h">
+      <Filter>IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GLFWWindow.h">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderWindow.h">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Window.h">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderSurface.h">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGLSurface.h">
       <Filter>Header Files\Render\OpenGL</Filter>
     </ClInclude>
   </ItemGroup>
@@ -148,9 +229,6 @@
     </ClCompile>
     <ClCompile Include="Engine.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Window.cpp">
-      <Filter>Source Files\Render</Filter>
     </ClCompile>
     <ClCompile Include="Helper.cpp">
       <Filter>Source Files\Utility</Filter>
@@ -200,18 +278,87 @@
     <ClCompile Include="FreeFlyCamera.cpp">
       <Filter>Source Files\Render\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="RenderImage.cpp">
+    <ClCompile Include="RenderTexture.cpp">
       <Filter>Source Files\Render</Filter>
     </ClCompile>
-    <ClCompile Include="OpenGLImage.cpp">
+    <ClCompile Include="OpenGLTexture.cpp">
       <Filter>Source Files\Render\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="Asset.cpp">
+      <Filter>Source Files\AssetSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetManager.cpp">
+      <Filter>Source Files\AssetSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetSource.cpp">
+      <Filter>Source Files\AssetSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="FolderAssetSource.cpp">
+      <Filter>Source Files\AssetSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetMeta.cpp">
+      <Filter>Source Files\AssetSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureAsset.cpp">
+      <Filter>Source Files\AssetSystem\Types</Filter>
+    </ClCompile>
+    <ClCompile Include="TextAsset.cpp">
+      <Filter>Source Files\AssetSystem\Types</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshAsset.cpp">
+      <Filter>Source Files\AssetSystem\Types</Filter>
+    </ClCompile>
+    <ClCompile Include="BinaryReader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\imgui\imgui.cpp">
+      <Filter>IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\imgui\imgui_draw.cpp">
+      <Filter>IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\imgui\imgui_impl_glfw.cpp">
+      <Filter>IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\imgui\imgui_impl_opengl3.cpp">
+      <Filter>IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\imgui\imgui_widgets.cpp">
+      <Filter>IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GLFWWindow.cpp">
+      <Filter>Source Files\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderWindow.cpp">
+      <Filter>Source Files\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\imgui\imgui_demo.cpp">
+      <Filter>IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderSurface.cpp">
+      <Filter>Source Files\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenGLSurface.cpp">
+      <Filter>Source Files\Render\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="Window.cpp">
+      <Filter>Source Files\Render</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\DefaultFragmentShader.glsl">
+    <None Include="..\bin\bin64\Debug\editor\Shader\DefaultFragmentShader.glsl">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="Resources\DefaultVertexShader.glsl">
+    <None Include="..\bin\bin64\Debug\editor\Shader\DefaultVertexShader.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\bin\bin64\Debug\editor\Shader\ScreenFragmentShader.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\bin\bin64\Debug\editor\Shader\ScreenVertexShader.glsl">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

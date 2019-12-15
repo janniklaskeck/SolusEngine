@@ -7,3 +7,8 @@
 #else
 #define SOLUS_API __declspec(dllimport)
 #endif
+
+// GLOBAL INCLUDES
+
+#include <cstdint>
+#include <string>

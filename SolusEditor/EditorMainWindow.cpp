@@ -3,26 +3,27 @@
 #include "Engine.h"
 #include "FreeFlyCamera.h"
 #include "World.h"
+#include "AssetManager.h"
+#include "FolderAssetSource.h"
+#include "Asset.h"
+#include "EditorInputDevice.h"
 
 using namespace Solus;
 
 namespace Editor
 {
 
-	EditorMainWindow::EditorMainWindow(InputDevice* inputDevice) : Window(inputDevice)
+	void EditorMainWindow::Initialize()
 	{
-		
+		gEngine->RegisterInputDevice(new EditorInputDevice);
 	}
-
-	EditorMainWindow::~EditorMainWindow()
-	{}
 
 	void EditorMainWindow::Update()
 	{
 		if (!firstRun)
 		{
-			FreeFlyCamera* camera = Engine::Instance()->GetWorld()->SpawnEntity<FreeFlyCamera>(Vec3f(0, 0, -3));
-			auto* entity = Engine::Instance()->GetWorld()->SpawnEntity<Entity>();
+			FreeFlyCamera* camera = gEngine->GetWorld()->SpawnEntity<FreeFlyCamera>(Vec3f(0, 0, -5), Vec3f(0, 0, 0));
+			auto* entity = gEngine->GetWorld()->SpawnEntity<Entity>(Vec3f(0, 0, 0), Vec3f(0, 0, 0));
 			entity->TEMP();
 			firstRun = true;
 		}

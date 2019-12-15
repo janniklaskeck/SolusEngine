@@ -1,8 +1,14 @@
 #include "OpenGLShader.h"
 
 #include "FileUtils.h"
+#include "AssetManager.h"
+#include "Engine.h"
+#include "TextAsset.h"
+
 #include <iostream>
 #include <GL/gl3w.h>
+
+
 namespace Solus
 {
 
@@ -13,13 +19,13 @@ namespace Solus
 	OpenGLShader::~OpenGLShader()
 	{}
 
-	bool OpenGLShader::Load(const char * vertexShaderFilePath, const char * fragmentShaderFilePath)
+	bool OpenGLShader::Load(TextAsset* vertexShaderFile, TextAsset* fragmentShaderFile)
 	{
-		std::string vertexShaderSource = FileUtils::ReadFile(vertexShaderFilePath);
-		const GLchar* vertexSource = vertexShaderSource.c_str();
+		vertexShaderFile->Load();
+		fragmentShaderFile->Load();
 
-		std::string fragmentShaderSource = FileUtils::ReadFile(fragmentShaderFilePath);
-		const GLchar* fragmentSource = fragmentShaderSource.c_str();
+		const char* vertexSource = vertexShaderFile->GetCharContent();
+		const char* fragmentSource = fragmentShaderFile->GetCharContent();
 
 		GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
 		glShaderSource(vertexShader, 1, &vertexSource, NULL);
@@ -33,6 +39,7 @@ namespace Solus
 			GLchar InfoLog[1024];
 			glGetShaderInfoLog(vertexShader, sizeof(InfoLog), NULL, InfoLog);
 			fprintf(stderr, "Error compiling shader type %d: '%s'\n", GL_VERTEX_SHADER, InfoLog);
+			return false;
 		}
 		// fragment shader
 		GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
@@ -44,6 +51,7 @@ namespace Solus
 		{
 			glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
 			std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
+			return false;
 		}
 		// link shaders
 		shaderProgram = glCreateProgram();
@@ -57,6 +65,7 @@ namespace Solus
 			GLchar ErrorLog[1024];
 			glGetProgramInfoLog(shaderProgram, sizeof(ErrorLog), NULL, ErrorLog);
 			fprintf(stderr, "Error linking shader program: '%s'\n", ErrorLog);
+			return false;
 		}
 		glValidateProgram(shaderProgram);
 		glGetProgramiv(shaderProgram, GL_VALIDATE_STATUS, &success);
@@ -65,7 +74,7 @@ namespace Solus
 			GLchar ErrorLog[1024];
 			glGetProgramInfoLog(shaderProgram, sizeof(ErrorLog), NULL, ErrorLog);
 			fprintf(stderr, "Invalid shader program: '%s'\n", ErrorLog);
-			exit(1);
+			return false;
 		}
 		glDetachShader(shaderProgram, vertexShader);
 		glDetachShader(shaderProgram, fragmentShader);

@@ -2,14 +2,17 @@
 
 #include "Engine.h"
 #include "EditorMainWindow.h"
-#include "EditorInputDevice.h"
 #include "FileUtils.h"
+
+using namespace Solus;
 
 int main(int argc, char* argv[])
 {
 
-	Solus::Engine::Initialize(new Editor::EditorMainWindow(new Editor::EditorInputDevice));
-	Solus::Engine::Instance()->GetMainWindow()->Run();
+	gEngine->Initialize();
+	gEngine->InitWindow(new Editor::EditorMainWindow);
+	gEngine->GetWindow()->Run();
+
 
 	return 0;
 }

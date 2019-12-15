@@ -26,9 +26,11 @@ namespace Solus
 		}
 
 		void SetPosition(Vec3f newPosition);
+		void AddPosition(Vec3f newPosition);
 		void SetRotation(Vec3f newRotation);
 		void AddRotation(Vec3f deltaRotation);
 		void SetScale(Vec3f newScale);
+		void AddScale(Vec3f newScale);
 
 		Vec3f GetPosition() const;
 		Vec3f GetRotation() const;
@@ -38,16 +40,17 @@ namespace Solus
 		Vec3f GetRight() const;
 		Vec3f GetUp() const;
 
-		Mat4f GetTransform() const
-		{
-			return mTransform;
-		}
+		Mat4f GetTransform() const;
 
 	protected:
 		uint64_t entityId;
 
 		class RenderMesh* mesh;
 		Mat4f mTransform;
+
+		Vec3f position;
+		Vec3f rotation;
+		Vec3f scale;
 	};
 }
 

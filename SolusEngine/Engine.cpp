@@ -1,50 +1,60 @@
 #include "Engine.h"
 
-#include "Helper.h"
+#include "GLFWWindow.h"
 #include "Window.h"
-#include "InputDevice.h"
-#include "World.h"
 #include "OpenGLDevice.h"
+
+#include "InputDevice.h"
+
+#include "World.h"
 #include "Camera.h"
+
+#include "Helper.h"
+#include "Timer.h"
 
 #include <iostream>
 #include <cstdarg>
 #include <ctime>
 #include <ostream>
+#include <chrono>
+#include <ctime>
+#include "FolderAssetSource.h"
 
 namespace Solus
 {
+	Engine* gEngine = nullptr;
 
-	Engine* Engine::engineInstance = nullptr;
+	bool Engine::Initialize()
+	{
+		gEngine = new Engine;
+		gEngine->mainTimer = new Timer;
+
+		auto now = std::chrono::system_clock::now();
+		std::time_t nowTime = std::chrono::system_clock::to_time_t(now);
+		char buffer[64];
+		ctime_s(buffer, 64, &nowTime);
+		gEngine->Log(LogDebug, "Engine initialized at: %s", buffer);
+
+		return true;
+	}
 
 	Engine::Engine()
-	{}
-
+	{
+		gEngine = this;
+		assetManager = new AssetManager;
+		FolderAssetSource* baseAssetFolder = new FolderAssetSource("./editor");
+		gEngine->GetAssetManager()->AddSource(baseAssetFolder);
+		RegisterRenderWindow(new GLFWWindow);
+		world = new World;
+		renderDevice = new OpenGLDevice;
+		renderDevice->Initialize();
+	}
 
 	Engine::~Engine()
 	{
-		delete mainWindow;
+		delete renderWindow;
+		delete window;
 		delete world;
-	}
-
-	Engine* Engine::Instance()
-	{
-		if (!engineInstance)
-			engineInstance = new Engine;
-		return engineInstance;
-	}
-
-	bool Engine::Initialize(Window* mainWindow)
-	{
-		int64_t currentTime = GetCurrentTime();
-		char buf[26];
-		ctime_s(buf, 26, &currentTime);
-		Log(LogDebug, "Engine initialized at: %s", buf);
-
-		Instance()->mainWindow = mainWindow;
-		Instance()->world = new World;
-
-		return false;
 	}
 
 	void Engine::Log(LogLevel level, const char* msgFormat, ...)
@@ -59,9 +69,23 @@ namespace Solus
 
 	void Engine::Update()
 	{
-		GetInputDevice()->Update();
-		GetWorld()->Update();
+		mainTimer->Update();
+		//if (mainTimer->TickDone())
+		//{
+			//mainTimer->Reset();
+			GetInputDevice()->Update();
+			GetWorld()->Update();
+			GetWindow()->Update();
+			GetRenderWindow()->Update();
+
+		//}
+	}
+
+	void Engine::Render()
+	{
+		renderDevice->PreRenderScene();
 		GetWorld()->Render();
+		renderDevice->PostRenderScene();
 	}
 
 	const char* Engine::LogLevelToChar(LogLevel level)
@@ -81,14 +105,31 @@ namespace Solus
 		}
 	}
 
-	void Engine::InitMainWindow(Window* windowInstance)
+	void Engine::InitRenderWindow(RenderWindow* windowInstance)
 	{
-		mainWindow = windowInstance;
+		renderWindow = windowInstance;
 	}
 
-	Window* Engine::GetMainWindow() const
+	void Engine::RegisterRenderWindow(RenderWindow* newRenderWindow)
 	{
-		return mainWindow;
+		renderWindow = newRenderWindow;
+		renderWindow->Initialize();
+	}
+
+	RenderWindow* Engine::GetRenderWindow() const
+	{
+		return renderWindow;
+	}
+
+	void Engine::InitWindow(Window* windowInstance)
+	{
+		window = windowInstance;
+		window->Initialize();
+	}
+
+	Window* Engine::GetWindow() const
+	{
+		return window;
 	}
 
 	void Engine::SetWorld(World* newWorld)
@@ -103,8 +144,6 @@ namespace Solus
 
 	RenderDevice* Engine::GetRenderDevice()
 	{
-		if (!renderDevice)
-			renderDevice = new OpenGLDevice;
 		return renderDevice;
 	}
 
@@ -118,9 +157,29 @@ namespace Solus
 		mainCamera = camera;
 	}
 
+	void Engine::RegisterInputDevice(InputDevice* newInputDevice)
+	{
+		inputDevice = newInputDevice;
+	}
+
 	InputDevice* Engine::GetInputDevice() const
 	{
-		return mainWindow->GetInputDevice();
+		return inputDevice;
+	}
+
+	AssetManager* Engine::GetAssetManager() const
+	{
+		return assetManager;
+	}
+
+	Timer* Engine::GetMainTimer() const
+	{
+		return mainTimer;
+	}
+
+	double Engine::DeltaTime() const
+	{
+		return mainTimer->GetDeltaTime();
 	}
 
 }

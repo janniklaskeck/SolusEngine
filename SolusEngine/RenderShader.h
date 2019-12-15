@@ -1,13 +1,18 @@
 #pragma once
 
-class RenderShader
+namespace Solus
 {
-public:
-	RenderShader();
-	virtual ~RenderShader();
+	class TextAsset;
 
-	virtual bool Load(const char* vertexShaderFilePath, const char* fragmentShaderFilePath) = 0;
+	class RenderShader
+	{
+	public:
+		RenderShader();
+		virtual ~RenderShader();
 
-	virtual unsigned int GetShaderProgram() const = 0;
-};
+		virtual bool Load(TextAsset* vertexShaderFilePath, TextAsset* fragmentShaderFilePath) = 0;
 
+		virtual unsigned int GetShaderProgram() const = 0;
+	};
+
+}

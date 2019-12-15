@@ -2,12 +2,14 @@
 
 #include "SolusEngine.h"
 #include "RenderShader.h"
+#include "RenderTexture.h"
 #include "Entity.h"
 
 #include <vector>
 
 namespace Solus
 {
+	class MeshAsset;
 
 	class SOLUS_API RenderMesh
 	{
@@ -17,11 +19,10 @@ namespace Solus
 
 		virtual void Render();
 
+		virtual bool Load(MeshAsset* meshAsset) = 0;
+
 	protected:
 		RenderShader* shader;
-
-		std::vector<Vec3f> vertices;
-		std::vector<unsigned int> indices;
 	public:
 		Entity* owner;
 	};
