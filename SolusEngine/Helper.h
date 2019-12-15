@@ -3,6 +3,7 @@
 #include "SolusEngine.h"
 
 #include <cstdint>
+#include <string>
 
 namespace Solus
 {
@@ -15,5 +16,7 @@ namespace Solus
 	double GetRandom(double min, double max, int64_t seed = -1);
 
 	int32_t GetRandom(int32_t min, int32_t max, int64_t seed = -1);
+
+	void ToLower(std::string& string);
 }
 

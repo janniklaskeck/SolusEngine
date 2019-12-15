@@ -2,10 +2,12 @@
 
 #include "SolusEngine.h"
 #include "Asset.h"
+#include "Helper.h"
 
 #include <string>
 #include <unordered_map>
 #include <algorithm>
+#include <filesystem>
 
 namespace Solus
 {
@@ -23,9 +25,9 @@ namespace Solus
 		virtual Asset* GetAsset(std::string& path) = 0;
 
 	protected:
-		std::string root;
+		std::filesystem::path root;
 
-		void InitializeAsset(std::string& path, std::string extension);
+		void InitializeAsset(std::filesystem::path relativePath);
 
 		void CleanPath(std::string& path);
 	private:
@@ -34,11 +36,7 @@ namespace Solus
 			size_t operator()(const std::string& key) const
 			{
 				std::string keyCopy(key);
-				std::transform(keyCopy.begin(), keyCopy.end(), keyCopy.begin(),
-							   [](unsigned char c)
-							   {
-								   return std::tolower(c);
-							   });
+				ToLower(keyCopy);
 				return std::hash<std::string>()(keyCopy);
 			}
 		};

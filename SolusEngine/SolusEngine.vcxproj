@@ -80,7 +80,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <LibraryPath>$(LibraryPath)</LibraryPath>
-    <OutDir>$(SolutionDir)bin\bin$(PlatformArchitecture)\$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)bin$(PlatformArchitecture)$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)intermediates\$(ProjectName)\$(Configuration)_$(Platform)\</IntDir>
     <TargetName>$(ProjectName)</TargetName>
   </PropertyGroup>
@@ -89,7 +89,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(SolutionDir)bin\bin$(PlatformArchitecture)\$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)bin$(PlatformArchitecture)$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)intermediates\$(ProjectName)\$(Configuration)_$(Platform)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -116,7 +116,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;SOLUSENGINE_EXPORT;GLFW_INCLUDE_NONE;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\Libraries\GLFW\include;..\Libraries\glm;..\Libraries\gl3w\include;..\Libraries\assimp-5.0.0\include;..\Libraries\assimp-5.0.0\out\build\x64-Debug\include;..\Libraries\json;..\Libraries\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Libraries\GLFW\include;..\Libraries\glm;..\Libraries\gl3w\include;..\Libraries\assimp\include;..\Libraries\json;..\Libraries\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DisableSpecificWarnings>4251;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -124,14 +124,14 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glfw3dll.lib;opengl32.lib;assimp-vc142-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3dll.lib;opengl32.lib;assimp-vc142-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
-      <AdditionalLibraryDirectories>..\Libraries\GLFW\lib-vc2017;..\Libraries\assimp-5.0.0\out\build\x64-Debug\code;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\Libraries\GLFW\lib-vc2017;..\Libraries\assimp\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>$(OutDir)\$(TargetName).lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /y $(SolutionDir)Libraries\GLFW\lib-vc2017\glfw3.dll  $(OutDir)
-xcopy /y $(SolutionDir)Libraries\assimp-5.0.0\out\build\x64-Debug\code\assimp-vc142-mtd.dll  $(OutDir)</Command>
+xcopy /y $(SolutionDir)Libraries\assimp\lib\assimp-vc142-mt.dll  $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -162,7 +162,7 @@ xcopy /y $(SolutionDir)Libraries\assimp-5.0.0\out\build\x64-Debug\code\assimp-vc
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;SOLUSENGINE_EXPORT;GLFW_INCLUDE_NONE;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\Libraries\GLFW\include;..\Libraries\glm;..\Libraries\gl3w\include;..\Libraries\assimp-5.0.0\include;..\Libraries\assimp-5.0.0\out\build\x64-Debug\include;..\Libraries\json;..\Libraries\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Libraries\GLFW\include;..\Libraries\glm;..\Libraries\gl3w\include;..\Libraries\assimp\include;..\Libraries\json;..\Libraries\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
@@ -171,12 +171,12 @@ xcopy /y $(SolutionDir)Libraries\assimp-5.0.0\out\build\x64-Debug\code\assimp-vc
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\Libraries\GLFW\lib-vc2017;..\Libraries\assimp-5.0.0\out\build\x64-Debug\code;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3dll.lib;opengl32.lib;assimp-vc142-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\Libraries\GLFW\lib-vc2017;..\Libraries\assimp\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3dll.lib;opengl32.lib;assimp-vc142-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /y $(SolutionDir)Libraries\GLFW\lib-vc2017\glfw3.dll  $(OutDir)
-xcopy /y $(SolutionDir)Libraries\assimp-5.0.0\out\build\x64-Debug\code\assimp-vc142-mtd.dll  $(OutDir)</Command>
+xcopy /y $(SolutionDir)Libraries\assimp\lib\assimp-vc142-mt.dll  $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -272,12 +272,6 @@ xcopy /y $(SolutionDir)Libraries\assimp-5.0.0\out\build\x64-Debug\code\assimp-vc
     <ClCompile Include="RenderWindow.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="World.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\bin\bin64\Debug\editor\Shader\DefaultFragmentShader.glsl" />
-    <None Include="..\bin\bin64\Debug\editor\Shader\DefaultVertexShader.glsl" />
-    <None Include="..\bin\bin64\Debug\editor\Shader\ScreenFragmentShader.glsl" />
-    <None Include="..\bin\bin64\Debug\editor\Shader\ScreenVertexShader.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -14,7 +14,7 @@ namespace Solus
 	Asset::~Asset()
 	{}
 
-	void Asset::Initialize(const char* filePath, bool forceLoad/* = false*/)
+	void Asset::Initialize(std::filesystem::path filePath, bool forceLoad/* = false*/)
 	{
 		this->path = filePath;
 		metaData.reset(new AssetMeta);
@@ -38,9 +38,9 @@ namespace Solus
 		dataPtr = nullptr;
 	}
 
-	std::string Asset::GetFilePath() const
+	std::filesystem::path Asset::GetFilePath() const
 	{
-		return std::string(path);
+		return path;
 	}
 
 	void* Asset::GetRawData() const

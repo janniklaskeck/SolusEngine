@@ -6,6 +6,7 @@
 
 #include <chrono>
 #include <random>
+#include <algorithm>
 
 namespace Solus
 {
@@ -56,6 +57,11 @@ namespace Solus
 		std::mt19937 randomBase(seed);
 		std::uniform_int_distribution<> random(min, max);
 		return random(randomBase);
+	}
+
+	void ToLower(std::string& string)
+	{
+		std::transform(string.begin(), string.end(), string.begin(), ::tolower);
 	}
 
 

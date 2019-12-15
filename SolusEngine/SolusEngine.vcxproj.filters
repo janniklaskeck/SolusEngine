@@ -348,18 +348,4 @@
       <Filter>Source Files\Render</Filter>
     </ClCompile>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="..\bin\bin64\Debug\editor\Shader\DefaultFragmentShader.glsl">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\bin\bin64\Debug\editor\Shader\DefaultVertexShader.glsl">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\bin\bin64\Debug\editor\Shader\ScreenFragmentShader.glsl">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\bin\bin64\Debug\editor\Shader\ScreenVertexShader.glsl">
-      <Filter>Resource Files</Filter>
-    </None>
-  </ItemGroup>
 </Project>

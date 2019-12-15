@@ -28,7 +28,7 @@ namespace Solus
 
 	void Entity::TEMP()
 	{
-		auto* meshAsset = (MeshAsset*)gEngine->GetAssetManager()->GetAsset("editor/Model/suzanne.obj");
+		auto* meshAsset = (MeshAsset*)gEngine->GetAssetManager()->GetAsset("Model/suzanne.obj");
 		mesh = gEngine->GetRenderDevice()->CreateMesh(meshAsset);
 		mesh->owner = this;
 	}

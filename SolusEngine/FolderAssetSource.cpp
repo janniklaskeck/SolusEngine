@@ -15,6 +15,7 @@ namespace Solus
 	void FolderAssetSource::Initialize()
 	{
 		filesystem::path path(root);
+		path = filesystem::absolute(path);
 		filesystem::recursive_directory_iterator end;
 
 		for (filesystem::recursive_directory_iterator i(path); i != end; ++i)
@@ -22,17 +23,18 @@ namespace Solus
 			const filesystem::path cp = (*i);
 			if (_stricmp(cp.extension().string().c_str(), Asset::ASSET_FILE_EXTENSION) > 0)
 			{
-				std::string filePath = cp.relative_path().string();
-				InitializeAsset(filePath, cp.extension().string());
+				auto relativePath = filesystem::relative(cp, path);
+				InitializeAsset(relativePath);
 			}
 		}
 	}
 
 	Asset* FolderAssetSource::GetAsset(std::string& path)
 	{
-		if (assets.find(path) != assets.end())
+		auto pathString = filesystem::path(path).generic_string();
+		if (assets.find(pathString) != assets.end())
 		{
-			return assets[path];
+			return assets[pathString];
 		}
 		return nullptr;
 	}

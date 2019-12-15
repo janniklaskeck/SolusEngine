@@ -42,8 +42,8 @@ namespace Solus
 		defaultSurface->Initialize(width, height);
 		SetRenderSurface(defaultSurface);
 
-		TextAsset* screenVertexShader = (TextAsset*)gEngine->GetAssetManager()->GetAsset("editor/Shader/ScreenVertexShader.glsl");
-		TextAsset* screenFragmentShader = (TextAsset*)gEngine->GetAssetManager()->GetAsset("editor/Shader/ScreenFragmentShader.glsl");
+		TextAsset* screenVertexShader = (TextAsset*)gEngine->GetAssetManager()->GetAsset("Shader/ScreenVertexShader.glsl");
+		TextAsset* screenFragmentShader = (TextAsset*)gEngine->GetAssetManager()->GetAsset("Shader/ScreenFragmentShader.glsl");
 
 		screenShader = (OpenGLShader*)CreateShader(screenVertexShader, screenFragmentShader);
 		screenTextureId = glGetUniformLocation(screenShader->GetShaderProgram(), "screenTexture");

@@ -7,9 +7,7 @@
 namespace Solus
 {
 	AssetMeta::AssetMeta()
-	{
-		metaData = nlohmann::json::parse("{}");
-	}
+	{}
 
 	void AssetMeta::Initialize(Asset* asset)
 	{
@@ -21,7 +19,7 @@ namespace Solus
 		std::filesystem::path metaDataFileName(fileName + fileExtension + Asset::ASSET_FILE_EXTENSION);
 
 		std::filesystem::path metaDataFilePath = parentFolder / metaDataFileName;
-		std::string metaDataFilePathString = metaDataFilePath.relative_path().string();
+		std::string metaDataFilePathString = metaDataFilePath.string();
 		if (std::filesystem::exists(metaDataFilePath))
 		{
 			ReadMetaData(metaDataFilePathString);

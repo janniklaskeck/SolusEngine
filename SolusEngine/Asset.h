@@ -7,6 +7,7 @@
 #include <vector>
 #include <cstdint>
 #include <memory>
+#include <filesystem>
 
 namespace Solus
 {
@@ -27,7 +28,7 @@ namespace Solus
 		Asset();
 		virtual ~Asset();
 		
-		virtual void Initialize(const char* filePath, bool forceLoad = false);
+		virtual void Initialize(std::filesystem::path filePath, bool forceLoad = false);
 
 		virtual void Load();
 		virtual void Unload();
@@ -35,9 +36,9 @@ namespace Solus
 		void* GetRawData() const;
 		uintmax_t GetDataSize() const;
 
-		std::string GetFilePath() const;
+		std::filesystem::path GetFilePath() const;
 	protected:
-		std::string path;
+		std::filesystem::path path;
 		AssetType type;
 
 		std::unique_ptr<class AssetMeta> metaData;

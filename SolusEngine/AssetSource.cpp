@@ -3,12 +3,16 @@
 #include "MeshAsset.h"
 #include "TextureAsset.h"
 
+#include "Helper.h"
+
+#include <filesystem>
+
 namespace Solus
 {
 
 	AssetSource::AssetSource(std::string root)
-		: root(root)
 	{
+		this->root = std::filesystem::absolute(root);
 		// Text files
 		extensionTypeMap[".txt"] = AssetType::AT_TEXT;
 		extensionTypeMap[".glsl"] = AssetType::AT_TEXT;
@@ -20,12 +24,10 @@ namespace Solus
 		extensionTypeMap[".obj"] = AssetType::AT_MESH;
 	}
 
-	void AssetSource::InitializeAsset(std::string& path, std::string extension)
+	void AssetSource::InitializeAsset(std::filesystem::path relativePath)
 	{
-		CleanPath(path);
-		std::transform(extension.begin(), extension.end(), extension.begin(), ::tolower);
-
 		Asset* asset;
+		std::string extension = relativePath.extension().generic_string();
 		if (extensionTypeMap.find(extension) != extensionTypeMap.end())
 		{
 			switch (extensionTypeMap[extension])
@@ -48,8 +50,9 @@ namespace Solus
 		{
 			asset = new TextAsset();
 		}
-		assets[path] = asset;
-		assets[path]->Initialize(path.c_str());
+		auto absolutePath = (root / relativePath);
+		asset->Initialize(absolutePath);
+		assets[relativePath.generic_string()] = asset;
 	}
 
 	void AssetSource::CleanPath(std::string& path)

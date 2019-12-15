@@ -10,8 +10,8 @@ namespace Solus
 
 	Solus::RenderMesh::RenderMesh()
 	{
-		TextAsset* vertexShader = (TextAsset*)gEngine->GetAssetManager()->GetAsset("editor/Shader/DefaultVertexShader.glsl");
-		TextAsset* pixelShader = (TextAsset*)gEngine->GetAssetManager()->GetAsset("editor/Shader/DefaultFragmentShader.glsl");
+		TextAsset* vertexShader = (TextAsset*)gEngine->GetAssetManager()->GetAsset("Shader/DefaultVertexShader.glsl");
+		TextAsset* pixelShader = (TextAsset*)gEngine->GetAssetManager()->GetAsset("Shader/DefaultFragmentShader.glsl");
 		shader = gEngine->GetRenderDevice()->CreateShader(vertexShader, pixelShader);
 		owner = nullptr;
 	}

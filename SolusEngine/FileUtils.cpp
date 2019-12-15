@@ -16,39 +16,35 @@ namespace Solus
 		return path.string();
 	}
 
-	std::string FileUtils::ReadFile(const char* filePath)
+	std::string FileUtils::ReadFile(std::filesystem::path path)
 	{
-		filesystem::path _filePath(filePath);
-
-		filesystem::file_status fileStatus = filesystem::status(_filePath);
+		filesystem::file_status fileStatus = filesystem::status(path);
 		if (!filesystem::is_regular_file(fileStatus))
 		{
-			gEngine->Log(LogLevel::LogError, "Could not load file at %s!", _filePath.string().c_str());
+			gEngine->Log(LogLevel::LogError, "Could not load file at %s!", path.string().c_str());
 			return "";
 		}
 
 		std::ifstream fileStream;
-		fileStream.open(_filePath);
+		fileStream.open(path);
 		std::stringstream ss;
 		ss << fileStream.rdbuf();
 
 		return ss.str();
 	}
 
-	char* FileUtils::ReadFileRaw(const char* filePath, uintmax_t& length)
+	char* FileUtils::ReadFileRaw(std::filesystem::path path, uintmax_t& length)
 	{
-		filesystem::path _filePath(filePath);
-
-		filesystem::file_status fileStatus = filesystem::status(_filePath);
+		filesystem::file_status fileStatus = filesystem::status(path);
 		if (!filesystem::is_regular_file(fileStatus))
 		{
-			gEngine->Log(LogLevel::LogError, "Could not load file at %s!", _filePath.string().c_str());
+			gEngine->Log(LogLevel::LogError, "Could not load file at %s!", path.string().c_str());
 			return nullptr;
 		}
-		uintmax_t fileSize = filesystem::file_size(_filePath);
+		uintmax_t fileSize = filesystem::file_size(path);
 		length = fileSize;
 		char* buffer = new char[fileSize];
-		std::ifstream fileStream(_filePath, std::ios::binary);
+		std::ifstream fileStream(path, std::ios::binary);
 		fileStream.seekg(std::ios::beg);
 		fileStream.read(buffer, fileSize);
 		fileStream.close();

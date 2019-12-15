@@ -145,7 +145,7 @@ namespace Solus
 		}
 		Assimp::Importer importer;
 		const char* path = "";
-		const aiScene* scene = importer.ReadFile(meshAsset->GetFilePath(), 0/*aiProcess_FixInfacingNormals
+		const aiScene* scene = importer.ReadFile(meshAsset->GetFilePath().string(), 0/*aiProcess_FixInfacingNormals
 												 | aiProcess_JoinIdenticalVertices
 												 | aiProcess_GenSmoothNormals
 												 | aiProcess_FindInvalidData
@@ -184,7 +184,7 @@ namespace Solus
 			}
 			if (!foundMaterial)
 			{
-				auto* texture = (TextureAsset*)gEngine->GetAssetManager()->GetAsset("editor/Texture/uvmap.dds");
+				auto* texture = (TextureAsset*)gEngine->GetAssetManager()->GetAsset("texture/uvmap.dds");
 				textures.push_back(gEngine->GetRenderDevice()->CreateTexture(texture));
 			}
 		}

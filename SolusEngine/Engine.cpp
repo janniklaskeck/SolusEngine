@@ -12,6 +12,8 @@
 #include "Helper.h"
 #include "Timer.h"
 
+#include "FileUtils.h"
+
 #include <iostream>
 #include <cstdarg>
 #include <ctime>
@@ -42,7 +44,8 @@ namespace Solus
 	{
 		gEngine = this;
 		assetManager = new AssetManager;
-		FolderAssetSource* baseAssetFolder = new FolderAssetSource("./editor");
+		auto a = FileUtils::GetCurrentFolder();
+		FolderAssetSource* baseAssetFolder = new FolderAssetSource(a + "/../editor");
 		gEngine->GetAssetManager()->AddSource(baseAssetFolder);
 		RegisterRenderWindow(new GLFWWindow);
 		world = new World;
