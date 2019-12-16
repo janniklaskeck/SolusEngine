@@ -1,7 +1,9 @@
 #pragma once
 #include "RenderDevice.h"
+#include "RenderTexture.h"
 
 #include <iostream>
+#include <memory>
 
 namespace Solus
 {
@@ -29,6 +31,7 @@ namespace Solus
 		virtual RenderMesh* CreateMesh(MeshAsset* meshFileName) override;
 
 		virtual RenderTexture* CreateTexture(TextureAsset* sourceFile, bool doLoading = true, TextureType type = TextureType::TEX_DDS) override;
+		virtual RenderTexture* GetDefaultTexture();
 
 		virtual void SetRenderSurface(RenderSurface* surface = nullptr) override;
 
@@ -40,6 +43,8 @@ namespace Solus
 		unsigned int screenTextureId;
 		unsigned int screenQuadVertexArray;
 		unsigned int screenQuadVertexBuffer;
+
+		std::unique_ptr<RenderTexture> defaultTexture;
 	};
 
 }

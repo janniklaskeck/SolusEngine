@@ -10,6 +10,7 @@
 #include "TextureAsset.h"
 
 #include "Engine.h"
+#include "AssetManager.h"
 
 #include <GL/gl3w.h>
 
@@ -126,6 +127,19 @@ namespace Solus
 
 		return newTexture;
 	}
+
+	RenderTexture* OpenGLDevice::GetDefaultTexture()
+	{
+		if (!defaultTexture.get())
+		{
+			auto* defaultTextureAsset = (TextureAsset*)gEngine->GetAssetManager()->GetAsset("texture/defaultTexture.dds");
+			defaultTexture.reset(new OpenGLTexture(GL_TEXTURE_2D));
+			defaultTexture.get()->Load(defaultTextureAsset);
+		}
+
+		return defaultTexture.get();
+	}
+
 	void OpenGLDevice::SetRenderSurface(RenderSurface* surface /*= nullptr*/)
 	{
 		if (!surface)

@@ -34,6 +34,8 @@ namespace Solus
 
 		virtual RenderTexture* CreateTexture(TextureAsset* sourceFile, bool doLoading = true, TextureType = TextureType::TEX_DDS) = 0;
 
+		virtual RenderTexture* GetDefaultTexture() = 0;
+
 		virtual void SetRenderSurface(RenderSurface* surface = nullptr) = 0;
 	};
 }

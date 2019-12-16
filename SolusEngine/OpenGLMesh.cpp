@@ -50,10 +50,6 @@ namespace Solus
 		glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(Vec3f) * vertices.size(), &vertices[0], GL_STATIC_DRAW);
 
-		glGenBuffers(1, &indexBuffer);
-		glBindBuffer(GL_ARRAY_BUFFER, indexBuffer);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(unsigned int) * indices.size(), &indices[0], GL_STATIC_DRAW);
-
 		glGenBuffers(1, &normalBuffer);
 		glBindBuffer(GL_ARRAY_BUFFER, normalBuffer);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(Vec3f) * normals.size(), &normals[0], GL_STATIC_DRAW);
@@ -61,6 +57,10 @@ namespace Solus
 		glGenBuffers(1, &uvBuffer);
 		glBindBuffer(GL_ARRAY_BUFFER, uvBuffer);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(Vec2f) * texCoords.size(), &texCoords[0], GL_STATIC_DRAW);
+
+		glGenBuffers(1, &indexBuffer);
+		glBindBuffer(GL_ARRAY_BUFFER, indexBuffer);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(unsigned int) * indices.size(), &indices[0], GL_STATIC_DRAW);
 
 	}
 
@@ -79,6 +79,8 @@ namespace Solus
 		//assert(modelViewMatrixUniformLoc != 0xFFFFFFFF);
 		textureSamplerLoc = glGetUniformLocation(shader->GetShaderProgram(), "textureSampler");
 		//assert(textureSamplerLoc != 0xFFFFFFFF);
+
+		glGenVertexArrays(1, &VAO);
 
 		CHECK_OPENGL_ERROR();
 	}
@@ -110,27 +112,23 @@ namespace Solus
 			glUniform1i(textureSamplerLoc, i);
 		}
 
-		//glBindVertexArray(VAO);
 		glBindVertexArray(VAO);
 
-		glEnableVertexAttribArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, entries[0].vertexBuffer);
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-		//glDisableVertexAttribArray(0);
+		glEnableVertexAttribArray(0);
 
-		glEnableVertexAttribArray(1);
 		glBindBuffer(GL_ARRAY_BUFFER, entries[0].normalBuffer);
 		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
-		//glDisableVertexAttribArray(1);
+		glEnableVertexAttribArray(1);
 
-		glEnableVertexAttribArray(2);
 		glBindBuffer(GL_ARRAY_BUFFER, entries[0].uvBuffer);
 		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, 0);
-		//glDisableVertexAttribArray(2);
+		glEnableVertexAttribArray(2);
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, entries[0].indexBuffer);
 
-		glDrawElements(GL_TRIANGLES, entries[0].indices.size(), GL_UNSIGNED_SHORT, 0);
+		glDrawElements(GL_TRIANGLES, entries[0].indices.size(), GL_UNSIGNED_INT, 0);
 		glDisableVertexAttribArray(0);
 		glDisableVertexAttribArray(1);
 		glDisableVertexAttribArray(2);
@@ -145,12 +143,12 @@ namespace Solus
 		}
 		Assimp::Importer importer;
 		const char* path = "";
-		const aiScene* scene = importer.ReadFile(meshAsset->GetFilePath().string(), 0/*aiProcess_FixInfacingNormals
+		const aiScene* scene = importer.ReadFile(meshAsset->GetFilePath().string(), aiProcess_FixInfacingNormals
 												 | aiProcess_JoinIdenticalVertices
 												 | aiProcess_GenSmoothNormals
 												 | aiProcess_FindInvalidData
 												 | aiProcess_GenUVCoords
-												 | aiProcess_Triangulate*/);
+												 | aiProcess_Triangulate);
 		if (!scene)
 		{
 			gEngine->Log(LogError, "Could not load OBJ model file: %s", importer.GetErrorString());
@@ -184,15 +182,9 @@ namespace Solus
 			}
 			if (!foundMaterial)
 			{
-				auto* texture = (TextureAsset*)gEngine->GetAssetManager()->GetAsset("texture/uvmap.dds");
-				textures.push_back(gEngine->GetRenderDevice()->CreateTexture(texture));
+				textures.push_back(gEngine->GetRenderDevice()->GetDefaultTexture());
 			}
 		}
-
-		glGenVertexArrays(1, &VAO);
-
-		glBindVertexArray(0);
-
 		return true;
 	}
 
