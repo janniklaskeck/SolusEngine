@@ -1,5 +1,6 @@
 #pragma once
-#include "Window.h"
+#include "Render/Window.h"
+
 namespace Editor
 {
 	class EditorMainWindow : public Solus::Window

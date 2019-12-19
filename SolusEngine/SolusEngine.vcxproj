@@ -79,7 +79,6 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <LibraryPath>$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)bin$(PlatformArchitecture)$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)intermediates\$(ProjectName)\$(Configuration)_$(Platform)\</IntDir>
     <TargetName>$(ProjectName)</TargetName>
@@ -116,7 +115,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;SOLUSENGINE_EXPORT;GLFW_INCLUDE_NONE;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\Libraries\GLFW\include;..\Libraries\glm;..\Libraries\gl3w\include;..\Libraries\assimp\include;..\Libraries\json;..\Libraries\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Libraries\GLFW\include;..\Libraries\glm;..\Libraries\gl3w\include;..\Libraries\assimp\include;..\Libraries\json;..\Libraries\imgui;./;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DisableSpecificWarnings>4251;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -188,47 +187,49 @@ xcopy /y $(SolutionDir)Libraries\assimp\lib\assimp-vc142-mt.dll  $(OutDir)</Comm
     <ClInclude Include="..\Libraries\imgui\imstb_rectpack.h" />
     <ClInclude Include="..\Libraries\imgui\imstb_textedit.h" />
     <ClInclude Include="..\Libraries\imgui\imstb_truetype.h" />
-    <ClInclude Include="Asset.h" />
-    <ClInclude Include="AssetManager.h" />
-    <ClInclude Include="AssetMeta.h" />
-    <ClInclude Include="AssetSource.h" />
-    <ClInclude Include="BinaryReader.h" />
-    <ClInclude Include="Camera.h" />
-    <ClInclude Include="Engine.h" />
-    <ClInclude Include="Entity.h" />
-    <ClInclude Include="FileUtils.h" />
-    <ClInclude Include="FolderAssetSource.h" />
-    <ClInclude Include="FreeFlyCamera.h" />
-    <ClInclude Include="GLFWWindow.h" />
-    <ClInclude Include="Helper.h" />
-    <ClInclude Include="InputDevice.h" />
-    <ClInclude Include="InputListener.h" />
-    <ClInclude Include="Level.h" />
-    <ClInclude Include="MathUtil.h" />
-    <ClInclude Include="Matrix.h" />
-    <ClInclude Include="MeshAsset.h" />
-    <ClInclude Include="OpenGLDevice.h" />
-    <ClInclude Include="OpenGLSurface.h" />
-    <ClInclude Include="OpenGLTexture.h" />
-    <ClInclude Include="OpenGLMesh.h" />
-    <ClInclude Include="OpenGLShader.h" />
-    <ClInclude Include="RenderDevice.h" />
-    <ClInclude Include="RenderSurface.h" />
-    <ClInclude Include="RenderTexture.h" />
-    <ClInclude Include="RenderMesh.h" />
-    <ClInclude Include="RenderShader.h" />
+    <ClInclude Include="AssetSystem\Asset.h" />
+    <ClInclude Include="AssetSystem\AssetManager.h" />
+    <ClInclude Include="AssetSystem\AssetMeta.h" />
+    <ClInclude Include="AssetSystem\AssetSource.h" />
+    <ClInclude Include="AssetSystem\FolderAssetSource.h" />
+    <ClInclude Include="AssetSystem\MeshAsset.h" />
+    <ClInclude Include="AssetSystem\TextAsset.h" />
+    <ClInclude Include="AssetSystem\TextureAsset.h" />
+    <ClInclude Include="Engine\Engine.h" />
+    <ClInclude Include="Engine\SolusEngine.h" />
+    <ClInclude Include="Input\InputDevice.h" />
+    <ClInclude Include="Input\InputListener.h" />
+    <ClInclude Include="Object\Entity.h" />
+    <ClInclude Include="Object\Level.h" />
+    <ClInclude Include="Object\SolusObject.h" />
+    <ClInclude Include="Object\World.h" />
+    <ClInclude Include="Render\Camera.h" />
+    <ClInclude Include="Render\FreeFlyCamera.h" />
+    <ClInclude Include="Render\GLFWWindow.h" />
+    <ClInclude Include="Render\OpenGLDevice.h" />
+    <ClInclude Include="Render\OpenGLMesh.h" />
+    <ClInclude Include="Render\OpenGLPrimitiveDrawer.h" />
+    <ClInclude Include="Render\OpenGLShader.h" />
+    <ClInclude Include="Render\OpenGLSurface.h" />
+    <ClInclude Include="Render\OpenGLTexture.h" />
+    <ClInclude Include="Render\PrimitiveDrawer.h" />
+    <ClInclude Include="Render\RenderDevice.h" />
+    <ClInclude Include="Render\RenderMesh.h" />
+    <ClInclude Include="Render\RenderShader.h" />
+    <ClInclude Include="Render\RenderSurface.h" />
+    <ClInclude Include="Render\RenderTexture.h" />
+    <ClInclude Include="Render\RenderWindow.h" />
+    <ClInclude Include="Render\Window.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="SolusEngine.h" />
-    <ClInclude Include="SolusObject.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="TextAsset.h" />
-    <ClInclude Include="TextureAsset.h" />
-    <ClInclude Include="Timer.h" />
-    <ClInclude Include="Transform.h" />
-    <ClInclude Include="Vector.h" />
-    <ClInclude Include="RenderWindow.h" />
-    <ClInclude Include="Window.h" />
-    <ClInclude Include="World.h" />
+    <ClInclude Include="Utility\BinaryReader.h" />
+    <ClInclude Include="Utility\FileUtils.h" />
+    <ClInclude Include="Utility\Helper.h" />
+    <ClInclude Include="Utility\MathUtil.h" />
+    <ClInclude Include="Utility\Matrix.h" />
+    <ClInclude Include="Utility\Timer.h" />
+    <ClInclude Include="Utility\Transform.h" />
+    <ClInclude Include="Utility\Vector.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Libraries\gl3w\src\gl3w.c" />
@@ -238,40 +239,42 @@ xcopy /y $(SolutionDir)Libraries\assimp\lib\assimp-vc142-mt.dll  $(OutDir)</Comm
     <ClCompile Include="..\Libraries\imgui\imgui_impl_glfw.cpp" />
     <ClCompile Include="..\Libraries\imgui\imgui_impl_opengl3.cpp" />
     <ClCompile Include="..\Libraries\imgui\imgui_widgets.cpp" />
-    <ClCompile Include="Asset.cpp" />
-    <ClCompile Include="AssetManager.cpp" />
-    <ClCompile Include="AssetMeta.cpp" />
-    <ClCompile Include="AssetSource.cpp" />
-    <ClCompile Include="BinaryReader.cpp" />
-    <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="Engine.cpp" />
-    <ClCompile Include="Entity.cpp" />
-    <ClCompile Include="FileUtils.cpp" />
-    <ClCompile Include="FolderAssetSource.cpp" />
-    <ClCompile Include="FreeFlyCamera.cpp" />
-    <ClCompile Include="GLFWWindow.cpp" />
-    <ClCompile Include="Helper.cpp" />
-    <ClCompile Include="InputDevice.cpp" />
-    <ClCompile Include="Level.cpp" />
-    <ClCompile Include="MathUtil.cpp" />
-    <ClCompile Include="MeshAsset.cpp" />
-    <ClCompile Include="OpenGLDevice.cpp" />
-    <ClCompile Include="OpenGLSurface.cpp" />
-    <ClCompile Include="OpenGLTexture.cpp" />
-    <ClCompile Include="OpenGLMesh.cpp" />
-    <ClCompile Include="OpenGLShader.cpp" />
-    <ClCompile Include="RenderDevice.cpp" />
-    <ClCompile Include="RenderSurface.cpp" />
-    <ClCompile Include="RenderTexture.cpp" />
-    <ClCompile Include="RenderMesh.cpp" />
-    <ClCompile Include="RenderShader.cpp" />
-    <ClCompile Include="SolusObject.cpp" />
-    <ClCompile Include="TextAsset.cpp" />
-    <ClCompile Include="TextureAsset.cpp" />
-    <ClCompile Include="Timer.cpp" />
-    <ClCompile Include="RenderWindow.cpp" />
-    <ClCompile Include="Window.cpp" />
-    <ClCompile Include="World.cpp" />
+    <ClCompile Include="AssetSystem\Asset.cpp" />
+    <ClCompile Include="AssetSystem\AssetManager.cpp" />
+    <ClCompile Include="AssetSystem\AssetMeta.cpp" />
+    <ClCompile Include="AssetSystem\AssetSource.cpp" />
+    <ClCompile Include="AssetSystem\FolderAssetSource.cpp" />
+    <ClCompile Include="AssetSystem\MeshAsset.cpp" />
+    <ClCompile Include="AssetSystem\TextAsset.cpp" />
+    <ClCompile Include="AssetSystem\TextureAsset.cpp" />
+    <ClCompile Include="Engine\Engine.cpp" />
+    <ClCompile Include="Input\InputDevice.cpp" />
+    <ClCompile Include="Object\Entity.cpp" />
+    <ClCompile Include="Object\Level.cpp" />
+    <ClCompile Include="Object\SolusObject.cpp" />
+    <ClCompile Include="Object\World.cpp" />
+    <ClCompile Include="Render\Camera.cpp" />
+    <ClCompile Include="Render\FreeFlyCamera.cpp" />
+    <ClCompile Include="Render\GLFWWindow.cpp" />
+    <ClCompile Include="Render\OpenGLDevice.cpp" />
+    <ClCompile Include="Render\OpenGLMesh.cpp" />
+    <ClCompile Include="Render\OpenGLPrimitiveDrawer.cpp" />
+    <ClCompile Include="Render\OpenGLShader.cpp" />
+    <ClCompile Include="Render\OpenGLSurface.cpp" />
+    <ClCompile Include="Render\OpenGLTexture.cpp" />
+    <ClCompile Include="Render\PrimitiveDrawer.cpp" />
+    <ClCompile Include="Render\RenderDevice.cpp" />
+    <ClCompile Include="Render\RenderMesh.cpp" />
+    <ClCompile Include="Render\RenderShader.cpp" />
+    <ClCompile Include="Render\RenderSurface.cpp" />
+    <ClCompile Include="Render\RenderTexture.cpp" />
+    <ClCompile Include="Render\RenderWindow.cpp" />
+    <ClCompile Include="Render\Window.cpp" />
+    <ClCompile Include="Utility\BinaryReader.cpp" />
+    <ClCompile Include="Utility\FileUtils.cpp" />
+    <ClCompile Include="Utility\Helper.cpp" />
+    <ClCompile Include="Utility\MathUtil.cpp" />
+    <ClCompile Include="Utility\Timer.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

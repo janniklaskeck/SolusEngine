@@ -1,5 +1,5 @@
 #pragma once
-#include "InputDevice.h"
+#include "Input/InputDevice.h"
 
 #include <GLFW/glfw3.h>
 #include <vector>

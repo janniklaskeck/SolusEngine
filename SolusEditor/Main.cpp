@@ -1,8 +1,8 @@
 #include "stdafx.h"
 
-#include "Engine.h"
 #include "EditorMainWindow.h"
-#include "FileUtils.h"
+#include "Engine/Engine.h"
+#include "Utility/FileUtils.h"
 
 using namespace Solus;
 

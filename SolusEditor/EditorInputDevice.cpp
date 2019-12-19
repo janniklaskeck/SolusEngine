@@ -1,7 +1,7 @@
 #include "EditorInputDevice.h"
 
-#include "Engine.h"
-#include "Window.h"
+#include "Engine/Engine.h"
+#include "Render/Window.h"
 
 namespace Editor
 {

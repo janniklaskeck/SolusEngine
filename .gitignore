@@ -277,14 +277,7 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
-/Libraries/boost_1_71_0/boost.css
-/Libraries/boost_1_71_0/boost.png
-/Libraries/boost_1_71_0/boost-build.jam
-/Libraries/boost_1_71_0/boostcpp.jam
-/Libraries/boost_1_71_0/bootstrap.bat
-/Libraries/boost_1_71_0/bootstrap.sh
-/Libraries/boost_1_71_0/index.htm
-/Libraries/boost_1_71_0/index.html
-/Libraries/boost_1_71_0/INSTALL
-/Libraries/boost_1_71_0/Jamroot
-/Libraries/boost_1_71_0/rst.css
+
+# VSCODE
+.vscode
+*.code-workspace

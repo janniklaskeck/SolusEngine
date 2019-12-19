@@ -1,12 +1,17 @@
 #include "EditorMainWindow.h"
-#include "InputDevice.h"
-#include "Engine.h"
-#include "FreeFlyCamera.h"
-#include "World.h"
-#include "AssetManager.h"
-#include "FolderAssetSource.h"
-#include "Asset.h"
 #include "EditorInputDevice.h"
+
+#include "Input/InputDevice.h"
+
+#include "Engine/Engine.h"
+
+#include "Render/FreeFlyCamera.h"
+
+#include "Object/World.h"
+
+#include "AssetSystem/AssetManager.h"
+#include "AssetSystem/FolderAssetSource.h"
+#include "AssetSystem/Asset.h"
 
 using namespace Solus;
 
