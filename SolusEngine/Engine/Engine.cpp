@@ -25,36 +25,42 @@ namespace Solus
 {
 	Engine* gEngine = nullptr;
 
-	bool Engine::Initialize()
+	void InitializeEngine(Window* window)
 	{
 		gEngine = new Engine;
-		gEngine->mainTimer = new Timer;
+		gEngine->InitWindow(window); // Do Window first, necessary for now
+		gEngine->Initialize();
+	}
+
+	void Engine::Initialize()
+	{
+		mainTimer = new Timer;
+		mainTimer->Initialize();
+
+		assetManager = new AssetManager;
+		assetManager->Initialize();
+		// Add Engine assets
+		auto cwd = FileUtils::GetCurrentFolder();
+		FolderAssetSource* baseAssetFolder = new FolderAssetSource(cwd + "/../Assets");
+		gEngine->GetAssetManager()->AddSource(baseAssetFolder);
+
+		renderDevice = new OpenGLDevice;
+		renderDevice->Initialize();
+
+		world = new World;
 
 		auto now = std::chrono::system_clock::now();
 		std::time_t nowTime = std::chrono::system_clock::to_time_t(now);
 		char buffer[64];
 		ctime_s(buffer, 64, &nowTime);
 		gEngine->Log(LogDebug, "Engine initialized at: %s", buffer);
-
-		return true;
 	}
 
 	Engine::Engine()
-	{
-		gEngine = this;
-		assetManager = new AssetManager;
-		auto a = FileUtils::GetCurrentFolder();
-		FolderAssetSource* baseAssetFolder = new FolderAssetSource(a + "/../editor");
-		gEngine->GetAssetManager()->AddSource(baseAssetFolder);
-		RegisterRenderWindow(new GLFWWindow);
-		world = new World;
-		renderDevice = new OpenGLDevice;
-		renderDevice->Initialize();
-	}
+	{}
 
 	Engine::~Engine()
 	{
-		delete renderWindow;
 		delete window;
 		delete world;
 	}
@@ -72,22 +78,23 @@ namespace Solus
 	void Engine::Update()
 	{
 		mainTimer->Update();
-		//if (mainTimer->TickDone())
-		//{
-			//mainTimer->Reset();
-			GetInputDevice()->Update();
-			GetWorld()->Update();
-			GetWindow()->Update();
-			GetRenderWindow()->Update();
+		GetInputDevice()->Update();
+		GetWorld()->Update();
+		GetWindow()->Update();
+	}
 
-		//}
+	void Engine::Destroy()
+	{
+		mainTimer->Destroy();
+		assetManager->Destroy();
+		renderDevice->Destroy();
+		inputDevice->Destroy();
+		window->Destroy();
 	}
 
 	void Engine::Render()
 	{
-		renderDevice->PreRenderScene();
-		GetWorld()->Render();
-		renderDevice->PostRenderScene();
+		GetWindow()->Render();
 	}
 
 	const char* Engine::LogLevelToChar(LogLevel level)
@@ -105,22 +112,6 @@ namespace Solus
 		default:
 			return "Unknown";
 		}
-	}
-
-	void Engine::InitRenderWindow(RenderWindow* windowInstance)
-	{
-		renderWindow = windowInstance;
-	}
-
-	void Engine::RegisterRenderWindow(RenderWindow* newRenderWindow)
-	{
-		renderWindow = newRenderWindow;
-		renderWindow->Initialize();
-	}
-
-	RenderWindow* Engine::GetRenderWindow() const
-	{
-		return renderWindow;
 	}
 
 	void Engine::InitWindow(Window* windowInstance)

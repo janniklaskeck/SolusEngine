@@ -15,9 +15,9 @@ namespace Editor
 	void EditorInputDevice::Update()
 	{
 		Solus::InputDevice::Update();
-		if (IsKeyDown(GLFW_KEY_ESCAPE))
+		if (IsKeyDown(0))
 		{
-			Solus::gEngine->GetWindow()->Close();
+			Solus::gEngine->GetWindow()->Destroy();
 		}
 	}
 }

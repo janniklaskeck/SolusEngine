@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="include">
+      <UniqueIdentifier>{c91f3036-cadb-49c9-8fd6-766586513c5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{6a1ef130-8f94-4217-ad54-95ab0d6481c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\GL">
+      <UniqueIdentifier>{b6378b6a-3c43-49d8-9b6b-2e49d7fc2930}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\KHR">
+      <UniqueIdentifier>{46c34704-9cd6-41c3-96d6-04d1a36b05d5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\gl3w.c">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\GL\gl3w.h">
+      <Filter>include\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GL\glcorearb.h">
+      <Filter>include\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="include\KHR\khrplatform.h">
+      <Filter>include\KHR</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

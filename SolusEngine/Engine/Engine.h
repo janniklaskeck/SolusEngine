@@ -1,12 +1,16 @@
 #pragma once
 
 #include "SolusEngine.h"
+
 #include "AssetSystem/AssetManager.h"
 
 #include "Object/Entity.h"
+#include "Object/World.h"
 
 #include "Render/Window.h"
-#include "Render/RenderWindow.h"
+#include "Render/RenderDevice.h"
+
+#include "Input/InputDevice.h"
 
 #include <cstdint>
 
@@ -21,32 +25,26 @@ namespace Solus
 		LogError
 	};
 
-	class World;
-	class InputDevice;
+	class Window;
 	class Camera;
-	class RenderDevice;
-	class AssetManager;
 	class Timer;
 
-	class SOLUS_API Engine
+	void SOLUS_API InitializeEngine(Window* window);
+
+	class SOLUS_API Engine : public SubSystem
 	{
-		Engine();
 	public:
+		Engine();
 		~Engine();
 
-		static bool Initialize();
+		virtual void Initialize() override;
+		virtual void Update() override;
+		virtual void Destroy() override;
 
 		void Log(LogLevel level, const char* msgFormat, ...);
 
-		void Update();
 
 		void Render();
-
-	private:
-		void InitRenderWindow(RenderWindow* renderWindowInstance);
-	public:
-		void RegisterRenderWindow(RenderWindow* newRenderWindow);
-		RenderWindow* GetRenderWindow() const;
 
 		void InitWindow(Window* windowInstance);
 		Window* GetWindow() const;
@@ -71,10 +69,9 @@ namespace Solus
 		static Engine* engineInstance;
 		static const char* LogLevelToChar(LogLevel level);
 
-		RenderWindow* renderWindow = nullptr;
 		Window* window = nullptr;
 		RenderDevice* renderDevice = nullptr;
-		
+
 		InputDevice* inputDevice = nullptr;
 		World* world = nullptr;
 		Camera* mainCamera = nullptr;

@@ -1,31 +1,38 @@
 #include "InputDevice.h"
 #include "Engine/Engine.h"
-#include "Render/RenderWindow.h"
+#include "Render/Window.h"
+
+#include <GLFW/glfw3.h>
 
 namespace Solus
 {
 	InputDevice::InputDevice()
-	{
-		previousMouseXPos = -1.;
-		previousMouseYPos = -1.;
-		mouseXPos = .0;
-		mouseYPos = .0;
-		scrollXOffset = .0;
-		scrollYOffset = .0;
-	}
+		: previousMouseXPos(-1.),
+		previousMouseYPos(-1.),
+		mouseXPos(0),
+		mouseYPos(0),
+		scrollXOffset(0),
+		scrollYOffset(0)
+	{	}
 
 	InputDevice::~InputDevice()
+	{}
+
+	void InputDevice::Initialize()
 	{}
 
 	void InputDevice::Update()
 	{
 		double xPos, yPos;
-		gEngine->GetRenderWindow()->GetCursorPos(&xPos, &yPos);
+		gEngine->GetWindow()->GetCursorPos(&xPos, &yPos);
 		previousMouseXPos = mouseXPos;
 		previousMouseYPos = mouseYPos;
 		mouseXPos = xPos;
 		mouseYPos = yPos;
 	}
+
+	void InputDevice::Destroy()
+	{}
 
 	bool InputDevice::IsKeyDown(int keyCode)
 	{
@@ -59,21 +66,20 @@ namespace Solus
 		yDelta = scrollYOffset;
 	}
 
-	void InputDevice::KeyEventUpdate(GLFWwindow* window, int key, int scancode, int action, int mods)
+	void InputDevice::KeyEventUpdate(int key, int scancode, int action, int mods)
 	{
 		keyState[key] = action;
 	}
 
-	void InputDevice::MousePosEventUpdate(GLFWwindow* window, double xPos, double yPos)
-	{
-	}
+	void InputDevice::MousePosEventUpdate(double xPos, double yPos)
+	{}
 
-	void InputDevice::MouseButtonEventUpdate(GLFWwindow* window, int key, int action, int mods)
+	void InputDevice::MouseButtonEventUpdate(int key, int action, int mods)
 	{
 		mouseButtonState[key] = action;
 	}
 
-	void InputDevice::MouseScrollEventUpdate(GLFWwindow* window, double xOffset, double yOffset)
+	void InputDevice::MouseScrollEventUpdate(double xOffset, double yOffset)
 	{
 		scrollXOffset = xOffset;
 		scrollYOffset = yOffset;

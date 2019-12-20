@@ -115,7 +115,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;SOLUSENGINE_EXPORT;GLFW_INCLUDE_NONE;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\Libraries\GLFW\include;..\Libraries\glm;..\Libraries\gl3w\include;..\Libraries\assimp\include;..\Libraries\json;..\Libraries\imgui;./;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Libraries\GLFW\include;..\Libraries\glm;..\gl3w\include;..\Libraries\assimp\include;..\Libraries\json;./;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DisableSpecificWarnings>4251;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -123,9 +123,9 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glfw3dll.lib;opengl32.lib;assimp-vc142-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3dll.lib;opengl32.lib;gl3w.lib;assimp-vc142-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
-      <AdditionalLibraryDirectories>..\Libraries\GLFW\lib-vc2017;..\Libraries\assimp\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\Libraries\GLFW\lib-vc2017;..\Libraries\assimp\lib;$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>$(OutDir)\$(TargetName).lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
@@ -179,14 +179,6 @@ xcopy /y $(SolutionDir)Libraries\assimp\lib\assimp-vc142-mt.dll  $(OutDir)</Comm
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\Libraries\imgui\imconfig.h" />
-    <ClInclude Include="..\Libraries\imgui\imgui.h" />
-    <ClInclude Include="..\Libraries\imgui\imgui_impl_glfw.h" />
-    <ClInclude Include="..\Libraries\imgui\imgui_impl_opengl3.h" />
-    <ClInclude Include="..\Libraries\imgui\imgui_internal.h" />
-    <ClInclude Include="..\Libraries\imgui\imstb_rectpack.h" />
-    <ClInclude Include="..\Libraries\imgui\imstb_textedit.h" />
-    <ClInclude Include="..\Libraries\imgui\imstb_truetype.h" />
     <ClInclude Include="AssetSystem\Asset.h" />
     <ClInclude Include="AssetSystem\AssetManager.h" />
     <ClInclude Include="AssetSystem\AssetMeta.h" />
@@ -218,9 +210,9 @@ xcopy /y $(SolutionDir)Libraries\assimp\lib\assimp-vc142-mt.dll  $(OutDir)</Comm
     <ClInclude Include="Render\RenderShader.h" />
     <ClInclude Include="Render\RenderSurface.h" />
     <ClInclude Include="Render\RenderTexture.h" />
-    <ClInclude Include="Render\RenderWindow.h" />
     <ClInclude Include="Render\Window.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="SubSystem.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Utility\BinaryReader.h" />
     <ClInclude Include="Utility\FileUtils.h" />
@@ -232,13 +224,6 @@ xcopy /y $(SolutionDir)Libraries\assimp\lib\assimp-vc142-mt.dll  $(OutDir)</Comm
     <ClInclude Include="Utility\Vector.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Libraries\gl3w\src\gl3w.c" />
-    <ClCompile Include="..\Libraries\imgui\imgui.cpp" />
-    <ClCompile Include="..\Libraries\imgui\imgui_demo.cpp" />
-    <ClCompile Include="..\Libraries\imgui\imgui_draw.cpp" />
-    <ClCompile Include="..\Libraries\imgui\imgui_impl_glfw.cpp" />
-    <ClCompile Include="..\Libraries\imgui\imgui_impl_opengl3.cpp" />
-    <ClCompile Include="..\Libraries\imgui\imgui_widgets.cpp" />
     <ClCompile Include="AssetSystem\Asset.cpp" />
     <ClCompile Include="AssetSystem\AssetManager.cpp" />
     <ClCompile Include="AssetSystem\AssetMeta.cpp" />
@@ -268,13 +253,17 @@ xcopy /y $(SolutionDir)Libraries\assimp\lib\assimp-vc142-mt.dll  $(OutDir)</Comm
     <ClCompile Include="Render\RenderShader.cpp" />
     <ClCompile Include="Render\RenderSurface.cpp" />
     <ClCompile Include="Render\RenderTexture.cpp" />
-    <ClCompile Include="Render\RenderWindow.cpp" />
     <ClCompile Include="Render\Window.cpp" />
     <ClCompile Include="Utility\BinaryReader.cpp" />
     <ClCompile Include="Utility\FileUtils.cpp" />
     <ClCompile Include="Utility\Helper.cpp" />
     <ClCompile Include="Utility\MathUtil.cpp" />
     <ClCompile Include="Utility\Timer.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\gl3w\gl3w.vcxproj">
+      <Project>{efe5400e-9531-43ea-9822-4796faed73e0}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

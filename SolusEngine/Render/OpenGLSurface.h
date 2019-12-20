@@ -16,9 +16,9 @@ namespace Solus
 
 		void BindBuffers();
 
-		unsigned int GetFramebuffer() const;
-		unsigned int GetDepthBuffer() const;
-		unsigned int GetColorTexture() const;
+		virtual unsigned int GetFramebuffer() const override;
+		virtual unsigned int GetDepthBuffer() const override;
+		virtual unsigned int GetColorTexture() const override;
 	private:
 		int width;
 		int height;

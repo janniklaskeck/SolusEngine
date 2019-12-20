@@ -8,6 +8,16 @@ namespace Solus
 {
 	GLFWWindow::GLFWWindow()
 	{
+
+	}
+
+	GLFWWindow::~GLFWWindow()
+	{
+		glfwTerminate();
+	}
+
+	void GLFWWindow::Initialize()
+	{
 		if (!glfwInit())
 		{
 			gEngine->Log(LogError, "Could not load glfw!");
@@ -31,7 +41,7 @@ namespace Solus
 		glfwSetMouseButtonCallback(window, MouseButtonCallbackForwarder);
 		glfwSetScrollCallback(window, MouseScrollCallbackForwarder);
 
-		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+		//glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 		if (glfwRawMouseMotionSupported())
 			glfwSetInputMode(window, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
 
@@ -46,29 +56,7 @@ namespace Solus
 		{
 			fprintf(stderr, "OpenGL 3.2 not supported\n");
 		}
-
-		IMGUI_CHECKVERSION();
-		ImGui::CreateContext();
-
-		ImGui_ImplGlfw_InitForOpenGL(window, true);
-		ImGui_ImplOpenGL3_Init("#version 460 core");
-
-		ImGui::StyleColorsDark();
-
-		printf("OpenGL %s, GLSL %s\n", glGetString(GL_VERSION),
-			   glGetString(GL_SHADING_LANGUAGE_VERSION));
-
-
-	}
-
-	GLFWWindow::~GLFWWindow()
-	{
-		glfwTerminate();
-	}
-
-	void GLFWWindow::Initialize()
-	{
-		
+		printf("OpenGL %s, GLSL %s\n", glGetString(GL_VERSION), glGetString(GL_SHADING_LANGUAGE_VERSION));
 	}
 
 	void GLFWWindow::Run()
@@ -76,16 +64,7 @@ namespace Solus
 		while (!glfwWindowShouldClose(window))
 		{
 			//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			//ImGui_ImplOpenGL3_NewFrame();
-			//ImGui_ImplGlfw_NewFrame();
-			//ImGui::NewFrame();
-			//ImGui::ShowDemoWindow();
-			//ImGui::Begin("Test");
-			//ImGui::Button("TestBtn");
-			//ImGui::End();
-			//
-			//ImGui::Render();
-			//ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
 
 			gEngine->Update();
 
@@ -99,7 +78,17 @@ namespace Solus
 	void GLFWWindow::Update()
 	{}
 
-	void GLFWWindow::Close()
+	void GLFWWindow::PreRenderUI()
+	{
+		
+	}
+
+	void GLFWWindow::RenderUI()
+	{
+		
+	}
+
+	void GLFWWindow::Destroy()
 	{
 		glfwSetWindowShouldClose(window, GLFW_TRUE);
 	}
@@ -119,23 +108,28 @@ namespace Solus
 		glfwGetFramebufferSize(window, width, height);
 	}
 
+	GLFWwindow* GLFWWindow::GetInternalWindow() const
+	{
+		return window;
+	}
+
 	void GLFWWindow::KeyCallbackForwarder(GLFWwindow* window, int key, int scancode, int action, int mods)
 	{
-		gEngine->GetInputDevice()->KeyEventUpdate(window, key, scancode, action, mods);
+		gEngine->GetInputDevice()->KeyEventUpdate(key, scancode, action, mods);
 	}
 
 	void GLFWWindow::MousePosCallbackForwarder(GLFWwindow* window, double xPos, double yPos)
 	{
-		gEngine->GetInputDevice()->MousePosEventUpdate(window, xPos, yPos);
+		gEngine->GetInputDevice()->MousePosEventUpdate(xPos, yPos);
 	}
 
 	void GLFWWindow::MouseButtonCallbackForwarder(GLFWwindow* window, int button, int action, int mods)
 	{
-		gEngine->GetInputDevice()->MouseButtonEventUpdate(window, button, action, mods);
+		gEngine->GetInputDevice()->MouseButtonEventUpdate(button, action, mods);
 	}
 
 	void GLFWWindow::MouseScrollCallbackForwarder(GLFWwindow* window, double xOffset, double yOffset)
 	{
-		gEngine->GetInputDevice()->MouseScrollEventUpdate(window, xOffset, yOffset);
+		gEngine->GetInputDevice()->MouseScrollEventUpdate(xOffset, yOffset);
 	}
 }

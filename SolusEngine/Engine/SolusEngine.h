@@ -10,5 +10,7 @@
 
 // GLOBAL INCLUDES
 
+#include "Engine/SubSystem.h"
+
 #include <cstdint>
 #include <string>

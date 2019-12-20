@@ -22,11 +22,14 @@ namespace Solus
 		TEX_DDS
 	};
 
-	class SOLUS_API RenderDevice
+	class SOLUS_API RenderDevice : public SubSystem
 	{
 	public:
 
 		virtual void Initialize() = 0;
+		virtual void Update() = 0;
+		virtual void Destroy() = 0;
+
 
 		virtual void PreRenderScene() = 0;
 		virtual void PostRenderScene() = 0;
@@ -39,5 +42,12 @@ namespace Solus
 
 		virtual RenderTexture* GetDefaultTexture() = 0;
 		virtual void SetRenderSurface(RenderSurface* surface = nullptr) = 0;
+		virtual RenderSurface* GetCurrentRenderSurface() const = 0;
+
+		void SetShouldRenderScene(bool shouldRender);
+		bool ShouldRenderScene() const;
+
+	protected:
+		bool shouldRenderScene = true;
 	};
 }

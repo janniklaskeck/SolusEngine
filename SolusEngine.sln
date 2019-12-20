@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.779
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SolusEngine", "SolusEngine\SolusEngine.vcxproj", "{C15D4FAC-4BDC-4B89-9830-E7A653F356B6}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SolusEditor", "SolusEditor\SolusEditor.vcxproj", "{6CD5713C-3646-43E1-A456-49C1EC85C73A}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gl3w", "gl3w\gl3w.vcxproj", "{EFE5400E-9531-43EA-9822-4796FAED73E0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +33,14 @@ Global
 		{6CD5713C-3646-43E1-A456-49C1EC85C73A}.Release|x64.Build.0 = Release|x64
 		{6CD5713C-3646-43E1-A456-49C1EC85C73A}.Release|x86.ActiveCfg = Release|Win32
 		{6CD5713C-3646-43E1-A456-49C1EC85C73A}.Release|x86.Build.0 = Release|Win32
+		{EFE5400E-9531-43EA-9822-4796FAED73E0}.Debug|x64.ActiveCfg = Debug|x64
+		{EFE5400E-9531-43EA-9822-4796FAED73E0}.Debug|x64.Build.0 = Debug|x64
+		{EFE5400E-9531-43EA-9822-4796FAED73E0}.Debug|x86.ActiveCfg = Debug|Win32
+		{EFE5400E-9531-43EA-9822-4796FAED73E0}.Debug|x86.Build.0 = Debug|Win32
+		{EFE5400E-9531-43EA-9822-4796FAED73E0}.Release|x64.ActiveCfg = Release|x64
+		{EFE5400E-9531-43EA-9822-4796FAED73E0}.Release|x64.Build.0 = Release|x64
+		{EFE5400E-9531-43EA-9822-4796FAED73E0}.Release|x86.ActiveCfg = Release|Win32
+		{EFE5400E-9531-43EA-9822-4796FAED73E0}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

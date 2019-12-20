@@ -1,7 +1,6 @@
 #pragma once
 #include "Input/InputDevice.h"
 
-#include <GLFW/glfw3.h>
 #include <vector>
 
 namespace Editor

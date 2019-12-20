@@ -12,6 +12,15 @@ namespace Solus
 		}
 	}
 
+	void AssetManager::Initialize()
+	{}
+
+	void AssetManager::Update()
+	{}
+
+	void AssetManager::Destroy()
+	{}
+
 	void Solus::AssetManager::AddSource(AssetSource* source)
 	{
 		if (!source)

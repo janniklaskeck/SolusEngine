@@ -15,9 +15,9 @@ namespace Solus
 		Entity::Update();
 		double xDelta, yDelta;
 		gEngine->GetInputDevice()->GetMousePosDelta(xDelta, yDelta);
-		float deltaTime = gEngine->DeltaTime();
-		float speed = 5.f * deltaTime;
-		float rotationSpeed = .1f * deltaTime;
+		float deltaTime = (float)gEngine->DeltaTime();
+		float speed = 5.0f * deltaTime;
+		float rotationSpeed = 0.1f * deltaTime;
 		AddRotation(Vec3f(yDelta, xDelta, 0.0f) * rotationSpeed);
 
 		if (gEngine->GetInputDevice()->IsKeyDown(GLFW_KEY_LEFT_SHIFT))

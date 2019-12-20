@@ -4,12 +4,14 @@
 namespace Solus
 {
 
-	class SOLUS_API Timer
+	class SOLUS_API Timer : public SubSystem
 	{
 	public:
 		Timer();
 
-		void Update();
+		virtual void Initialize() override;
+		virtual void Update() override;
+		virtual void Destroy() override;
 
 		bool TickDone() const;
 		void Reset();

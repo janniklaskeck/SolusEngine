@@ -24,6 +24,8 @@ namespace Solus
 	{
 	public:
 		virtual void Initialize() override;
+		virtual void Update() override;
+		virtual void Destroy() override;
 
 		virtual void PreRenderScene() override;
 		virtual void PostRenderScene() override;
@@ -36,6 +38,7 @@ namespace Solus
 
 		virtual RenderTexture* GetDefaultTexture();
 		virtual void SetRenderSurface(RenderSurface* surface = nullptr) override;
+		virtual RenderSurface* GetCurrentRenderSurface() const override;
 
 	private:
 		OpenGLPrimitiveDrawer* primitiveDrawer;

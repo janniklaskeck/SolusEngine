@@ -3,23 +3,24 @@
 #include "Engine/SolusEngine.h"
 #include "InputListener.h"
 
-#include <GLFW/glfw3.h>
 #include <unordered_map>
 
 namespace Solus
 {
-	class SOLUS_API InputDevice
+	class SOLUS_API InputDevice : public SubSystem
 	{
 	public:
 		InputDevice();
 		virtual ~InputDevice();
 
-		virtual void Update();
+		virtual void Initialize() override;
+		virtual void Update() override;
+		virtual void Destroy() override;
 
-		virtual void KeyEventUpdate(GLFWwindow* window, int key, int scancode, int action, int mods);
-		virtual void MousePosEventUpdate(GLFWwindow* window, double xPos, double yPos);
-		virtual void MouseButtonEventUpdate(GLFWwindow* window, int key, int action, int mods);
-		virtual void MouseScrollEventUpdate(GLFWwindow* window, double xOffset, double yOffset);
+		virtual void KeyEventUpdate(int key, int scancode, int action, int mods);
+		virtual void MousePosEventUpdate(double xPos, double yPos);
+		virtual void MouseButtonEventUpdate(int key, int action, int mods);
+		virtual void MouseScrollEventUpdate(double xOffset, double yOffset);
 
 		bool IsKeyDown(int keyCode);
 		bool IsKeyUp(int keyCode);

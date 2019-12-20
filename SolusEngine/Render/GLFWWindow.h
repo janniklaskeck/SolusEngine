@@ -1,18 +1,13 @@
 #pragma once
 
-#include "RenderWindow.h"
-
-#include "imgui.h"
-#include "imgui_impl_glfw.h"
-#include "imgui_impl_opengl3.h"
+#include "Window.h"
 
 #include <GL/gl3w.h>
 #include <GLFW/glfw3.h>
 
 namespace Solus
 {
-
-	class GLFWWindow : public RenderWindow
+	class SOLUS_API GLFWWindow : public Window
 	{
 	public:
 
@@ -22,11 +17,17 @@ namespace Solus
 		virtual void Initialize() override;
 		virtual void Run() override;
 		virtual void Update()override;
-		virtual void Close() override;
+
+		virtual void PreRenderUI() override;
+		virtual void RenderUI() override;
+
+		virtual void Destroy() override;
 
 		virtual void GetCursorPos(double* xPos, double* yPos) override;
 		virtual double GetTime() const override;
 		virtual void GetWindowSize(int* xSize, int* ySize) override;
+
+		GLFWwindow* GetInternalWindow() const;
 
 	protected:
 
@@ -35,7 +36,7 @@ namespace Solus
 		static void MouseButtonCallbackForwarder(GLFWwindow* window, int button, int action, int mods);
 		static void MouseScrollCallbackForwarder(GLFWwindow* window, double xOffset, double yOffset);
 
-	private:
+	protected:
 		GLFWwindow* window;
 	};
 
