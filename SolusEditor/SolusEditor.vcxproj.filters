@@ -28,13 +28,16 @@
     <Filter Include="IMGUI">
       <UniqueIdentifier>{b6492aa8-bd4b-4538-bf70-3a9fa4019c0a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Window\SubWindow">
+      <UniqueIdentifier>{5ba49b2a-6a25-48ad-b96c-bf895d3ffe89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Window\SubWindow">
+      <UniqueIdentifier>{7ea1fa65-58ad-43d5-bbeb-fff4228333d5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="EditorMainWindow.cpp">
-      <Filter>Source Files\Window</Filter>
     </ClCompile>
     <ClCompile Include="EditorInputDevice.cpp">
       <Filter>Source Files\Input</Filter>
@@ -57,13 +60,16 @@
     <ClCompile Include="IMGUI\imgui_widgets.cpp">
       <Filter>IMGUI</Filter>
     </ClCompile>
+    <ClCompile Include="Window\EditorMainWindow.cpp">
+      <Filter>Source Files\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="Window\SubWindow\EditorSceneWindow.cpp">
+      <Filter>Source Files\Window\SubWindow</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
       <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="EditorMainWindow.h">
-      <Filter>Header Files\Window</Filter>
     </ClInclude>
     <ClInclude Include="EditorInputDevice.h">
       <Filter>Header Files\Input</Filter>
@@ -91,6 +97,15 @@
     </ClInclude>
     <ClInclude Include="IMGUI\imstb_truetype.h">
       <Filter>IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Window\EditorMainWindow.h">
+      <Filter>Header Files\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Window\SubWindow\EditorSceneWindow.h">
+      <Filter>Header Files\Window\SubWindow</Filter>
+    </ClInclude>
+    <ClInclude Include="Window\SubWindow\SubWindow.h">
+      <Filter>Header Files\Window\SubWindow</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

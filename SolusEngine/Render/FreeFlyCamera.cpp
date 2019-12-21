@@ -1,6 +1,8 @@
 #include "FreeFlyCamera.h"
 #include "Input/InputDevice.h"
 
+#include "Engine/Engine.h"
+
 #include <GLFW/glfw3.h>
 
 namespace Solus
@@ -13,6 +15,10 @@ namespace Solus
 	bool FreeFlyCamera::Update()
 	{
 		Entity::Update();
+
+		gEngine->GetWindow()->SetMouseVisible(!IsInputEnabled());
+		if (!IsInputEnabled())
+			return true;
 		double xDelta, yDelta;
 		gEngine->GetInputDevice()->GetMousePosDelta(xDelta, yDelta);
 		float deltaTime = (float)gEngine->DeltaTime();

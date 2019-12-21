@@ -17,6 +17,7 @@ namespace Solus
 		virtual void Initialize() override;
 		virtual void Run() override;
 		virtual void Update()override;
+		virtual void Render() override;
 
 		virtual void PreRenderUI() override;
 		virtual void RenderUI() override;
@@ -26,6 +27,8 @@ namespace Solus
 		virtual void GetCursorPos(double* xPos, double* yPos) override;
 		virtual double GetTime() const override;
 		virtual void GetWindowSize(int* xSize, int* ySize) override;
+
+		virtual void SetMouseVisible(bool isVisible) override;
 
 		GLFWwindow* GetInternalWindow() const;
 
@@ -38,6 +41,8 @@ namespace Solus
 
 	protected:
 		GLFWwindow* window;
+
+
 	};
 
 }

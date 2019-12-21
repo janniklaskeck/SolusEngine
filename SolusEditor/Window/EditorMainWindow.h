@@ -3,6 +3,8 @@
 
 namespace Editor
 {
+	class EditorSceneWindow;
+
 	class EditorMainWindow : public Solus::GLFWWindow
 	{
 	public:
@@ -13,5 +15,7 @@ namespace Editor
 
 	private:
 		bool firstRun = false;
+		EditorSceneWindow* sceneWindow;
+
 	};
 }

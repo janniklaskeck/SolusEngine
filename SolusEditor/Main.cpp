@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-#include "EditorMainWindow.h"
+#include "Window/EditorMainWindow.h"
 
 #include "Engine/Engine.h"
 

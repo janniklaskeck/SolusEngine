@@ -1,6 +1,5 @@
 #pragma once
 #include "Engine/SolusEngine.h"
-#include "Engine/Engine.h"
 #include "Object/Entity.h"
 
 namespace Solus
@@ -19,8 +18,19 @@ namespace Solus
 			return &projectionMatrix;
 		}
 
+		void SetInputEnabled(bool isEnabled)
+		{
+			isInputEnabled = isEnabled;
+		}
+
+		bool IsInputEnabled() const
+		{
+			return isInputEnabled;
+		}
+
 	private:
 		Mat4f projectionMatrix;
+		bool isInputEnabled = true;
 	};
 
 }

@@ -21,6 +21,8 @@ namespace Solus
 		virtual double GetTime() const = 0;
 		virtual void GetWindowSize(int* xSize, int* ySize) = 0;
 
+		virtual void SetMouseVisible(bool isVisible) = 0;
+
 		bool IsEditorWindow() const
 		{
 			return isEditorWindow;

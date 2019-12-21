@@ -41,7 +41,7 @@ namespace Solus
 		glfwSetMouseButtonCallback(window, MouseButtonCallbackForwarder);
 		glfwSetScrollCallback(window, MouseScrollCallbackForwarder);
 
-		//glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+		SetMouseVisible(true);
 		if (glfwRawMouseMotionSupported())
 			glfwSetInputMode(window, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
 
@@ -80,12 +80,12 @@ namespace Solus
 
 	void GLFWWindow::PreRenderUI()
 	{
-		
+
 	}
 
 	void GLFWWindow::RenderUI()
 	{
-		
+
 	}
 
 	void GLFWWindow::Destroy()
@@ -131,5 +131,16 @@ namespace Solus
 	void GLFWWindow::MouseScrollCallbackForwarder(GLFWwindow* window, double xOffset, double yOffset)
 	{
 		gEngine->GetInputDevice()->MouseScrollEventUpdate(xOffset, yOffset);
+	}
+
+	void GLFWWindow::Render()
+	{}
+
+	void GLFWWindow::SetMouseVisible(bool isVisible)
+	{
+		if (isVisible)
+			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+		else
+			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	}
 }

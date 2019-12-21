@@ -2,6 +2,11 @@
 
 #include "Engine/SolusEngine.h"
 
+#include "Render/RenderSurface.h"
+#include "Render/RenderTexture.h"
+#include "Render/RenderMesh.h"
+#include "Render/RenderShader.h"
+
 #include <cstdint>
 #include <vector>
 
@@ -10,10 +15,6 @@ namespace Solus
 	class MeshAsset;
 	class TextAsset;
 	class TextureAsset;
-	class RenderShader;
-	class RenderMesh;
-	class RenderTexture;
-	class RenderSurface;
 	class PrimitiveDrawer;
 
 	enum class TextureType : uint8_t

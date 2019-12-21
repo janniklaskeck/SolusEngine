@@ -1,6 +1,8 @@
 #include "EditorMainWindow.h"
 #include "EditorInputDevice.h"
 
+#include "SubWindow/EditorSceneWindow.h"
+
 #include "Input/InputDevice.h"
 
 #include "Engine/Engine.h"
@@ -41,6 +43,8 @@ namespace Editor
 
 		ImGui::StyleColorsDark();
 
+		sceneWindow = new EditorSceneWindow;
+		sceneWindow->Initialize();
 	}
 
 	void EditorMainWindow::Update()
@@ -48,7 +52,7 @@ namespace Editor
 		if (!firstRun)
 		{
 			gEngine->GetRenderDevice()->SetShouldRenderScene(false);
-			FreeFlyCamera* camera = gEngine->GetWorld()->SpawnEntity<FreeFlyCamera>(Vec3f(0, 0, -5), Vec3f(0, 0, 0));
+			
 			auto* entity = gEngine->GetWorld()->SpawnEntity<Entity>(Vec3f(0, 0, 0), Vec3f(0, 0, 0));
 			entity->TEMP();
 			firstRun = true;
@@ -70,18 +74,9 @@ namespace Editor
 		ImGui::NewFrame();
 
 		//ImGui::ShowDemoWindow();
-		auto texture = ((OpenGLSurface*)renderDevice->GetCurrentRenderSurface())->GetColorTexture();
-		ImGui::Begin("Scene Window");
 
-		ImVec2 pos = ImGui::GetCursorScreenPos();
+		sceneWindow->Render();
 
-		ImVec2 windowTopLeft = ImGui::GetCursorScreenPos();
-		int width, height;
-		GetWindowSize(&width, &height);
-		ImVec2 windowBottomRight = ImVec2(windowTopLeft.x + width / 2, windowTopLeft.y + height / 2);
-		ImGui::GetWindowDrawList()->AddImage((void*)texture, windowTopLeft, windowBottomRight, ImVec2(0, 1), ImVec2(1, 0));
-
-		ImGui::End();
 		RenderUI();
 
 		ImGui::Render();

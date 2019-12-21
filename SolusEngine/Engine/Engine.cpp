@@ -34,6 +34,9 @@ namespace Solus
 
 	void Engine::Initialize()
 	{
+		world = new World;
+		window->Initialize();
+
 		mainTimer = new Timer;
 		mainTimer->Initialize();
 
@@ -47,7 +50,6 @@ namespace Solus
 		renderDevice = new OpenGLDevice;
 		renderDevice->Initialize();
 
-		world = new World;
 
 		auto now = std::chrono::system_clock::now();
 		std::time_t nowTime = std::chrono::system_clock::to_time_t(now);
@@ -117,7 +119,6 @@ namespace Solus
 	void Engine::InitWindow(Window* windowInstance)
 	{
 		window = windowInstance;
-		window->Initialize();
 	}
 
 	Window* Engine::GetWindow() const
