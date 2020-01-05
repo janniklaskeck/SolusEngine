@@ -1,10 +1,12 @@
 #pragma once
 
+#include "Engine/SolusEngine.h"
+
 namespace Solus
 {
 	class TextAsset;
 
-	class RenderShader
+	class SOLUS_API RenderShader
 	{
 	public:
 		RenderShader();

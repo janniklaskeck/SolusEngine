@@ -12,6 +12,13 @@
 
 namespace Solus
 {
+	REFLECT_STRUCT_BEGIN(Entity, SolusObject)
+	REFLECT_STRUCT_MEMBER(entityId)
+	REFLECT_STRUCT_MEMBER(position)
+	REFLECT_STRUCT_MEMBER(rotation)
+	REFLECT_STRUCT_MEMBER(scale)
+	REFLECT_STRUCT_END()
+
 
 	Entity::Entity(Vec3f initialPosition, Vec3f initialRotation)
 		: mesh(nullptr)

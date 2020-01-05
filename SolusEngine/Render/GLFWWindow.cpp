@@ -7,9 +7,7 @@
 namespace Solus
 {
 	GLFWWindow::GLFWWindow()
-	{
-
-	}
+	{}
 
 	GLFWWindow::~GLFWWindow()
 	{
@@ -18,6 +16,7 @@ namespace Solus
 
 	void GLFWWindow::Initialize()
 	{
+		Window::Initialize();
 		if (!glfwInit())
 		{
 			gEngine->Log(LogError, "Could not load glfw!");

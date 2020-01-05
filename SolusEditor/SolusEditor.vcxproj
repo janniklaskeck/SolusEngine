@@ -101,7 +101,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\SolusEngine;..\Libraries\glm;..\Libraries\GLFW\include;..\gl3w\include;.\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\SolusEngine;..\Libraries\glm;..\Libraries\GLFW\include;..\gl3w\include;.\;..\intermediates\generated;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DisableSpecificWarnings>4251</DisableSpecificWarnings>
@@ -112,6 +112,9 @@
       <AdditionalLibraryDirectories>..\Libraries\GLFW\lib-vc2017;$(OutDir)</AdditionalLibraryDirectories>
       <SubSystem>Console</SubSystem>
     </Link>
+    <PreBuildEvent>
+      <Command>py $(SolutionDir)Tools\HeaderTool.py $(ProjectDir)</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -162,6 +165,8 @@
     <ClCompile Include="IMGUI\imgui_widgets.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Window\EditorMainWindow.cpp" />
+    <ClCompile Include="Window\SubWindow\EditorPropertyWindow.cpp" />
+    <ClCompile Include="Window\SubWindow\EditorSceneGraph.cpp" />
     <ClCompile Include="Window\SubWindow\EditorSceneWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -176,6 +181,8 @@
     <ClInclude Include="IMGUI\imstb_truetype.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Window\EditorMainWindow.h" />
+    <ClInclude Include="Window\SubWindow\EditorPropertyWindow.h" />
+    <ClInclude Include="Window\SubWindow\EditorSceneGraph.h" />
     <ClInclude Include="Window\SubWindow\EditorSceneWindow.h" />
     <ClInclude Include="Window\SubWindow\SubWindow.h" />
   </ItemGroup>

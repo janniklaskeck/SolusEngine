@@ -66,6 +66,12 @@
     <ClCompile Include="Window\SubWindow\EditorSceneWindow.cpp">
       <Filter>Source Files\Window\SubWindow</Filter>
     </ClCompile>
+    <ClCompile Include="Window\SubWindow\EditorSceneGraph.cpp">
+      <Filter>Source Files\Window\SubWindow</Filter>
+    </ClCompile>
+    <ClCompile Include="Window\SubWindow\EditorPropertyWindow.cpp">
+      <Filter>Source Files\Window\SubWindow</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -105,6 +111,12 @@
       <Filter>Header Files\Window\SubWindow</Filter>
     </ClInclude>
     <ClInclude Include="Window\SubWindow\SubWindow.h">
+      <Filter>Header Files\Window\SubWindow</Filter>
+    </ClInclude>
+    <ClInclude Include="Window\SubWindow\EditorSceneGraph.h">
+      <Filter>Header Files\Window\SubWindow</Filter>
+    </ClInclude>
+    <ClInclude Include="Window\SubWindow\EditorPropertyWindow.h">
       <Filter>Header Files\Window\SubWindow</Filter>
     </ClInclude>
   </ItemGroup>

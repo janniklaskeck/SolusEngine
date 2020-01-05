@@ -1,270 +1,50 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="Header Files\Utility">
-      <UniqueIdentifier>{8d32bba5-1a2e-4351-bcc6-bb7146054a64}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utility">
-      <UniqueIdentifier>{51a9524d-8e3c-4bae-9f64-04bb9f3a3fa8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Render">
-      <UniqueIdentifier>{da423617-9598-4836-9b4d-febc1cef07eb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Render">
-      <UniqueIdentifier>{7a8ac93d-7894-4fe3-8869-ab12a0cea62f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Input">
-      <UniqueIdentifier>{80e41a30-ad2a-4ce9-9472-8c8ebf3645a2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Input">
-      <UniqueIdentifier>{615047b8-ab5b-49c7-a4a2-fd5d0add380b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Render\OpenGL">
-      <UniqueIdentifier>{71c31b1c-837e-4a38-9896-3ee3ff539f55}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Render\OpenGL">
-      <UniqueIdentifier>{99471d72-c6da-4561-b4bd-89b3a8b5a175}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Object">
-      <UniqueIdentifier>{024d5529-5a1f-4730-9a07-07f45488fabb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Object\World">
-      <UniqueIdentifier>{49a1d2df-3172-4461-8215-fe67ee69a33e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Object">
-      <UniqueIdentifier>{b4fd74bd-d878-4bcc-b7a7-ba37b514bbd7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Object\World">
-      <UniqueIdentifier>{a51bff09-8e18-4d01-9011-36eabb2d1e59}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Render\Camera">
-      <UniqueIdentifier>{0a60a6a9-e751-449f-b5c3-4109f4100a4f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Render\Camera">
-      <UniqueIdentifier>{a1014588-9db7-499e-9651-02aef61c59a9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\AssetSystem">
-      <UniqueIdentifier>{0accc146-2a51-453d-ad0b-79df68f928ae}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\AssetSystem">
-      <UniqueIdentifier>{14e25692-f74a-4452-b29c-feeb856da2ee}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\AssetSystem\Types">
-      <UniqueIdentifier>{3baf439c-c53f-4507-921f-4a679a0aaf68}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\AssetSystem\Types">
-      <UniqueIdentifier>{3503e90b-a0a5-4234-9dfa-5f028d58b18c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Engine">
-      <UniqueIdentifier>{8a7c823c-ec5b-4145-a897-9151d3c5024f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Engine">
-      <UniqueIdentifier>{a331dfb3-b041-484b-86a1-dd5f1fb2c87b}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="targetver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Utility\BinaryReader.h">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="Utility\FileUtils.h">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="Utility\Helper.h">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="Utility\MathUtil.h">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="Utility\Matrix.h">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="Utility\Timer.h">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="Utility\Transform.h">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="Utility\Vector.h">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="Input\InputDevice.h">
-      <Filter>Header Files\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="Input\InputListener.h">
-      <Filter>Header Files\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="AssetSystem\MeshAsset.h">
-      <Filter>Header Files\AssetSystem\Types</Filter>
-    </ClInclude>
-    <ClInclude Include="AssetSystem\TextAsset.h">
-      <Filter>Header Files\AssetSystem\Types</Filter>
-    </ClInclude>
-    <ClInclude Include="AssetSystem\TextureAsset.h">
-      <Filter>Header Files\AssetSystem\Types</Filter>
-    </ClInclude>
-    <ClInclude Include="AssetSystem\Asset.h">
-      <Filter>Header Files\AssetSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="AssetSystem\AssetManager.h">
-      <Filter>Header Files\AssetSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="AssetSystem\AssetMeta.h">
-      <Filter>Header Files\AssetSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="AssetSystem\AssetSource.h">
-      <Filter>Header Files\AssetSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="AssetSystem\FolderAssetSource.h">
-      <Filter>Header Files\AssetSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="Object\Entity.h">
-      <Filter>Header Files\Object\World</Filter>
-    </ClInclude>
-    <ClInclude Include="Object\Level.h">
-      <Filter>Header Files\Object\World</Filter>
-    </ClInclude>
-    <ClInclude Include="Object\World.h">
-      <Filter>Header Files\Object\World</Filter>
-    </ClInclude>
-    <ClInclude Include="Object\SolusObject.h">
-      <Filter>Header Files\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="Render\Camera.h">
-      <Filter>Header Files\Render\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="Render\FreeFlyCamera.h">
-      <Filter>Header Files\Render\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="Render\GLFWWindow.h">
-      <Filter>Header Files\Render</Filter>
-    </ClInclude>
-    <ClInclude Include="Render\PrimitiveDrawer.h">
-      <Filter>Header Files\Render</Filter>
-    </ClInclude>
-    <ClInclude Include="Render\RenderDevice.h">
-      <Filter>Header Files\Render</Filter>
-    </ClInclude>
-    <ClInclude Include="Render\RenderMesh.h">
-      <Filter>Header Files\Render</Filter>
-    </ClInclude>
-    <ClInclude Include="Render\RenderShader.h">
-      <Filter>Header Files\Render</Filter>
-    </ClInclude>
-    <ClInclude Include="Render\RenderSurface.h">
-      <Filter>Header Files\Render</Filter>
-    </ClInclude>
-    <ClInclude Include="Render\RenderTexture.h">
-      <Filter>Header Files\Render</Filter>
-    </ClInclude>
-    <ClInclude Include="Render\Window.h">
-      <Filter>Header Files\Render</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Engine.h">
-      <Filter>Header Files\Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\SolusEngine.h">
-      <Filter>Header Files\Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="Render\OpenGLTexture.h">
-      <Filter>Header Files\Render\OpenGL</Filter>
-    </ClInclude>
-    <ClInclude Include="Render\OpenGLDevice.h">
-      <Filter>Header Files\Render\OpenGL</Filter>
-    </ClInclude>
-    <ClInclude Include="Render\OpenGLMesh.h">
-      <Filter>Header Files\Render\OpenGL</Filter>
-    </ClInclude>
-    <ClInclude Include="Render\OpenGLPrimitiveDrawer.h">
-      <Filter>Header Files\Render\OpenGL</Filter>
-    </ClInclude>
-    <ClInclude Include="Render\OpenGLShader.h">
-      <Filter>Header Files\Render\OpenGL</Filter>
-    </ClInclude>
-    <ClInclude Include="Render\OpenGLSurface.h">
-      <Filter>Header Files\Render\OpenGL</Filter>
-    </ClInclude>
-    <ClInclude Include="SubSystem.h">
-      <Filter>Header Files\Engine</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Utility\BinaryReader.cpp">
-      <Filter>Source Files\Utility</Filter>
-    </ClCompile>
-    <ClCompile Include="Utility\FileUtils.cpp">
-      <Filter>Source Files\Utility</Filter>
-    </ClCompile>
-    <ClCompile Include="Utility\Helper.cpp">
-      <Filter>Source Files\Utility</Filter>
-    </ClCompile>
-    <ClCompile Include="Utility\MathUtil.cpp">
-      <Filter>Source Files\Utility</Filter>
-    </ClCompile>
-    <ClCompile Include="Utility\Timer.cpp">
-      <Filter>Source Files\Utility</Filter>
-    </ClCompile>
-    <ClCompile Include="Input\InputDevice.cpp">
-      <Filter>Source Files\Input</Filter>
-    </ClCompile>
-    <ClCompile Include="AssetSystem\MeshAsset.cpp">
-      <Filter>Source Files\AssetSystem\Types</Filter>
-    </ClCompile>
-    <ClCompile Include="AssetSystem\TextAsset.cpp">
-      <Filter>Source Files\AssetSystem\Types</Filter>
-    </ClCompile>
-    <ClCompile Include="AssetSystem\TextureAsset.cpp">
-      <Filter>Source Files\AssetSystem\Types</Filter>
-    </ClCompile>
     <ClCompile Include="AssetSystem\Asset.cpp">
-      <Filter>Source Files\AssetSystem</Filter>
+      <Filter>Source Files\AssetManager</Filter>
     </ClCompile>
     <ClCompile Include="AssetSystem\AssetManager.cpp">
-      <Filter>Source Files\AssetSystem</Filter>
+      <Filter>Source Files\AssetManager</Filter>
     </ClCompile>
     <ClCompile Include="AssetSystem\AssetMeta.cpp">
-      <Filter>Source Files\AssetSystem</Filter>
+      <Filter>Source Files\AssetManager</Filter>
     </ClCompile>
     <ClCompile Include="AssetSystem\AssetSource.cpp">
-      <Filter>Source Files\AssetSystem</Filter>
+      <Filter>Source Files\AssetManager</Filter>
     </ClCompile>
-    <ClCompile Include="AssetSystem\FolderAssetSource.cpp">
-      <Filter>Source Files\AssetSystem</Filter>
-    </ClCompile>
-    <ClCompile Include="Object\SolusObject.cpp">
-      <Filter>Source Files\Object</Filter>
-    </ClCompile>
-    <ClCompile Include="Object\Entity.cpp">
-      <Filter>Source Files\Object\World</Filter>
-    </ClCompile>
-    <ClCompile Include="Object\Level.cpp">
-      <Filter>Source Files\Object\World</Filter>
-    </ClCompile>
-    <ClCompile Include="Object\World.cpp">
-      <Filter>Source Files\Object\World</Filter>
+    <ClCompile Include="Utility\BinaryReader.cpp">
+      <Filter>Source Files\Utils</Filter>
     </ClCompile>
     <ClCompile Include="Render\Camera.cpp">
       <Filter>Source Files\Render\Camera</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Engine.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Entity.cpp">
+      <Filter>Source Files\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\FileUtils.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetSystem\FolderAssetSource.cpp">
+      <Filter>Source Files\AssetManager</Filter>
+    </ClCompile>
     <ClCompile Include="Render\FreeFlyCamera.cpp">
       <Filter>Source Files\Render\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Render\GLFWWindow.cpp">
+      <Filter>Source Files\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\Helper.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\MathUtil.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\RTTI_Primitives.cpp">
+      <Filter>Source Files\Utils</Filter>
     </ClCompile>
     <ClCompile Include="Render\PrimitiveDrawer.cpp">
       <Filter>Source Files\Render</Filter>
@@ -284,32 +64,251 @@
     <ClCompile Include="Render\RenderTexture.cpp">
       <Filter>Source Files\Render</Filter>
     </ClCompile>
-    <ClCompile Include="Render\Window.cpp">
-      <Filter>Source Files\Render</Filter>
-    </ClCompile>
-    <ClCompile Include="Render\GLFWWindow.cpp">
-      <Filter>Source Files\Render</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Engine.cpp">
-      <Filter>Source Files\Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="Render\OpenGLTexture.cpp">
-      <Filter>Source Files\Render\OpenGL</Filter>
-    </ClCompile>
-    <ClCompile Include="Render\OpenGLSurface.cpp">
-      <Filter>Source Files\Render\OpenGL</Filter>
-    </ClCompile>
-    <ClCompile Include="Render\OpenGLShader.cpp">
+    <ClCompile Include="Render\OpenGLDevice.cpp">
       <Filter>Source Files\Render\OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="Render\OpenGLMesh.cpp">
       <Filter>Source Files\Render\OpenGL</Filter>
     </ClCompile>
-    <ClCompile Include="Render\OpenGLDevice.cpp">
-      <Filter>Source Files\Render\OpenGL</Filter>
-    </ClCompile>
     <ClCompile Include="Render\OpenGLPrimitiveDrawer.cpp">
       <Filter>Source Files\Render\OpenGL</Filter>
     </ClCompile>
+    <ClCompile Include="Render\OpenGLShader.cpp">
+      <Filter>Source Files\Render\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="Render\OpenGLSurface.cpp">
+      <Filter>Source Files\Render\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="Render\OpenGLTexture.cpp">
+      <Filter>Source Files\Render\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="Render\Window.cpp">
+      <Filter>Source Files\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\Timer.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetSystem\TextAsset.cpp">
+      <Filter>Source Files\AssetManager</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetSystem\TextureAsset.cpp">
+      <Filter>Source Files\AssetManager</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetSystem\MeshAsset.cpp">
+      <Filter>Source Files\AssetManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Level.cpp">
+      <Filter>Source Files\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\World.cpp">
+      <Filter>Source Files\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\SolusObject.cpp">
+      <Filter>Source Files\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Input\InputDevice.cpp">
+      <Filter>Source Files\Input</Filter>
+    </ClCompile>
+  <ClCompile Include="..\intermediates\generated\Entity.generated.cpp"><Filter>Generated</Filter></ClCompile>
+  <ClCompile Include="..\intermediates\generated\SolusObject.generated.cpp"><Filter>Generated</Filter></ClCompile>
+  <ClCompile Include="..\intermediates\generated\Camera.generated.cpp"><Filter>Generated</Filter></ClCompile>
+  <ClCompile Include="..\intermediates\generated\FreeFlyCamera.generated.cpp"><Filter>Generated</Filter></ClCompile></ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="AssetSystem\Asset.h">
+      <Filter>Header Files\AssetManager</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetSystem\AssetManager.h">
+      <Filter>Header Files\AssetManager</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetSystem\AssetMeta.h">
+      <Filter>Header Files\AssetManager</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetSystem\AssetSource.h">
+      <Filter>Header Files\AssetManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\BinaryReader.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Render\Camera.h">
+      <Filter>Header Files\Render\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Engine.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Entity.h">
+      <Filter>Header Files\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\FileUtils.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetSystem\FolderAssetSource.h">
+      <Filter>Header Files\AssetManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Render\FreeFlyCamera.h">
+      <Filter>Header Files\Render\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Render\GLFWWindow.h">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\Helper.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\MathUtil.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\Matrix.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\Reflection.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\RTTI.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Render\RenderTexture.h">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Render\PrimitiveDrawer.h">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Render\RenderDevice.h">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Render\RenderMesh.h">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Render\RenderShader.h">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Render\RenderSurface.h">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Render\OpenGLDevice.h">
+      <Filter>Header Files\Render\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="Render\OpenGLMesh.h">
+      <Filter>Header Files\Render\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="Render\OpenGLPrimitiveDrawer.h">
+      <Filter>Header Files\Render\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="Render\OpenGLShader.h">
+      <Filter>Header Files\Render\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="Render\OpenGLSurface.h">
+      <Filter>Header Files\Render\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="Render\OpenGLTexture.h">
+      <Filter>Header Files\Render\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="Render\Window.h">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\Transform.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\Timer.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetSystem\TextAsset.h">
+      <Filter>Header Files\AssetManager</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetSystem\TextureAsset.h">
+      <Filter>Header Files\AssetManager</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetSystem\MeshAsset.h">
+      <Filter>Header Files\AssetManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Level.h">
+      <Filter>Header Files\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\World.h">
+      <Filter>Header Files\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\SolusObject.h">
+      <Filter>Header Files\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\Vector.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="SubSystem.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\SolusEngine.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Input\InputListener.h">
+      <Filter>Header Files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Input\InputDevice.h">
+      <Filter>Header Files\Input</Filter>
+    </ClInclude>
+	<ClInclude Include="..\intermediates\generated\Entity.generated.h"><Filter>Generated</Filter></ClInclude>
+	<ClInclude Include="..\intermediates\generated\SolusObject.generated.h"><Filter>Generated</Filter></ClInclude>
+	<ClInclude Include="..\intermediates\generated\Camera.generated.h"><Filter>Generated</Filter></ClInclude>
+	<ClInclude Include="..\intermediates\generated\FreeFlyCamera.generated.h"><Filter>Generated</Filter></ClInclude></ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{d49edccf-0fe4-411d-888a-3d2ceadd3ab8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{b91c0e2f-048e-40b4-b5be-bbfb5e90d70f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{30caf233-bccc-4bd1-aa21-a3af5a62987d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Engine">
+      <UniqueIdentifier>{389efdef-e270-46f7-bb81-6bc14063c40b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Render">
+      <UniqueIdentifier>{7c4c8a47-9d4f-4cb3-820a-8b1d27ba813c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Render\Camera">
+      <UniqueIdentifier>{d676b01e-13ca-432e-8705-6b2564c06949}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Object">
+      <UniqueIdentifier>{6acaf1b1-5ff5-4ea3-95d9-ec514cabed12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\AssetManager">
+      <UniqueIdentifier>{d3d8ec8e-53c9-442b-a322-14f42529a230}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utils">
+      <UniqueIdentifier>{749745a2-b94e-47fa-b67f-680f265128e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Render\OpenGL">
+      <UniqueIdentifier>{c680a8b2-7fe4-444a-948b-60ba5fb60285}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Input">
+      <UniqueIdentifier>{df01a86e-af05-4fc2-bac4-5f9d574b550d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Engine">
+      <UniqueIdentifier>{389efdef-e270-46f7-bb81-6bc14333c41b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Render">
+      <UniqueIdentifier>{7c4c8a47-9d4f-4cb3-820a-8b1d233a812c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Render\Camera">
+      <UniqueIdentifier>{d676b01e-13ca-432e-8705-6b2564336939}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object">
+      <UniqueIdentifier>{6acaf1b1-5ff5-4ea3-95d9-ec51433bed42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\AssetManager">
+      <UniqueIdentifier>{d3d8ec8e-53c9-442b-a322-14f42533a250}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utils">
+      <UniqueIdentifier>{749745a2-b94e-47fa-b67f-680f2653312861}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Render\OpenGL">
+      <UniqueIdentifier>{c680a8b2-7fe4-444a-948b-60ba33b60275}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Input">
+      <UniqueIdentifier>{df01a86e-af05-4fc2-bac4-5f9d334b558d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Generated">
+      <UniqueIdentifier>{dd62c2c5-deee-4c56-8b5e-fd205f5e121e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

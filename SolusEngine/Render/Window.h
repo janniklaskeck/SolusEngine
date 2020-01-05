@@ -8,7 +8,7 @@ namespace Solus
 	{
 	public:
 
-		virtual void Initialize() = 0;
+		virtual void Initialize();
 		virtual void Run() = 0;
 		virtual void Update() = 0;
 		virtual void Render() = 0;

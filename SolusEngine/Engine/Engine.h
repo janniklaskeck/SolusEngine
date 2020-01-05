@@ -79,6 +79,7 @@ namespace Solus
 		AssetManager* assetManager = nullptr;
 
 		Timer* mainTimer = nullptr;
+
 	private:
 		int tickCounter = 0;
 	};

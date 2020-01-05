@@ -2,6 +2,8 @@
 #include "EditorInputDevice.h"
 
 #include "SubWindow/EditorSceneWindow.h"
+#include "SubWindow/EditorSceneGraph.h"
+#include "SubWindow/EditorPropertyWindow.h"
 
 #include "Input/InputDevice.h"
 
@@ -45,6 +47,12 @@ namespace Editor
 
 		sceneWindow = new EditorSceneWindow;
 		sceneWindow->Initialize();
+
+		sceneGraph = new EditorSceneGraph;
+		sceneGraph->Initialize();
+
+		propertyWindow = new EditorPropertyWindow;
+		propertyWindow->Initialize();
 	}
 
 	void EditorMainWindow::Update()
@@ -55,8 +63,14 @@ namespace Editor
 			
 			auto* entity = gEngine->GetWorld()->SpawnEntity<Entity>(Vec3f(0, 0, 0), Vec3f(0, 0, 0));
 			entity->TEMP();
+
+			entity = gEngine->GetWorld()->SpawnEntity<Entity>(Vec3f(5, 2, 0), Vec3f(0, 0, 0));
+			entity->TEMP();
+
 			firstRun = true;
 		}
+
+		propertyWindow->SetEntity(sceneGraph->GetSelectedEntity());
 	}
 
 	void EditorMainWindow::Render()
@@ -73,9 +87,11 @@ namespace Editor
 		PreRenderUI();
 		ImGui::NewFrame();
 
-		//ImGui::ShowDemoWindow();
+		ImGui::ShowDemoWindow();
 
 		sceneWindow->Render();
+		sceneGraph->Render();
+		propertyWindow->Render();
 
 		RenderUI();
 

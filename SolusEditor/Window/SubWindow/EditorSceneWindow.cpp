@@ -25,12 +25,11 @@ namespace Editor
 			sceneCamera->SetInputEnabled(ImGui::IsWindowFocused() && ImGui::IsMouseDown(1));
 			ImVec2 pos = ImGui::GetCursorScreenPos();
 			ImVec2 windowTopLeft = ImGui::GetCursorScreenPos();
-			int width = ImGui::GetWindowWidth();
-			int height = ImGui::GetWindowHeight();
+			int width = (int)ImGui::GetWindowWidth();
+			int height = (int)ImGui::GetWindowHeight();
 			ImVec2 windowBottomRight = ImVec2(windowTopLeft.x + width, windowTopLeft.y + height);
 			auto texture = renderDevice->GetCurrentRenderSurface()->GetColorTexture();
 			ImGui::GetWindowDrawList()->AddImage((void*)texture, windowTopLeft, windowBottomRight, ImVec2(0, 1), ImVec2(1, 0));
-
 		}
 		ImGui::End();
 	}

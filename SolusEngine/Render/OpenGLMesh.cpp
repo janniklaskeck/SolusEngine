@@ -135,14 +135,14 @@ namespace Solus
 		glDisableVertexAttribArray(2);
 		CHECK_OPENGL_ERROR();
 
-		auto* primDrawer = (OpenGLPrimitiveDrawer*)gEngine->GetRenderDevice()->GetPrimitiveDrawer();
-		Vec2f center = { 1280.f * 0.5f, 720.f * 0.5f };
-		Vec2f extents = { 100, 100 };
-		primDrawer->RenderRectangle(center, extents, Vec4f(1, 0, 0, 1));
-
-		center = { 1280.f * 0.2f, 720.f * 0.4f };
-		extents = { 100, 50 };
-		primDrawer->RenderRectangle(center, extents, Vec4f(1, 0, 0, 1));
+		//auto* primDrawer = (OpenGLPrimitiveDrawer*)gEngine->GetRenderDevice()->GetPrimitiveDrawer();
+		//Vec2f center = { 1280.f * 0.5f, 720.f * 0.5f };
+		//Vec2f extents = { 100, 100 };
+		//primDrawer->RenderRectangle(center, extents, Vec4f(1, 0, 0, 1));
+		//
+		//center = { 1280.f * 0.2f, 720.f * 0.4f };
+		//extents = { 100, 50 };
+		//primDrawer->RenderRectangle(center, extents, Vec4f(1, 0, 0, 1));
 	}
 
 	bool OpenGLMesh::Load(MeshAsset* meshAsset)

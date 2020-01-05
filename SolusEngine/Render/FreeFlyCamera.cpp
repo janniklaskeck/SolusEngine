@@ -7,6 +7,10 @@
 
 namespace Solus
 {
+	REFLECT_STRUCT_BEGIN(FreeFlyCamera, Camera)
+	REFLECT_STRUCT_MEMBER(asd)
+	REFLECT_STRUCT_END()
+
 	Mat4f* FreeFlyCamera::GetViewMatrix()
 	{
 		return &mTransform;

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build" ToolsVersion="15.0">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
-    </ProjectConfiguration>
+    </ProjectConfiguration> 
     <ProjectConfiguration Include="Release|Win32">
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
@@ -59,17 +59,17 @@
   </ImportGroup>
   <ImportGroup Label="Shared">
   </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" />
   </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" />
   </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" />
   </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -115,10 +115,12 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;SOLUSENGINE_EXPORT;GLFW_INCLUDE_NONE;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\Libraries\GLFW\include;..\Libraries\glm;..\gl3w\include;..\Libraries\assimp\include;..\Libraries\json;./;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Libraries\GLFW\include;..\Libraries\glm;..\gl3w\include;..\Libraries\assimp\include;..\Libraries\json;./;..\intermediates\generated;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DisableSpecificWarnings>4251;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <PreprocessToFile>false</PreprocessToFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -132,6 +134,9 @@
       <Command>xcopy /y $(SolutionDir)Libraries\GLFW\lib-vc2017\glfw3.dll  $(OutDir)
 xcopy /y $(SolutionDir)Libraries\assimp\lib\assimp-vc142-mt.dll  $(OutDir)</Command>
     </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>py $(SolutionDir)Tools/HeaderTool.py $(ProjectDir)</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -219,10 +224,15 @@ xcopy /y $(SolutionDir)Libraries\assimp\lib\assimp-vc142-mt.dll  $(OutDir)</Comm
     <ClInclude Include="Utility\Helper.h" />
     <ClInclude Include="Utility\MathUtil.h" />
     <ClInclude Include="Utility\Matrix.h" />
+    <ClInclude Include="Utility\Reflection.h" />
+    <ClInclude Include="Utility\RTTI.h" />
     <ClInclude Include="Utility\Timer.h" />
     <ClInclude Include="Utility\Transform.h" />
     <ClInclude Include="Utility\Vector.h" />
-  </ItemGroup>
+  <ClInclude Include="..\intermediates\generated\Entity.generated.h" />
+  <ClInclude Include="..\intermediates\generated\SolusObject.generated.h" />
+  <ClInclude Include="..\intermediates\generated\Camera.generated.h" />
+  <ClInclude Include="..\intermediates\generated\FreeFlyCamera.generated.h" /></ItemGroup> 
   <ItemGroup>
     <ClCompile Include="AssetSystem\Asset.cpp" />
     <ClCompile Include="AssetSystem\AssetManager.cpp" />
@@ -258,7 +268,12 @@ xcopy /y $(SolutionDir)Libraries\assimp\lib\assimp-vc142-mt.dll  $(OutDir)</Comm
     <ClCompile Include="Utility\FileUtils.cpp" />
     <ClCompile Include="Utility\Helper.cpp" />
     <ClCompile Include="Utility\MathUtil.cpp" />
+    <ClCompile Include="Utility\RTTI_Primitives.cpp" />
     <ClCompile Include="Utility\Timer.cpp" />
+  <ClCompile Include="..\intermediates\generated\Entity.generated.cpp" />
+  <ClCompile Include="..\intermediates\generated\SolusObject.generated.cpp" />
+  <ClCompile Include="..\intermediates\generated\Camera.generated.cpp" />
+  <ClCompile Include="..\intermediates\generated\FreeFlyCamera.generated.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\gl3w\gl3w.vcxproj">
