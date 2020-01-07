@@ -248,7 +248,7 @@
 	<ClInclude Include="..\intermediates\generated\Entity.generated.h"><Filter>Generated</Filter></ClInclude>
 	<ClInclude Include="..\intermediates\generated\SolusObject.generated.h"><Filter>Generated</Filter></ClInclude>
 	<ClInclude Include="..\intermediates\generated\Camera.generated.h"><Filter>Generated</Filter></ClInclude>
-	<ClInclude Include="..\intermediates\generated\FreeFlyCamera.generated.h"><Filter>Generated</Filter></ClInclude></ItemGroup>
+	<ClInclude Include="..\intermediates\generated\FreeFlyCamera.generated.h"><Filter>Generated</Filter></ClInclude><ClInclude Include="..\intermediates\generated\SolusEngine.generated.h"><Filter>Generated</Filter></ClInclude></ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">
       <UniqueIdentifier>{d49edccf-0fe4-411d-888a-3d2ceadd3ab8}</UniqueIdentifier>

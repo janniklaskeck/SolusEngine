@@ -2,6 +2,7 @@
 #include "Engine/SolusEngine.h"
 
 #include <unordered_map>
+#include <functional>
 #include <vector>
 #include <typeinfo>
 #include <iostream>
@@ -10,6 +11,21 @@
 
 namespace Solus
 {
+	template<typename T>
+	struct SOLUS_API ClassMetaData
+	{
+	protected:
+		std::unordered_map<std::string, std::function<void* (T*)>> functions;
+	public:
+		template<typename V>
+		V* GetValuePtr(const char* name, T* object)
+		{
+			if (functions.find(name) == functions.end())
+				return nullptr;
+			return (V*)functions[name](object);
+		}
+	};
+
 	struct SOLUS_API TypeDescriptor
 	{
 		const char* name;
@@ -156,6 +172,7 @@ namespace Solus
 	virtual size_t GetClassId(); \
 	friend struct Solus::DefaultResolver; \
 	friend struct Solus::type##_Reflection; \
+	static Solus::type##_Reflection Reflection_Acc; \
 	static Solus::TypeDescriptor_Struct Reflection; \
 	static void InitReflection(Solus::TypeDescriptor_Struct*);
 
@@ -164,6 +181,7 @@ namespace Solus
 		static size_t classHash = typeid(type).hash_code(); \
 		return classHash; \
 	} \
+	Solus::type##_Reflection type::Reflection_Acc; \
 	Solus::TypeDescriptor_Struct type::Reflection{type::InitReflection}; \
 	void type::InitReflection(Solus::TypeDescriptor_Struct* typeDesc) { \
 		using T = type; \
@@ -177,6 +195,7 @@ namespace Solus
 		static size_t classHash = typeid(type).hash_code(); \
 		return classHash; \
 	} \
+	Solus::type##_Reflection type::Reflection_Acc; \
 	Solus::TypeDescriptor_Struct type::Reflection{type::InitReflection}; \
 	void type::InitReflection(Solus::TypeDescriptor_Struct* typeDesc) { \
 		using T = type; \
@@ -253,5 +272,5 @@ namespace Solus
 			return &typeDesc;
 		}
 	};
-}
+	}
 

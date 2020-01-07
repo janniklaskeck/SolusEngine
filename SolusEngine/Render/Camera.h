@@ -28,9 +28,9 @@ namespace Solus
 		{
 			return isInputEnabled;
 		}
-		bool asd2 = true;
 	protected:
 		Mat4f projectionMatrix;
+		SPROPERTY();
 		bool isInputEnabled = true;
 	};
 

@@ -4,7 +4,7 @@
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
-    </ProjectConfiguration> 
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Release|Win32">
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
@@ -135,7 +135,7 @@
 xcopy /y $(SolutionDir)Libraries\assimp\lib\assimp-vc142-mt.dll  $(OutDir)</Command>
     </PostBuildEvent>
     <PreBuildEvent>
-      <Command>py $(SolutionDir)Tools/HeaderTool.py $(ProjectDir)</Command>
+      <Command>py $(SolutionDir)Tools/HeaderTool.py $(ProjectDir) $(ProjectName)</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -229,10 +229,11 @@ xcopy /y $(SolutionDir)Libraries\assimp\lib\assimp-vc142-mt.dll  $(OutDir)</Comm
     <ClInclude Include="Utility\Timer.h" />
     <ClInclude Include="Utility\Transform.h" />
     <ClInclude Include="Utility\Vector.h" />
-  <ClInclude Include="..\intermediates\generated\Entity.generated.h" />
-  <ClInclude Include="..\intermediates\generated\SolusObject.generated.h" />
-  <ClInclude Include="..\intermediates\generated\Camera.generated.h" />
-  <ClInclude Include="..\intermediates\generated\FreeFlyCamera.generated.h" /></ItemGroup> 
+    <ClInclude Include="..\intermediates\generated\Entity.generated.h" />
+    <ClInclude Include="..\intermediates\generated\SolusObject.generated.h" />
+    <ClInclude Include="..\intermediates\generated\Camera.generated.h" />
+    <ClInclude Include="..\intermediates\generated\FreeFlyCamera.generated.h" />
+  <ClInclude Include="..\intermediates\generated\SolusEngine.generated.h" /></ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssetSystem\Asset.cpp" />
     <ClCompile Include="AssetSystem\AssetManager.cpp" />
@@ -270,10 +271,10 @@ xcopy /y $(SolutionDir)Libraries\assimp\lib\assimp-vc142-mt.dll  $(OutDir)</Comm
     <ClCompile Include="Utility\MathUtil.cpp" />
     <ClCompile Include="Utility\RTTI_Primitives.cpp" />
     <ClCompile Include="Utility\Timer.cpp" />
-  <ClCompile Include="..\intermediates\generated\Entity.generated.cpp" />
-  <ClCompile Include="..\intermediates\generated\SolusObject.generated.cpp" />
-  <ClCompile Include="..\intermediates\generated\Camera.generated.cpp" />
-  <ClCompile Include="..\intermediates\generated\FreeFlyCamera.generated.cpp" />
+    <ClCompile Include="..\intermediates\generated\Entity.generated.cpp" />
+    <ClCompile Include="..\intermediates\generated\SolusObject.generated.cpp" />
+    <ClCompile Include="..\intermediates\generated\Camera.generated.cpp" />
+    <ClCompile Include="..\intermediates\generated\FreeFlyCamera.generated.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\gl3w\gl3w.vcxproj">

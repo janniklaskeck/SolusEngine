@@ -15,7 +15,8 @@ class ReflectionClass(object):
         self.headerPath = headerPath
         self.members = []
 
-def GenerateReflectionHeaders(folder):
+def GenerateReflectionHeaders(folder, projectName):
+    print("Generate Reflection files for Folder: " + folder + " ProjectName: " + projectName)
     os.chdir(folder)
     reflectedClasses = []
     for root, dirs, files in os.walk("."):
@@ -25,13 +26,9 @@ def GenerateReflectionHeaders(folder):
                 classMeta = ParseHeaderFile(filePath)
                 if not classMeta == None:
                     reflectedClasses.append(classMeta)
-
-                #isReflected, className = ContainsReflectedClass(filePath)
-                #if isReflected:
-                #    reflectedClasses.append(ReflectionClass(className, os.path.join(root, file)))
     for classMeta in reflectedClasses:
-        UpdateMetaFiles(classMeta)
-    #BuildReflectionHeader(folder, reflectedClasses)
+        UpdateMetaFiles(classMeta, folder, projectName)
+    BuildReflectionHeader(folder, projectName, reflectedClasses)
 
 def ParseHeaderFile(relativeFilePath):
     if relativeFilePath.endswith("RTTI.h"):
@@ -75,49 +72,23 @@ def ParseHeaderFile(relativeFilePath):
 
     return classMeta
 
-def ContainsReflectedClass(filename):
-    with open(filename, "r") as file:
-        lines = file.readlines()
-        for e in range(0, len(lines)):
-            line = lines[e]
-            lineParts = line.split(" ")
-            for i in range(0, len(lineParts)):
-                lineParts[i] = lineParts[i].strip()
-            if ";" in lineParts:
-                continue
-            if "class" in lineParts:
-                classIndex = lineParts.index("class")
-                if classIndex >= 0:
-                    className = lineParts[classIndex + 1]
-                    if className.endswith(";"):
-                        continue
-                    if className == "SOLUS_API":
-                        className = lineParts[classIndex + 2]
-                    isReflected = False
-                    if e > 0:
-                        isReflected = "SOLUS_CLASS" in lines[e-1]
-                    return isReflected, className
-    return False, "ERROR"
-
-def UpdateMetaFiles(classMeta):
+def UpdateMetaFiles(classMeta, folder, projectName):
     path = os.path.abspath("..\\intermediates\\generated\\")
     reflectionClassName = classMeta.className + "_Reflection"
     with open(path + os.path.sep + classMeta.className + ".generated.h", "w+") as newHeader:
         newHeader.write("#pragma once\n")
-        newHeader.write("#include \"Engine/SolusEngine.h\"\n")
+        newHeader.write("#include \"Utility/RTTI.h\"\n")
         newHeader.write("#include <unordered_map>\n")
         newHeader.write("#include <string>\n")
         newHeader.write("namespace Solus\n{\n")
 
         newHeader.write("class " + classMeta.className + ";\n")
-        newHeader.write("struct SOLUS_API " + reflectionClassName + "\n{\n")
+        newHeader.write("struct SOLUS_API " + reflectionClassName + " : public ClassMetaData<" + classMeta.className + ">\n{\n")
         newHeader.write(classMeta.className + "_Reflection();\n")
-        newHeader.write("std::unordered_map<std::string, void*(" + reflectionClassName + "::*)(" + classMeta.className + "*)> functions;\n")
 
         for member in classMeta.members:
             newHeader.write("void* " + member.name + "(" + classMeta.className + "* object);\n")
 
-        newHeader.write("void* GetValuePtr(const char* name, " + classMeta.className + "* object);\n")
         newHeader.write("};\n")
         newHeader.write("}\n")
 
@@ -127,37 +98,33 @@ def UpdateMetaFiles(classMeta):
         newSource.write("namespace Solus\n{\n")
         newSource.write(reflectionClassName + "::" + reflectionClassName + "()\n{\n")
         for member in classMeta.members:
-            newSource.write("functions[\"" + member.name + "\"] = &" + reflectionClassName + "::" + member.name + ";\n")
+            newSource.write("functions[\"" + member.name + "\"] = std::bind(&" + reflectionClassName + "::" + member.name + ", this, std::placeholders::_1);\n")
         newSource.write("}\n")
         for member in classMeta.members:
             newSource.write("void* " + reflectionClassName + "::" + member.name + "(" + classMeta.className + "* object)\n{\n")
             newSource.write("return (void*)&object->" + member.name + ";\n")
             newSource.write("}\n")
-        newSource.write("void* " + reflectionClassName + "::GetValuePtr(const char* name, " + classMeta.className + "* object)\n{\n")
-        newSource.write("return std::invoke(functions[name], this, object);\n")
-        newSource.write("}\n")
         newSource.write("}\n")
 
-    helper = VSProjectUtil.VcxprojHelper("..\\SolusEngine", "SolusEngine")
+    helper = VSProjectUtil.VcxprojHelper(folder, projectName)
     helper.AddHeader(classMeta.className)
     helper.AddSource(classMeta.className)
     helper.WriteFiles()
 
-def BuildReflectionHeader(folder, reflectedClasses):
+def BuildReflectionHeader(folder, projectName, reflectedClasses):
     if len(reflectedClasses) == 0:
         return
-    folderOnly = os.path.basename(os.path.dirname(folder))
-    with open(folder + folderOnly + ".generated.h", "w+") as newHeader:
+    path = os.path.abspath("..\\intermediates\\generated\\")
+    with open(path + os.path.sep + projectName + ".generated.h", "w+") as newHeader:
         content = ("#include \"Engine/SolusEngine.h\"\n"
-                "#include <typeinfo>\n\n"
-                )
+                "#include <typeinfo>\n\n")
 
         for i in range(0, len(reflectedClasses)):
             headerPath = reflectedClasses[i].headerPath
             content += "#include \"" + headerPath + "\"\n"
 
         content += ("\nnamespace Solus {\n"
-        "void " + folderOnly + "_Init()\n{\n")
+        "void " + projectName + "_Init()\n{\n")
 
         for i in range(0, len(reflectedClasses)):
             meta = reflectedClasses[i]
@@ -165,9 +132,10 @@ def BuildReflectionHeader(folder, reflectedClasses):
 
         content += "}\n}\n"
         newHeader.write(content)
+    
+    helper = VSProjectUtil.VcxprojHelper(folder, projectName)
+    helper.AddHeader("SolusEngine")
+    helper.WriteFiles()
 
 if __name__ == '__main__':
-    numArgs = len(sys.argv)
-    if numArgs - 1 > 0: # remove file from args
-        for i in range(1, numArgs):
-            GenerateReflectionHeaders(sys.argv[i])
+    GenerateReflectionHeaders(sys.argv[1], sys.argv[2])

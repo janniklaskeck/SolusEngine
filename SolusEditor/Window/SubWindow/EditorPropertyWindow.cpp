@@ -23,19 +23,6 @@ namespace Editor
 		auto* renderDevice = gEngine->GetRenderDevice();
 		if (ImGui::Begin("Properties") && entity)
 		{
-			auto* ffc = dynamic_cast<FreeFlyCamera*>(entity);
-			if (ffc)
-			{
-				size_t offset1 = offsetof(FreeFlyCamera, asd);
-				size_t offset2 = offsetof(Camera, asd2);
-
-				auto se = sizeof(Entity);
-				auto sc = sizeof(Camera);
-				void* (FreeFlyCamera:: * fp)() = &FreeFlyCamera::Asd;
-				//void* a = ffc->refl.call("asd", ffc);
-				//bool* b = (bool*)(a);
-				int c = 0;
-			}
 			auto id = entity->GetClassId();
 			auto a = Solus::SolusObject::GetTypeInfo(id);
 			ShowPropertyFields(entity, a);
@@ -66,12 +53,21 @@ namespace Editor
 		{
 			if (_stricmp(member.type->name, "uint64_t") == 0)
 			{
-				ImGui::InputInt(member.name, metaData->GetValuePtr<int>(entity, member.name));
+				int* ptr = entity->Reflection_Acc.GetValuePtr<int>(member.name, entity);
+				if (ptr)
+					ImGui::LabelText(member.name, "%d", *ptr);
 			}
 			else if (_stricmp(member.type->name, "bool") == 0)
 			{
-				bool* a = metaData->GetValuePtr<bool>(entity, member.name);
-				ImGui::Checkbox(member.name, a);
+				bool* ptr = entity->Reflection_Acc.GetValuePtr<bool>(member.name, entity);
+				if (ptr)
+					ImGui::Checkbox(member.name, ptr);
+			} 
+			else if (_stricmp(member.type->name, "Vec3f") == 0)
+			{
+				float* ptr = entity->Reflection_Acc.GetValuePtr<float>(member.name, entity);
+				if (ptr)
+					ImGui::InputFloat3(member.name, ptr);
 			}
 		}
 		if (metaData->parent)

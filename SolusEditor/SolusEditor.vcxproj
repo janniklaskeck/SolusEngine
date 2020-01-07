@@ -113,7 +113,7 @@
       <SubSystem>Console</SubSystem>
     </Link>
     <PreBuildEvent>
-      <Command>py $(SolutionDir)Tools\HeaderTool.py $(ProjectDir)</Command>
+      <Command>py $(SolutionDir)Tools\HeaderTool.py $(ProjectDir) $(ProjectName)</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
