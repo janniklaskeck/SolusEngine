@@ -22,7 +22,7 @@ namespace Editor
 		void SetEntity(Solus::Entity* entity);
 
 	private:
-		void ShowPropertyFields(Solus::Entity* entity, Solus::TypeDescriptor_Struct* metaData);
+		void ShowPropertyFields(Solus::Entity* entity, Solus::ClassMetaData* metaData);
 
 		Solus::Entity* entity;
 	};

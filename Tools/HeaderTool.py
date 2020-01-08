@@ -4,8 +4,9 @@ import os
 import VSProjectUtil
 
 class ReflectionMember(object):
-    def __init__(self, memberName):
+    def __init__(self, memberType, memberName):
         super().__init__()
+        self.type = memberType
         self.name = memberName
 
 class ReflectionClass(object):
@@ -68,7 +69,7 @@ def ParseHeaderFile(relativeFilePath):
                 nextLineSplit = nextLine.split(" ")
                 for i in range(0, len(nextLineSplit)):
                     nextLineSplit[i] = nextLineSplit[i].strip().replace(";", "")
-                classMeta.members.append(ReflectionMember(nextLineSplit[1]))
+                classMeta.members.append(ReflectionMember(nextLineSplit[0], nextLineSplit[1]))
 
     return classMeta
 
@@ -83,9 +84,15 @@ def UpdateMetaFiles(classMeta, folder, projectName):
         newHeader.write("namespace Solus\n{\n")
 
         newHeader.write("class " + classMeta.className + ";\n")
-        newHeader.write("struct SOLUS_API " + reflectionClassName + " : public ClassMetaData<" + classMeta.className + ">\n{\n")
+        newHeader.write("struct SOLUS_API " + reflectionClassName + " : public ClassMetaData\n{\n")
         newHeader.write(classMeta.className + "_Reflection();\n")
-
+        newHeader.write("struct TypeInfo_" + classMeta.className + " : public TypeInfo\n{\n")
+        newHeader.write("TypeInfo_" + classMeta.className + "(const char* name, size_t size, std::function<void* (" + classMeta.className + "*)> accessor)\n: accessor(accessor)\n{\n")
+        newHeader.write("this->name = name;\nthis->size = size;\n}\n")
+        newHeader.write("std::function<void* (" + classMeta.className + "*)> accessor = nullptr;\n")
+        newHeader.write("virtual void* GetValuePtr(void* object) override\n{\n")
+        newHeader.write("return accessor((" + classMeta.className + "*)object);\n}\n")
+        newHeader.write("};\n\n")
         for member in classMeta.members:
             newHeader.write("void* " + member.name + "(" + classMeta.className + "* object);\n")
 
@@ -98,8 +105,10 @@ def UpdateMetaFiles(classMeta, folder, projectName):
         newSource.write("namespace Solus\n{\n")
         newSource.write(reflectionClassName + "::" + reflectionClassName + "()\n{\n")
         for member in classMeta.members:
-            newSource.write("functions[\"" + member.name + "\"] = std::bind(&" + reflectionClassName + "::" + member.name + ", this, std::placeholders::_1);\n")
-        newSource.write("}\n")
+            newSource.write("data[\"" + member.name + "\"] = new TypeInfo_" + classMeta.className + "(\"" + member.type + "\", sizeof(" + member.type + "), std::bind(&" + reflectionClassName + "::" + member.name + ", this, std::placeholders::_1));\n")
+        newSource.write("this->name = \"" + classMeta.className + "\";\n")
+        newSource.write("this->size = sizeof(" + classMeta.className + ");\n")
+        newSource.write("}\n\n")
         for member in classMeta.members:
             newSource.write("void* " + reflectionClassName + "::" + member.name + "(" + classMeta.className + "* object)\n{\n")
             newSource.write("return (void*)&object->" + member.name + ";\n")
@@ -128,7 +137,7 @@ def BuildReflectionHeader(folder, projectName, reflectedClasses):
 
         for i in range(0, len(reflectedClasses)):
             meta = reflectedClasses[i]
-            content += "Solus::SolusObject::Insert(typeid(" + meta.className + ").hash_code(), &Solus::" + meta.className + "::Reflection);\n"
+            content += "Solus::ClassMetaData::Insert(typeid(" + meta.className + ").hash_code(), &Solus::" + meta.className + "::Reflection);\n"
 
         content += "}\n}\n"
         newHeader.write(content)

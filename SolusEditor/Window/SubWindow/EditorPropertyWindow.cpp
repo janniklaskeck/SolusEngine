@@ -24,7 +24,7 @@ namespace Editor
 		if (ImGui::Begin("Properties") && entity)
 		{
 			auto id = entity->GetClassId();
-			auto a = Solus::SolusObject::GetTypeInfo(id);
+			auto a = Solus::ClassMetaData::Get(id);
 			ShowPropertyFields(entity, a);
 		}
 		ImGui::End();
@@ -47,27 +47,28 @@ namespace Editor
 		this->entity = entity;
 	}
 
-	void EditorPropertyWindow::ShowPropertyFields(Solus::Entity* entity, Solus::TypeDescriptor_Struct* metaData)
+	void EditorPropertyWindow::ShowPropertyFields(Solus::Entity* entity, Solus::ClassMetaData* metaData)
 	{
-		for (auto& member : metaData->members)
+		for (auto it = metaData->data.begin(); it != metaData->data.end(); it++)
 		{
-			if (_stricmp(member.type->name, "uint64_t") == 0)
+			auto& member = *it;
+			if (_stricmp(member.second->name, "uint64_t") == 0)
 			{
-				int* ptr = entity->Reflection_Acc.GetValuePtr<int>(member.name, entity);
+				int* ptr = entity->Reflection.GetValuePtr<int>(member.first.c_str(), entity);
 				if (ptr)
-					ImGui::LabelText(member.name, "%d", *ptr);
+					ImGui::LabelText(member.first.c_str(), "%d", *ptr);
 			}
-			else if (_stricmp(member.type->name, "bool") == 0)
+			else if (_stricmp(member.second->name, "bool") == 0)
 			{
-				bool* ptr = entity->Reflection_Acc.GetValuePtr<bool>(member.name, entity);
+				bool* ptr = entity->Reflection.GetValuePtr<bool>(member.first.c_str(), entity);
 				if (ptr)
-					ImGui::Checkbox(member.name, ptr);
+					ImGui::Checkbox(member.first.c_str(), ptr);
 			} 
-			else if (_stricmp(member.type->name, "Vec3f") == 0)
+			else if (_stricmp(member.second->name, "Vec3f") == 0)
 			{
-				float* ptr = entity->Reflection_Acc.GetValuePtr<float>(member.name, entity);
+				float* ptr = entity->Reflection.GetValuePtr<float>(member.first.c_str(), entity);
 				if (ptr)
-					ImGui::InputFloat3(member.name, ptr);
+					ImGui::InputFloat3(member.first.c_str(), ptr);
 			}
 		}
 		if (metaData->parent)

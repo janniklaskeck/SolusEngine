@@ -25,8 +25,8 @@ namespace Editor
 			for (int i = 0; i < entities.size(); i++)
 			{
 				auto entity = entities[i];
-				auto* info = Solus::SolusObject::GetTypeInfo(entity->GetClassId());
-				char name[128]; 
+				auto* info = Solus::ClassMetaData::Get(entity->GetClassId());
+				char name[128];
 				sprintf_s(name, "%s", info->name);
 				ImGui::PushID(entity->GetId());
 				if (ImGui::Selectable(name, selected == i))

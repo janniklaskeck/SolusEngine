@@ -7,9 +7,7 @@
 
 namespace Solus
 {
-	REFLECT_STRUCT_BEGIN(Camera, Entity)
-	REFLECT_STRUCT_MEMBER(isInputEnabled)
-	REFLECT_STRUCT_END()
+	SCLASS_IMPL(Camera);
 
 	Camera::Camera(float fovY, float windowWidth, float windowHeight, float near, float far)
 	{
