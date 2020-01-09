@@ -120,6 +120,8 @@ def UpdateMetaFiles(classMeta, folder, projectName):
         newSource.write("\n")
         for member in classMeta.members:
             newSource.write("\tdata[\"" + member.name + "\"] = new TypeInfo_" + classMeta.className + "(\"" + member.type + "\", sizeof(" + member.type + "), std::bind(&" + reflectionClassName + "::" + member.name + ", this, std::placeholders::_1));\n")
+            newSource.write("\tsortedMemberKeys.push_back(\"" + member.name + "\");\n")
+        newSource.write("\n\tstd::sort(sortedMemberKeys.begin(), sortedMemberKeys.end(), [](std::string a, std::string b){return a < b;});\n")
         newSource.write("}\n\n")
         for member in classMeta.members:
             newSource.write("void* " + reflectionClassName + "::" + member.name + "(" + classMeta.className + "* object)\n{\n")

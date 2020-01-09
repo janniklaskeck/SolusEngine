@@ -225,7 +225,6 @@ xcopy /y $(SolutionDir)Libraries\assimp\lib\assimp-vc142-mt.dll  $(OutDir)</Comm
     <ClInclude Include="Utility\Helper.h" />
     <ClInclude Include="Utility\MathUtil.h" />
     <ClInclude Include="Utility\Matrix.h" />
-    <ClInclude Include="Utility\Reflection.h" />
     <ClInclude Include="Utility\RTTI.h" />
     <ClInclude Include="Utility\Timer.h" />
     <ClInclude Include="Utility\Transform.h" />

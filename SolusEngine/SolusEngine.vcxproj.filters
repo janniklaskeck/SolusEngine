@@ -173,9 +173,6 @@
     <ClInclude Include="Utility\Matrix.h">
       <Filter>Header Files\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="Utility\Reflection.h">
-      <Filter>Header Files\Utils</Filter>
-    </ClInclude>
     <ClInclude Include="Utility\RTTI.h">
       <Filter>Header Files\Utils</Filter>
     </ClInclude>

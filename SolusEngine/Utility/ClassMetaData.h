@@ -4,6 +4,7 @@
 
 #include <vector>
 #include <unordered_map>
+#include <algorithm>
 
 namespace Solus
 {
@@ -21,8 +22,11 @@ namespace Solus
 		size_t id;
 		const char* name;
 		size_t size;
+
 		std::vector<ClassMetaData*> parents;
+		
 		std::unordered_map<std::string, TypeInfo*> data;
+		std::vector<std::string> sortedMemberKeys;
 
 		template<typename V>
 		static V* GetValuePtr(const char* name, void* object);

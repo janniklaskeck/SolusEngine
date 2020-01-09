@@ -30,6 +30,7 @@ namespace Editor
 			ImVec2 windowBottomRight = ImVec2(windowTopLeft.x + width, windowTopLeft.y + height);
 			auto texture = renderDevice->GetCurrentRenderSurface()->GetColorTexture();
 			ImGui::GetWindowDrawList()->AddImage((void*)texture, windowTopLeft, windowBottomRight, ImVec2(0, 1), ImVec2(1, 0));
+			ImGui::TextColored(ImVec4(1.f, 0.f, 1.f, 1.f), "FPS: %.2f, DeltaTime: %.2f ms", 1.f / gEngine->DeltaTime(), gEngine->DeltaTime() * 1000.f);
 		}
 		ImGui::End();
 	}

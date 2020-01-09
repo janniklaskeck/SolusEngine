@@ -23,9 +23,8 @@ namespace Editor
 		auto* renderDevice = gEngine->GetRenderDevice();
 		if (ImGui::Begin("Properties") && entity)
 		{
-			auto id = entity->GetClassId();
-			auto a = Solus::ClassMetaData::Get(id);
-			ShowPropertyFields(entity, a);
+			auto metaData = Solus::ClassMetaData::Get(entity->GetClassId());
+			ShowPropertyFields(entity, metaData);
 		}
 		ImGui::End();
 	}
@@ -49,26 +48,30 @@ namespace Editor
 
 	void EditorPropertyWindow::ShowPropertyFields(Solus::Entity* entity, Solus::ClassMetaData* metaData)
 	{
-		for (auto it = metaData->data.begin(); it != metaData->data.end(); it++)
+		if (!entity || !metaData)
+			return;
+		if (metaData->data.size() > 0)
+			ImGui::TextColored(ImVec4(1.f, 0.f, 1.f, 1.f), "%s Member", metaData->name);
+		for (auto& memberName : metaData->sortedMemberKeys)
 		{
-			auto& member = *it;
-			if (_stricmp(member.second->name, "uint64_t") == 0)
+			auto* typeInfo = metaData->data[memberName];
+			if (_stricmp(typeInfo->name, "uint64_t") == 0)
 			{
-				int* ptr = entity->Reflection.GetValuePtr<int>(member.first.c_str(), entity);
+				int* ptr = entity->Reflection.GetValuePtr<int>(memberName.c_str(), entity);
 				if (ptr)
-					ImGui::LabelText(member.first.c_str(), "%d", *ptr);
+					ImGui::LabelText(memberName.c_str(), "%d", *ptr);
 			}
-			else if (_stricmp(member.second->name, "bool") == 0)
+			else if (_stricmp(typeInfo->name, "bool") == 0)
 			{
-				bool* ptr = entity->Reflection.GetValuePtr<bool>(member.first.c_str(), entity);
+				bool* ptr = entity->Reflection.GetValuePtr<bool>(memberName.c_str(), entity);
 				if (ptr)
-					ImGui::Checkbox(member.first.c_str(), ptr);
+					ImGui::Checkbox(memberName.c_str(), ptr);
 			} 
-			else if (_stricmp(member.second->name, "Vec3f") == 0)
+			else if (_stricmp(typeInfo->name, "Vec3f") == 0)
 			{
-				float* ptr = entity->Reflection.GetValuePtr<float>(member.first.c_str(), entity);
+				float* ptr = entity->Reflection.GetValuePtr<float>(memberName.c_str(), entity);
 				if (ptr)
-					ImGui::InputFloat3(member.first.c_str(), ptr);
+					ImGui::InputFloat3(memberName.c_str(), ptr);
 			}
 		}
 		if (metaData->parents.size())
