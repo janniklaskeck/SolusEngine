@@ -43,9 +43,6 @@
     <ClCompile Include="Utility\MathUtil.cpp">
       <Filter>Source Files\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="Utility\RTTI_Primitives.cpp">
-      <Filter>Source Files\Utils</Filter>
-    </ClCompile>
     <ClCompile Include="Render\PrimitiveDrawer.cpp">
       <Filter>Source Files\Render</Filter>
     </ClCompile>
@@ -109,10 +106,25 @@
     <ClCompile Include="Input\InputDevice.cpp">
       <Filter>Source Files\Input</Filter>
     </ClCompile>
-  <ClCompile Include="..\intermediates\generated\Entity.generated.cpp"><Filter>Generated</Filter></ClCompile>
-  <ClCompile Include="..\intermediates\generated\SolusObject.generated.cpp"><Filter>Generated</Filter></ClCompile>
-  <ClCompile Include="..\intermediates\generated\Camera.generated.cpp"><Filter>Generated</Filter></ClCompile>
-  <ClCompile Include="..\intermediates\generated\FreeFlyCamera.generated.cpp"><Filter>Generated</Filter></ClCompile></ItemGroup>
+    <ClCompile Include="..\intermediates\generated\Entity.generated.cpp">
+      <Filter>Generated</Filter>
+    </ClCompile>
+    <ClCompile Include="..\intermediates\generated\SolusObject.generated.cpp">
+      <Filter>Generated</Filter>
+    </ClCompile>
+    <ClCompile Include="..\intermediates\generated\Camera.generated.cpp">
+      <Filter>Generated</Filter>
+    </ClCompile>
+    <ClCompile Include="..\intermediates\generated\FreeFlyCamera.generated.cpp">
+      <Filter>Generated</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\RTTI.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\ClassMetaData.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+  </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
     <ClInclude Include="targetver.h" />
@@ -245,10 +257,25 @@
     <ClInclude Include="Input\InputDevice.h">
       <Filter>Header Files\Input</Filter>
     </ClInclude>
-	<ClInclude Include="..\intermediates\generated\Entity.generated.h"><Filter>Generated</Filter></ClInclude>
-	<ClInclude Include="..\intermediates\generated\SolusObject.generated.h"><Filter>Generated</Filter></ClInclude>
-	<ClInclude Include="..\intermediates\generated\Camera.generated.h"><Filter>Generated</Filter></ClInclude>
-	<ClInclude Include="..\intermediates\generated\FreeFlyCamera.generated.h"><Filter>Generated</Filter></ClInclude><ClInclude Include="..\intermediates\generated\SolusEngine.generated.h"><Filter>Generated</Filter></ClInclude></ItemGroup>
+    <ClInclude Include="..\intermediates\generated\Entity.generated.h">
+      <Filter>Generated</Filter>
+    </ClInclude>
+    <ClInclude Include="..\intermediates\generated\SolusObject.generated.h">
+      <Filter>Generated</Filter>
+    </ClInclude>
+    <ClInclude Include="..\intermediates\generated\Camera.generated.h">
+      <Filter>Generated</Filter>
+    </ClInclude>
+    <ClInclude Include="..\intermediates\generated\FreeFlyCamera.generated.h">
+      <Filter>Generated</Filter>
+    </ClInclude>
+    <ClInclude Include="..\intermediates\generated\SolusEngine.generated.h">
+      <Filter>Generated</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\ClassMetaData.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+  </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">
       <UniqueIdentifier>{d49edccf-0fe4-411d-888a-3d2ceadd3ab8}</UniqueIdentifier>

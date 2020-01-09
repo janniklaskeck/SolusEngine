@@ -71,9 +71,10 @@ namespace Editor
 					ImGui::InputFloat3(member.first.c_str(), ptr);
 			}
 		}
-		if (metaData->parent)
+		if (metaData->parents.size())
 		{
-			ShowPropertyFields(entity, metaData->parent);
+			for (auto* parent : metaData->parents)
+				ShowPropertyFields(entity, parent);
 		}
 	}
 

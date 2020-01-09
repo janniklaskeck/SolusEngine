@@ -13,6 +13,7 @@ class ReflectionClass(object):
     def __init__(self, className, headerPath):
         super().__init__()
         self.className = className
+        self.parentClasses = []
         self.headerPath = headerPath
         self.members = []
 
@@ -45,7 +46,7 @@ def ParseHeaderFile(relativeFilePath):
                 lineParts[i] = lineParts[i].strip()
             if ";" in lineParts:
                 continue
-            if "class" in lineParts:
+            if "class" in lineParts and "SOLUS_CLASS" in lines[e-1]:
                 if lineParts[len(lineParts) - 1].endswith(";"):
                     continue
                 classIndex = lineParts.index("class")
@@ -56,10 +57,17 @@ def ParseHeaderFile(relativeFilePath):
                     if className == "SOLUS_API":
                         className = lineParts[classIndex + 2]
                     isReflected = False
-                    if e > 0 and "SOLUS_CLASS" in lines[e-1]:
+                    if e > 0:
                         classMeta = ReflectionClass(className, relativeFilePath)
+                        if ":" in line:
+                            parentIndexStart = line.index(":")
+                            parentClasses = line[parentIndexStart + 1:len(line)].strip()
+                            parentClasses = parentClasses.replace("public", "").strip()
+                            splitParents = map(str.strip, parentClasses.split(","))
+                            classMeta.parentClasses = splitParents
                     else:
                         return None
+                    
             elif "SPROPERTY" in line and e < lineCount - 1:
                 if classMeta == None:
                     print("""Found SPROPERTY macro in non reflected class!
@@ -78,23 +86,24 @@ def UpdateMetaFiles(classMeta, folder, projectName):
     reflectionClassName = classMeta.className + "_Reflection"
     with open(path + os.path.sep + classMeta.className + ".generated.h", "w+") as newHeader:
         newHeader.write("#pragma once\n")
-        newHeader.write("#include \"Utility/RTTI.h\"\n")
+        newHeader.write("#include \"Utility/ClassMetaData.h\"\n")
         newHeader.write("#include <unordered_map>\n")
         newHeader.write("#include <string>\n")
-        newHeader.write("namespace Solus\n{\n")
+        newHeader.write("#include <functional>\n")
+        newHeader.write("\nnamespace Solus\n{\n")
 
-        newHeader.write("class " + classMeta.className + ";\n")
+        newHeader.write("class " + classMeta.className + ";\n\n")
         newHeader.write("struct SOLUS_API " + reflectionClassName + " : public ClassMetaData\n{\n")
-        newHeader.write(classMeta.className + "_Reflection();\n")
-        newHeader.write("struct TypeInfo_" + classMeta.className + " : public TypeInfo\n{\n")
-        newHeader.write("TypeInfo_" + classMeta.className + "(const char* name, size_t size, std::function<void* (" + classMeta.className + "*)> accessor)\n: accessor(accessor)\n{\n")
-        newHeader.write("this->name = name;\nthis->size = size;\n}\n")
-        newHeader.write("std::function<void* (" + classMeta.className + "*)> accessor = nullptr;\n")
-        newHeader.write("virtual void* GetValuePtr(void* object) override\n{\n")
-        newHeader.write("return accessor((" + classMeta.className + "*)object);\n}\n")
-        newHeader.write("};\n\n")
+        newHeader.write("\t" + classMeta.className + "_Reflection();\n\n")
+        newHeader.write("\tstruct TypeInfo_" + classMeta.className + " : public TypeInfo\n\t{\n")
+        newHeader.write("\t\tTypeInfo_" + classMeta.className + "(const char* name, size_t size, std::function<void* (" + classMeta.className + "*)> accessor)\n\t\t: accessor(accessor)\n\t\t{\n")
+        newHeader.write("\t\t\tthis->name = name;\n\t\t\tthis->size = size;\n\t\t}\n\n")
+        newHeader.write("\t\tstd::function<void* (" + classMeta.className + "*)> accessor = nullptr;\n\n")
+        newHeader.write("\t\tvirtual void* GetValuePtr(void* object) override\n\t\t{\n")
+        newHeader.write("\t\t\treturn accessor((" + classMeta.className + "*)object);\n\t\t}\n")
+        newHeader.write("\n\t};\n\n")
         for member in classMeta.members:
-            newHeader.write("void* " + member.name + "(" + classMeta.className + "* object);\n")
+            newHeader.write("\tvoid* " + member.name + "(" + classMeta.className + "* object);\n")
 
         newHeader.write("};\n")
         newHeader.write("}\n")
@@ -104,15 +113,18 @@ def UpdateMetaFiles(classMeta, folder, projectName):
         newSource.write("#include \"" + classMeta.headerPath + "\"\n")
         newSource.write("namespace Solus\n{\n")
         newSource.write(reflectionClassName + "::" + reflectionClassName + "()\n{\n")
+        newSource.write("\tthis->name = \"" + classMeta.className + "\";\n")
+        newSource.write("\tthis->size = sizeof(" + classMeta.className + ");\n")
+        for parentClass in classMeta.parentClasses:
+            newSource.write("\tthis->parents.push_back(&" + parentClass + "::Reflection); \n")
+        newSource.write("\n")
         for member in classMeta.members:
-            newSource.write("data[\"" + member.name + "\"] = new TypeInfo_" + classMeta.className + "(\"" + member.type + "\", sizeof(" + member.type + "), std::bind(&" + reflectionClassName + "::" + member.name + ", this, std::placeholders::_1));\n")
-        newSource.write("this->name = \"" + classMeta.className + "\";\n")
-        newSource.write("this->size = sizeof(" + classMeta.className + ");\n")
+            newSource.write("\tdata[\"" + member.name + "\"] = new TypeInfo_" + classMeta.className + "(\"" + member.type + "\", sizeof(" + member.type + "), std::bind(&" + reflectionClassName + "::" + member.name + ", this, std::placeholders::_1));\n")
         newSource.write("}\n\n")
         for member in classMeta.members:
             newSource.write("void* " + reflectionClassName + "::" + member.name + "(" + classMeta.className + "* object)\n{\n")
-            newSource.write("return (void*)&object->" + member.name + ";\n")
-            newSource.write("}\n")
+            newSource.write("\treturn (void*)&object->" + member.name + ";\n")
+            newSource.write("}\n\n")
         newSource.write("}\n")
 
     helper = VSProjectUtil.VcxprojHelper(folder, projectName)
@@ -132,12 +144,12 @@ def BuildReflectionHeader(folder, projectName, reflectedClasses):
             headerPath = reflectedClasses[i].headerPath
             content += "#include \"" + headerPath + "\"\n"
 
-        content += ("\nnamespace Solus {\n"
+        content += ("\nnamespace Solus\n{\n"
         "void " + projectName + "_Init()\n{\n")
 
         for i in range(0, len(reflectedClasses)):
             meta = reflectedClasses[i]
-            content += "Solus::ClassMetaData::Insert(typeid(" + meta.className + ").hash_code(), &Solus::" + meta.className + "::Reflection);\n"
+            content += "\tSolus::ClassMetaData::Insert(typeid(" + meta.className + ").hash_code(), &Solus::" + meta.className + "::Reflection);\n"
 
         content += "}\n}\n"
         newHeader.write(content)

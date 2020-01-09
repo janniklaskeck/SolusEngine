@@ -8,7 +8,6 @@
 
 namespace Solus
 {
-	class Entity;
 
 	SOLUS_CLASS();
 	class SOLUS_API SolusObject

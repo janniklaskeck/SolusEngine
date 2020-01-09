@@ -220,6 +220,7 @@ xcopy /y $(SolutionDir)Libraries\assimp\lib\assimp-vc142-mt.dll  $(OutDir)</Comm
     <ClInclude Include="SubSystem.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Utility\BinaryReader.h" />
+    <ClInclude Include="Utility\ClassMetaData.h" />
     <ClInclude Include="Utility\FileUtils.h" />
     <ClInclude Include="Utility\Helper.h" />
     <ClInclude Include="Utility\MathUtil.h" />
@@ -233,7 +234,8 @@ xcopy /y $(SolutionDir)Libraries\assimp\lib\assimp-vc142-mt.dll  $(OutDir)</Comm
     <ClInclude Include="..\intermediates\generated\SolusObject.generated.h" />
     <ClInclude Include="..\intermediates\generated\Camera.generated.h" />
     <ClInclude Include="..\intermediates\generated\FreeFlyCamera.generated.h" />
-  <ClInclude Include="..\intermediates\generated\SolusEngine.generated.h" /></ItemGroup>
+    <ClInclude Include="..\intermediates\generated\SolusEngine.generated.h" />
+  </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssetSystem\Asset.cpp" />
     <ClCompile Include="AssetSystem\AssetManager.cpp" />
@@ -266,10 +268,11 @@ xcopy /y $(SolutionDir)Libraries\assimp\lib\assimp-vc142-mt.dll  $(OutDir)</Comm
     <ClCompile Include="Render\RenderTexture.cpp" />
     <ClCompile Include="Render\Window.cpp" />
     <ClCompile Include="Utility\BinaryReader.cpp" />
+    <ClCompile Include="Utility\ClassMetaData.cpp" />
     <ClCompile Include="Utility\FileUtils.cpp" />
     <ClCompile Include="Utility\Helper.cpp" />
     <ClCompile Include="Utility\MathUtil.cpp" />
-    <ClCompile Include="Utility\RTTI_Primitives.cpp" />
+    <ClCompile Include="Utility\RTTI.cpp" />
     <ClCompile Include="Utility\Timer.cpp" />
     <ClCompile Include="..\intermediates\generated\Entity.generated.cpp" />
     <ClCompile Include="..\intermediates\generated\SolusObject.generated.cpp" />
