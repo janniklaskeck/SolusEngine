@@ -31,7 +31,7 @@ namespace Solus
 	protected:
 		Mat4f projectionMatrix;
 		SPROPERTY();
-		bool isInputEnabled = true;
+		bool isInputEnabled = false;
 	};
 
 }
