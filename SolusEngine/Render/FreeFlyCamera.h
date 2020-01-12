@@ -14,6 +14,9 @@ namespace Solus
 
 		virtual bool Update() override;
 
+		SPROPERTY();
+		float movementSpeed = 5.f;
+
 	};
 
 }

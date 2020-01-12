@@ -28,20 +28,23 @@ namespace Solus
 		bool IsButtonDown(int mouseButton);
 		bool IsButtonUp(int mouseButton);
 
-		void GetMousePosDelta(double& xDelta, double& yDelta);
-		void GetMouseScrollDelta(double& xDelta, double& yDelta);
+		void GetMousePosDelta(float& xDelta, float& yDelta);
+		void GetMouseScrollDelta(float& xDelta, float& yDelta);
 
 	private:
 		std::unordered_map<int, int> keyState;
 		double mouseXPos;
 		double mouseYPos;
 
-		double previousMouseXPos;
+		double previousMouseXPos; 
 		double previousMouseYPos;
 
 		std::unordered_map<int, int> mouseButtonState;
 		double scrollXOffset;
 		double scrollYOffset;
+
+		double previousScrollXOffset;
+		double previousScrollYOffset;
 	};
 }
 

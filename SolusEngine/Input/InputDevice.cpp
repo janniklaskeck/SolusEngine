@@ -54,16 +54,18 @@ namespace Solus
 		return mouseButtonState[mouseButton] == GLFW_RELEASE;
 	}
 
-	void InputDevice::GetMousePosDelta(double& xDelta, double& yDelta)
+	void InputDevice::GetMousePosDelta(float& xDelta, float& yDelta)
 	{
 		xDelta = previousMouseXPos - mouseXPos;
 		yDelta = previousMouseYPos - mouseYPos;
 	}
 
-	void InputDevice::GetMouseScrollDelta(double& xDelta, double& yDelta)
+	void InputDevice::GetMouseScrollDelta(float& xDelta, float& yDelta)
 	{
 		xDelta = scrollXOffset;
 		yDelta = scrollYOffset;
+		scrollXOffset = 0.0;
+		scrollYOffset = 0.0;
 	}
 
 	void InputDevice::KeyEventUpdate(int key, int scancode, int action, int mods)

@@ -21,12 +21,22 @@ namespace Solus
 		gEngine->GetWindow()->SetMouseVisible(!IsInputEnabled());
 		if (!IsInputEnabled())
 			return true;
-		double xDelta, yDelta;
-		gEngine->GetInputDevice()->GetMousePosDelta(xDelta, yDelta);
+		auto* input = gEngine->GetInputDevice();
+
+		float xDelta, yDelta;
+		input->GetMousePosDelta(xDelta, yDelta);
 		float deltaTime = (float)gEngine->DeltaTime();
-		float speed = 5.0f * deltaTime;
+		float speed = movementSpeed * deltaTime;
 		float rotationSpeed = 0.1f * deltaTime;
 		AddRotation(Vec3f(yDelta, xDelta, 0.0f) * rotationSpeed);
+
+		float xScroll, yScroll;
+		input->GetMouseScrollDelta(xScroll, yScroll);
+
+		if (std::abs(yScroll) > 0.1)
+		{
+			movementSpeed = std::clamp<float>(movementSpeed + yScroll, 1.0, 20.0);
+		}
 
 		if (gEngine->GetInputDevice()->IsKeyDown(GLFW_KEY_LEFT_SHIFT))
 			speed *= 2.0f;
