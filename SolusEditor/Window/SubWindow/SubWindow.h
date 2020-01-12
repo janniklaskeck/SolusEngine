@@ -13,5 +13,8 @@ namespace Editor
 
 		virtual void OnMinimized() = 0;
 		virtual void OnMaximized() = 0;
+
+	protected:
+		unsigned int windowFlags = 0;
 	};
 }

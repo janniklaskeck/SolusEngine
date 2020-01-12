@@ -15,12 +15,13 @@ namespace Editor
 	void EditorSceneWindow::Initialize()
 	{
 		sceneCamera = gEngine->GetWorld()->SpawnEntity<Solus::FreeFlyCamera>(Vec3f(0, 0, -5), Vec3f(0, 0, 0));
+		windowFlags = ImGuiWindowFlags_NoCollapse;
 	}
 
 	void EditorSceneWindow::Render()
 	{
 		auto* renderDevice = gEngine->GetRenderDevice();
-		if (ImGui::Begin("Scene"))
+		if (ImGui::Begin("Scene", nullptr, windowFlags))
 		{
 			sceneCamera->SetInputEnabled(ImGui::IsWindowFocused() && ImGui::IsMouseDown(1));
 			ImVec2 pos = ImGui::GetCursorScreenPos();
