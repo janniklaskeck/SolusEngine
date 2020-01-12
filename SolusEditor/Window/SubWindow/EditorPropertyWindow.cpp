@@ -16,15 +16,19 @@ using namespace Solus;
 namespace Editor
 {
 	void EditorPropertyWindow::Initialize()
-	{}
+	{
+		windowFlags = ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_MenuBar;
+	}
 
 	void EditorPropertyWindow::Render()
 	{
-		auto* renderDevice = gEngine->GetRenderDevice();
-		if (ImGui::Begin("Properties") && entity)
+		if (ImGui::Begin("Properties"))
 		{
-			auto metaData = Solus::ClassMetaData::Get(entity->GetClassId());
-			ShowPropertyFields(entity, metaData);
+			if (entity)
+			{
+				auto metaData = Solus::ClassMetaData::Get(entity->GetClassId());
+				ShowPropertyFields(entity, metaData);
+			}
 		}
 		ImGui::End();
 	}
@@ -51,25 +55,36 @@ namespace Editor
 		if (!entity || !metaData)
 			return;
 		if (metaData->data.size() > 0)
-			ImGui::TextColored(ImVec4(1.f, 0.f, 1.f, 1.f), "%s Member", metaData->name);
+			ImGui::TextColored(ImVec4(1.f, 0.f, 1.f, 1.f), "%s", metaData->name);
 		for (auto& memberName : metaData->sortedMemberKeys)
 		{
 			auto* typeInfo = metaData->data[memberName];
-			if (_stricmp(typeInfo->name, "uint64_t") == 0)
+			if (typeInfo->IsType("uint64_t"))
 			{
-				int* ptr = entity->Reflection.GetValuePtr<int>(memberName.c_str(), entity);
+				int* ptr = Solus::ClassMetaData::GetValuePtr<int>(memberName.c_str(), entity);
 				if (ptr)
-					ImGui::LabelText(memberName.c_str(), "%d", *ptr);
+				{
+					if (_stricmp(memberName.c_str(), "entityId") == 0)
+						ImGui::LabelText(memberName.c_str(), "%d", *ptr);
+					else
+						ImGui::InputInt(memberName.c_str(), ptr);
+				}
 			}
-			else if (_stricmp(typeInfo->name, "bool") == 0)
+			else if (typeInfo->IsType("bool"))
 			{
-				bool* ptr = entity->Reflection.GetValuePtr<bool>(memberName.c_str(), entity);
+				bool* ptr = Solus::ClassMetaData::GetValuePtr<bool>(memberName.c_str(), entity);
 				if (ptr)
 					ImGui::Checkbox(memberName.c_str(), ptr);
-			} 
-			else if (_stricmp(typeInfo->name, "Vec3f") == 0)
+			}
+			else if (typeInfo->IsType("float"))
 			{
-				float* ptr = entity->Reflection.GetValuePtr<float>(memberName.c_str(), entity);
+				float* ptr = Solus::ClassMetaData::GetValuePtr<float>(memberName.c_str(), entity);
+				if (ptr)
+					ImGui::InputFloat(memberName.c_str(), ptr);
+			}
+			else if (typeInfo->IsType("Vec3f"))
+			{
+				float* ptr = Solus::ClassMetaData::GetValuePtr<float>(memberName.c_str(), entity);
 				if (ptr)
 					ImGui::InputFloat3(memberName.c_str(), ptr);
 			}
