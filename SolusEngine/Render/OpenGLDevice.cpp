@@ -94,7 +94,7 @@ namespace Solus
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glViewport(0, 0, 1280, 720);
 		glDisable(GL_DEPTH_TEST);
-		glClearColor(1.f, 1.f, 0.f, 0.f);
+		glClearColor(0.f, 0.f, 0.f, 0.f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		if (ShouldRenderScene())
 		{
