@@ -4,22 +4,47 @@ import os
 import VSProjectUtil
 
 class ReflectionMember(object):
-    def __init__(self, memberType, memberName):
+    def __init__(self, memberType: str, memberName: str):
         super().__init__()
         self.type = memberType
         self.name = memberName
 
+    def __repr__(self):
+        return "({} {})".format(self.name, self.type)
+
+    def __hash__(self):
+        return hash((self.name, self.type))
+
+    def __eq__(self, value):
+        try:
+            return (self.name, self.type) == (value.name, value.type)
+        except AttributeError:
+            return NotImplemented
+
 class ReflectionClass(object):
-    def __init__(self, className, headerPath):
+    def __init__(self, className: str, headerPath: str):
         super().__init__()
         self.className = className
         self.parentClasses = []
         self.headerPath = headerPath
         self.members = []
 
-def GenerateReflectionHeaders(folder, projectName):
-    print("Generate Reflection files for Folder: " + folder + " ProjectName: " + projectName)
-    os.chdir(folder)
+def GenerateReflectionHeaders(solutionFolder: str, projectName: str):
+    print("Search for existing Reflection files...")
+
+    existingClasses = []
+    intermediatesPath = os.path.join(solutionFolder, "intermediates/generated")
+    for filename in os.listdir(intermediatesPath):
+        if filename.endswith(".h"):
+            parsedClass = ParseReflectionHeader(os.path.join(intermediatesPath, filename))
+            if not parsedClass == None:
+                existingClasses.append(parsedClass)
+
+    print("Found " + str(len(existingClasses)) + " Reflection files.")
+
+    projectFolder = os.path.join(solutionFolder, projectName)
+    print("Generate Reflection files for Folder: " + projectFolder)
+    os.chdir(projectFolder)
     reflectedClasses = []
     for root, dirs, files in os.walk("."):
         for file in files:
@@ -29,10 +54,41 @@ def GenerateReflectionHeaders(folder, projectName):
                 if not classMeta == None:
                     reflectedClasses.append(classMeta)
     for classMeta in reflectedClasses:
-        UpdateMetaFiles(classMeta, folder, projectName)
-    BuildReflectionHeader(folder, projectName, reflectedClasses)
+        if ReflectionHeaderNeedsUpdate(classMeta, existingClasses):
+            print("Write Reflection file for: " + classMeta.className)
+            WriteMetaFiles(classMeta, projectFolder, projectName)
+    BuildReflectionHeader(projectFolder, projectName, reflectedClasses)
 
-def ParseHeaderFile(relativeFilePath):
+def ParseReflectionHeader(filepath: str):
+    parsedClass = None
+    with open(os.path.abspath(filepath), "r") as file:
+        line = file.readline()
+        lineCount = 0
+        while line:
+            if line.startswith("//#"):
+                if lineCount == 0:
+                    classLineParts = line[3:-1].split(",")
+                    className = classLineParts[0]
+                    headerPath = classLineParts[1]
+                    parsedClass = ReflectionClass(className, headerPath)
+                elif lineCount == 1:
+                    parentClassesLineParts = line[3:-1].split(",")
+                    for className in parentClassesLineParts:
+                        if len(className) > 0:
+                            parsedClass.parentClasses.append(className)
+                elif lineCount == 2:
+                    membersLineParts = line[3:-1].split(",")
+                    for member in membersLineParts:
+                        memberParts = member.split(" ")
+                        if len(memberParts) == 2:
+                            parsedClass.members.append(ReflectionMember(memberParts[1], memberParts[0]))
+                line = file.readline()
+                lineCount += 1
+            else:
+                return parsedClass 
+    return None
+
+def ParseHeaderFile(relativeFilePath: str):
     if relativeFilePath.endswith("RTTI.h"):
         return None
     classMeta = None
@@ -63,7 +119,7 @@ def ParseHeaderFile(relativeFilePath):
                             parentIndexStart = line.index(":")
                             parentClasses = line[parentIndexStart + 1:len(line)].strip()
                             parentClasses = parentClasses.replace("public", "").strip()
-                            splitParents = map(str.strip, parentClasses.split(","))
+                            splitParents = list(map(str.strip, parentClasses.split(",")))
                             classMeta.parentClasses = splitParents
                     else:
                         return None
@@ -81,10 +137,45 @@ def ParseHeaderFile(relativeFilePath):
 
     return classMeta
 
-def UpdateMetaFiles(classMeta, folder, projectName):
+def ReflectionHeaderNeedsUpdate(currentClass: ReflectionClass, existingClasses: list):
+    if len(existingClasses) == 0:
+        return True
+    notExisting = True
+    existingClass = None
+    for classMeta in existingClasses:
+        if classMeta.className == currentClass.className:
+            notExisting = False
+            existingClass = classMeta
+            break
+    if notExisting:
+        return True
+    if not existingClass.headerPath == currentClass.headerPath:
+        return True
+    if not existingClass.parentClasses == currentClass.parentClasses:
+        return True
+    if not existingClass.members == currentClass.members:
+        return True
+    return False
+
+def WriteMetaFiles(classMeta: ReflectionClass, folder: str, projectName: str):
     path = os.path.abspath("..\\intermediates\\generated\\")
     reflectionClassName = classMeta.className + "_Reflection"
     with open(path + os.path.sep + classMeta.className + ".generated.h", "w+") as newHeader:
+        newHeader.write("//#" + classMeta.className + "," + classMeta.headerPath + "\n")
+        parentClassString = ""
+        parentClassCount = len(classMeta.parentClasses)
+        for i in range(0, parentClassCount):
+            parentClassString += classMeta.parentClasses[i]
+            if i < parentClassCount - 1:
+                parentClassString += ","
+        newHeader.write("//#" + parentClassString + "\n")
+        membersString = ""
+        memberCount = len(classMeta.members)
+        for i in range(0, memberCount):
+            membersString += classMeta.members[i].name + " " + classMeta.members[i].type
+            if i < memberCount - 1:
+                membersString += ","
+        newHeader.write("//#" + membersString + "\n")
         newHeader.write("#pragma once\n")
         newHeader.write("#include \"Utility/ClassMetaData.h\"\n")
         newHeader.write("#include <unordered_map>\n")
@@ -134,7 +225,7 @@ def UpdateMetaFiles(classMeta, folder, projectName):
     helper.AddSource(classMeta.className)
     helper.WriteFiles()
 
-def BuildReflectionHeader(folder, projectName, reflectedClasses):
+def BuildReflectionHeader(folder: str, projectName: str, reflectedClasses: list):
     if len(reflectedClasses) == 0:
         return
     path = os.path.abspath("..\\intermediates\\generated\\")
@@ -161,4 +252,6 @@ def BuildReflectionHeader(folder, projectName, reflectedClasses):
     helper.WriteFiles()
 
 if __name__ == '__main__':
-    GenerateReflectionHeaders(sys.argv[1], sys.argv[2])
+    solutionFolder = sys.argv[1] # "E:\\Projects\\SolusEngine\\"
+    projectName = sys.argv[2] # "SolusEngine"
+    GenerateReflectionHeaders(solutionFolder, projectName)
