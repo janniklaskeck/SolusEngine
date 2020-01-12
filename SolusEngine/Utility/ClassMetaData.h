@@ -16,6 +16,11 @@ namespace Solus
 			const char* name = "";
 			size_t size = 0;
 
+			bool IsType(const char* typeName)
+			{
+				return _stricmp(name, typeName) == 0;
+			}
+
 			virtual void* GetValuePtr(void* object) = 0;
 		};
 
