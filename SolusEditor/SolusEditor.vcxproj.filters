@@ -1,46 +1,32 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Header Files\Window">
-      <UniqueIdentifier>{79a2b353-62ae-4ec4-a5be-d8123076943c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Window">
-      <UniqueIdentifier>{d7d2d664-2d2c-4a4e-b952-89794dde44e8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Input">
-      <UniqueIdentifier>{a02c0008-25cd-4794-9191-dfde033e020a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Input">
-      <UniqueIdentifier>{90c6ea8c-e01b-4945-9976-90ead8a47c53}</UniqueIdentifier>
-    </Filter>
     <Filter Include="IMGUI">
       <UniqueIdentifier>{b6492aa8-bd4b-4538-bf70-3a9fa4019c0a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Window\SubWindow">
-      <UniqueIdentifier>{5ba49b2a-6a25-48ad-b96c-bf895d3ffe89}</UniqueIdentifier>
+    <Filter Include="Source">
+      <UniqueIdentifier>{b238235f-f9a3-406d-be60-b65f4dd4c534}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Window\SubWindow">
+    <Filter Include="Source\Input">
+      <UniqueIdentifier>{a02c0008-25cd-4794-9191-dfde033e020a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Object">
+      <UniqueIdentifier>{0d1cb4bc-04a4-4ddd-accf-398321dffa50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Window">
+      <UniqueIdentifier>{d7d2d664-2d2c-4a4e-b952-89794dde44e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Window\SubWindow">
       <UniqueIdentifier>{7ea1fa65-58ad-43d5-bbeb-fff4228333d5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="EditorInputDevice.cpp">
-      <Filter>Source Files\Input</Filter>
+      <Filter>Source\Input</Filter>
     </ClCompile>
     <ClCompile Include="IMGUI\imgui.cpp">
       <Filter>IMGUI</Filter>
@@ -61,25 +47,28 @@
       <Filter>IMGUI</Filter>
     </ClCompile>
     <ClCompile Include="Window\EditorMainWindow.cpp">
-      <Filter>Source Files\Window</Filter>
+      <Filter>Source\Window</Filter>
     </ClCompile>
     <ClCompile Include="Window\SubWindow\EditorSceneWindow.cpp">
-      <Filter>Source Files\Window\SubWindow</Filter>
+      <Filter>Source\Window\SubWindow</Filter>
     </ClCompile>
     <ClCompile Include="Window\SubWindow\EditorSceneGraph.cpp">
-      <Filter>Source Files\Window\SubWindow</Filter>
+      <Filter>Source\Window\SubWindow</Filter>
     </ClCompile>
     <ClCompile Include="Window\SubWindow\EditorPropertyWindow.cpp">
-      <Filter>Source Files\Window\SubWindow</Filter>
+      <Filter>Source\Window\SubWindow</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\TestEntity.cpp">
+      <Filter>Source\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Window\SubWindow\EditorAssetWindow.cpp">
+      <Filter>Source\Window\SubWindow</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="stdafx.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="EditorInputDevice.h">
-      <Filter>Header Files\Input</Filter>
-    </ClInclude>
     <ClInclude Include="IMGUI\imconfig.h">
       <Filter>IMGUI</Filter>
     </ClInclude>
@@ -104,20 +93,32 @@
     <ClInclude Include="IMGUI\imstb_truetype.h">
       <Filter>IMGUI</Filter>
     </ClInclude>
-    <ClInclude Include="Window\EditorMainWindow.h">
-      <Filter>Header Files\Window</Filter>
-    </ClInclude>
-    <ClInclude Include="Window\SubWindow\EditorSceneWindow.h">
-      <Filter>Header Files\Window\SubWindow</Filter>
+    <ClInclude Include="stdafx.h">
+      <Filter>Source</Filter>
     </ClInclude>
     <ClInclude Include="Window\SubWindow\SubWindow.h">
-      <Filter>Header Files\Window\SubWindow</Filter>
+      <Filter>Source\Window\SubWindow</Filter>
     </ClInclude>
-    <ClInclude Include="Window\SubWindow\EditorSceneGraph.h">
-      <Filter>Header Files\Window\SubWindow</Filter>
+    <ClInclude Include="Window\SubWindow\EditorAssetWindow.h">
+      <Filter>Source\Window\SubWindow</Filter>
     </ClInclude>
     <ClInclude Include="Window\SubWindow\EditorPropertyWindow.h">
-      <Filter>Header Files\Window\SubWindow</Filter>
+      <Filter>Source\Window\SubWindow</Filter>
+    </ClInclude>
+    <ClInclude Include="Window\SubWindow\EditorSceneGraph.h">
+      <Filter>Source\Window\SubWindow</Filter>
+    </ClInclude>
+    <ClInclude Include="Window\SubWindow\EditorSceneWindow.h">
+      <Filter>Source\Window\SubWindow</Filter>
+    </ClInclude>
+    <ClInclude Include="Window\EditorMainWindow.h">
+      <Filter>Source\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\TestEntity.h">
+      <Filter>Source\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorInputDevice.h">
+      <Filter>Source\Input</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

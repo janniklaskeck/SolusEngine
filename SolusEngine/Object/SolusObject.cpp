@@ -6,12 +6,17 @@ namespace Solus
 {
 	SCLASS_IMPL(SolusObject);
 
-	void SolusObject::Begin()
+	void SolusObject::BeginPlay()
 	{
 
 	}
 
-	void SolusObject::End()
+	void SolusObject::EndPlay()
+	{
+
+	}
+
+	void SolusObject::Update(float deltaTime)
 	{
 
 	}

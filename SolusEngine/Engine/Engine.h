@@ -5,7 +5,6 @@
 #include "AssetSystem/AssetManager.h"
 
 #include "Object/Entity.h"
-#include "Object/World.h"
 
 #include "Render/Window.h"
 #include "Render/RenderDevice.h"
@@ -28,6 +27,7 @@ namespace Solus
 	class Window;
 	class Camera;
 	class Timer;
+	class World;
 
 	void SOLUS_API InitializeEngine(Window* window);
 

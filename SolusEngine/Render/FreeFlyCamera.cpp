@@ -14,18 +14,17 @@ namespace Solus
 		return &mTransform;
 	}
 
-	bool FreeFlyCamera::Update()
+	void FreeFlyCamera::Update(float deltaTime)
 	{
-		Entity::Update();
+		Entity::Update(deltaTime);
 
 		gEngine->GetWindow()->SetMouseVisible(!IsInputEnabled());
 		if (!IsInputEnabled())
-			return true;
+			return;
 		auto* input = gEngine->GetInputDevice();
 
 		float xDelta, yDelta;
 		input->GetMousePosDelta(xDelta, yDelta);
-		float deltaTime = (float)gEngine->DeltaTime();
 		float speed = movementSpeed * deltaTime;
 		float rotationSpeed = 0.1f * deltaTime;
 		AddRotation(Vec3f(yDelta, xDelta, 0.0f) * rotationSpeed);
@@ -70,6 +69,5 @@ namespace Solus
 			Vec3f up = GetUp();
 			AddPosition(-up * speed);
 		}
-		return false;
 	}
 }

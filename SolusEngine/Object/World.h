@@ -1,7 +1,8 @@
 #pragma once
-#include "SolusObject.h"
-#include "Entity.h"
+#include "Object/SolusObject.h"
+#include "Object/Entity.h"
 
+#include "Utility/Vector.h"
 #include <unordered_map>
 #include <vector>
 
@@ -20,12 +21,13 @@ namespace Solus
 		bool DestroyEntity(Entity* entity);
 		std::vector<Entity*> GetEntities() const;
 
-		void Update();
+		virtual void BeginPlay() override;
+		virtual void Update(float deltaTime) override;
+		virtual void EndPlay() override;
 		void Render();
 
 	protected:
 		std::unordered_map<uint64_t, Entity*>* globalEntities;
-
 	};
 
 	template<class T>
@@ -41,6 +43,7 @@ namespace Solus
 		entity->SetPosition(position);
 		entity->SetRotation(rotation);
 		entity->SetScale(scale);
+		//entity->BeginPlay();
 		globalEntities->insert({ {entity->GetId(), entity } });
 		return instance;
 	}

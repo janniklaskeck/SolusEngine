@@ -35,9 +35,38 @@ namespace Solus
 		mesh->owner = this;
 	}
 
-	bool Entity::Update()
+	void Entity::AttachComponent(SComponent* component)
 	{
-		return false;
+		if (!component)
+			return;
+		component->Attach(this);
+	}
+
+	void Entity::BeginPlay()
+	{
+		SolusObject::BeginPlay();
+		for (auto* component : components)
+		{
+			component->BeginPlay();
+		}
+	}
+
+	void Entity::EndPlay()
+	{
+		SolusObject::EndPlay();
+		for (auto* component : components)
+		{
+			component->EndPlay();
+		}
+	}
+
+	void Entity::Update(float deltaTime)
+	{
+		SolusObject::Update(deltaTime);
+		for (auto* component : components)
+		{
+			component->Update(deltaTime);
+		}
 	}
 
 	bool Entity::Render()

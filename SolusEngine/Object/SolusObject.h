@@ -1,10 +1,10 @@
 #pragma once
 
 #include "Engine/SolusEngine.h"
-
 #include "SolusObject.generated.h"
 
 #include "Utility/RTTI.h"
+
 
 namespace Solus
 {
@@ -14,7 +14,8 @@ namespace Solus
 	{
 		REFLECT(SolusObject)
 	public:
-		virtual void Begin();
-		virtual void End();
+		virtual void BeginPlay();
+		virtual void Update(float deltaTime);
+		virtual void EndPlay();
 	};
 }

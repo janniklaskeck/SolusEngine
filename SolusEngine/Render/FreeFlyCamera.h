@@ -12,7 +12,7 @@ namespace Solus
 	public:
 		virtual Mat4f* GetViewMatrix() override;
 
-		virtual bool Update() override;
+		virtual void Update(float deltaTime) override;
 
 		SPROPERTY();
 		float movementSpeed = 5.f;

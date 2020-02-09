@@ -164,7 +164,9 @@
     <ClCompile Include="IMGUI\imgui_impl_opengl3.cpp" />
     <ClCompile Include="IMGUI\imgui_widgets.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Object\TestEntity.cpp" />
     <ClCompile Include="Window\EditorMainWindow.cpp" />
+    <ClCompile Include="Window\SubWindow\EditorAssetWindow.cpp" />
     <ClCompile Include="Window\SubWindow\EditorPropertyWindow.cpp" />
     <ClCompile Include="Window\SubWindow\EditorSceneGraph.cpp" />
     <ClCompile Include="Window\SubWindow\EditorSceneWindow.cpp" />
@@ -179,8 +181,10 @@
     <ClInclude Include="IMGUI\imstb_rectpack.h" />
     <ClInclude Include="IMGUI\imstb_textedit.h" />
     <ClInclude Include="IMGUI\imstb_truetype.h" />
+    <ClInclude Include="Object\TestEntity.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Window\EditorMainWindow.h" />
+    <ClInclude Include="Window\SubWindow\EditorAssetWindow.h" />
     <ClInclude Include="Window\SubWindow\EditorPropertyWindow.h" />
     <ClInclude Include="Window\SubWindow\EditorSceneGraph.h" />
     <ClInclude Include="Window\SubWindow\EditorSceneWindow.h" />

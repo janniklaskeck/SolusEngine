@@ -1,6 +1,7 @@
 #include "EditorSceneGraph.h"
 
 #include "Engine/Engine.h"
+#include "Object/World.h"
 
 #include "Render/RenderDevice.h"
 

@@ -1,8 +1,8 @@
 #pragma once
 #include "SolusObject.h"
-
 #include "Entity.generated.h"
 
+#include "Component/SComponent.h"
 #include "Utility/Matrix.h"
 #include "Utility/Vector.h"
 
@@ -21,7 +21,10 @@ namespace Solus
 
 		void TEMP();
 
-		virtual bool Update();
+		void AttachComponent(SComponent* component);
+		virtual void BeginPlay() override;
+		virtual void Update(float deltaTime) override;
+		virtual void EndPlay() override;
 
 		virtual bool Render();
 
@@ -48,6 +51,8 @@ namespace Solus
 		Mat4f GetTransform() const;
 
 	protected:
+		std::vector<SComponent*> components;
+
 		SPROPERTY();
 		uint64_t entityId;
 

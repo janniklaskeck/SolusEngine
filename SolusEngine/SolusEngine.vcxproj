@@ -196,6 +196,8 @@ xcopy /y $(SolutionDir)Libraries\assimp\lib\assimp-vc142-mt.dll  $(OutDir)</Comm
     <ClInclude Include="Engine\SolusEngine.h" />
     <ClInclude Include="Input\InputDevice.h" />
     <ClInclude Include="Input\InputListener.h" />
+    <ClInclude Include="Object\Component\MeshComponent.h" />
+    <ClInclude Include="Object\Component\SComponent.h" />
     <ClInclude Include="Object\Entity.h" />
     <ClInclude Include="Object\Level.h" />
     <ClInclude Include="Object\SolusObject.h" />
@@ -246,6 +248,8 @@ xcopy /y $(SolutionDir)Libraries\assimp\lib\assimp-vc142-mt.dll  $(OutDir)</Comm
     <ClCompile Include="AssetSystem\TextureAsset.cpp" />
     <ClCompile Include="Engine\Engine.cpp" />
     <ClCompile Include="Input\InputDevice.cpp" />
+    <ClCompile Include="Object\Component\MeshComponent.cpp" />
+    <ClCompile Include="Object\Component\SComponent.cpp" />
     <ClCompile Include="Object\Entity.cpp" />
     <ClCompile Include="Object\Level.cpp" />
     <ClCompile Include="Object\SolusObject.cpp" />

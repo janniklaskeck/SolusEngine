@@ -41,11 +41,27 @@ namespace Solus
 		return entities;
 	}
 
-	void World::Update()
+	void World::BeginPlay()
 	{
 		for (auto it = globalEntities->begin(); it != globalEntities->end(); it++)
 		{
-			it->second->Update();
+			it->second->BeginPlay();
+		}
+	}
+
+	void World::Update(float deltaTime)
+	{
+		for (auto it = globalEntities->begin(); it != globalEntities->end(); it++)
+		{
+			it->second->Update(deltaTime);
+		}
+	}
+
+	void World::EndPlay()
+	{
+		for (auto it = globalEntities->begin(); it != globalEntities->end(); it++)
+		{
+			it->second->EndPlay();
 		}
 	}
 
