@@ -34,6 +34,8 @@ def GenerateReflectionHeaders(solutionFolder: str, projectName: str):
 
     existingClasses = []
     intermediatesPath = os.path.join(solutionFolder, "intermediates/generated")
+    if not os.path.exists(intermediatesPath):
+        os.makedirs(intermediatesPath)
     for filename in os.listdir(intermediatesPath):
         if filename.endswith(".h"):
             parsedClass = ParseReflectionHeader(os.path.join(intermediatesPath, filename))
