@@ -14,6 +14,8 @@ namespace Solus
 
 		virtual Mat4f* GetViewMatrix() = 0;
 
+		void UpdateProjectionMatrix(float fovY, float windowWidth, float windowHeight, float near = .1f, float far = 1000.f);
+
 		Mat4f* GetProjectionMatrix()
 		{
 			return &projectionMatrix;

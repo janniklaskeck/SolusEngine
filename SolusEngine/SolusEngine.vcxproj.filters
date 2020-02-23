@@ -14,7 +14,7 @@
       <Filter>Source\AssetManager</Filter>
     </ClCompile>
     <ClCompile Include="Utility\BinaryReader.cpp">
-      <Filter>Source\Utils</Filter>
+      <Filter>Source\Utility</Filter>
     </ClCompile>
     <ClCompile Include="Render\Camera.cpp">
       <Filter>Source\Render\Camera</Filter>
@@ -26,7 +26,7 @@
       <Filter>Source\Object</Filter>
     </ClCompile>
     <ClCompile Include="Utility\FileUtils.cpp">
-      <Filter>Source\Utils</Filter>
+      <Filter>Source\Utility</Filter>
     </ClCompile>
     <ClCompile Include="AssetSystem\FolderAssetSource.cpp">
       <Filter>Source\AssetManager</Filter>
@@ -38,10 +38,10 @@
       <Filter>Source\Render</Filter>
     </ClCompile>
     <ClCompile Include="Utility\Helper.cpp">
-      <Filter>Source\Utils</Filter>
+      <Filter>Source\Utility</Filter>
     </ClCompile>
     <ClCompile Include="Utility\MathUtil.cpp">
-      <Filter>Source\Utils</Filter>
+      <Filter>Source\Utility</Filter>
     </ClCompile>
     <ClCompile Include="Render\PrimitiveDrawer.cpp">
       <Filter>Source\Render</Filter>
@@ -83,7 +83,7 @@
       <Filter>Source\Render</Filter>
     </ClCompile>
     <ClCompile Include="Utility\Timer.cpp">
-      <Filter>Source\Utils</Filter>
+      <Filter>Source\Utility</Filter>
     </ClCompile>
     <ClCompile Include="AssetSystem\TextAsset.cpp">
       <Filter>Source\AssetManager</Filter>
@@ -119,10 +119,10 @@
       <Filter>Generated</Filter>
     </ClCompile>
     <ClCompile Include="Utility\RTTI.cpp">
-      <Filter>Source\Utils</Filter>
+      <Filter>Source\Utility</Filter>
     </ClCompile>
     <ClCompile Include="Utility\ClassMetaData.cpp">
-      <Filter>Source\Utils</Filter>
+      <Filter>Source\Utility</Filter>
     </ClCompile>
     <ClCompile Include="Object\Component\SComponent.cpp">
       <Filter>Source\Object\Component</Filter>
@@ -150,34 +150,34 @@
       <Filter>Generated</Filter>
     </ClInclude>
     <ClInclude Include="Utility\BinaryReader.h">
-      <Filter>Source\Utils</Filter>
+      <Filter>Source\Utility</Filter>
     </ClInclude>
     <ClInclude Include="Utility\ClassMetaData.h">
-      <Filter>Source\Utils</Filter>
+      <Filter>Source\Utility</Filter>
     </ClInclude>
     <ClInclude Include="Utility\FileUtils.h">
-      <Filter>Source\Utils</Filter>
+      <Filter>Source\Utility</Filter>
     </ClInclude>
     <ClInclude Include="Utility\Helper.h">
-      <Filter>Source\Utils</Filter>
+      <Filter>Source\Utility</Filter>
     </ClInclude>
     <ClInclude Include="Utility\MathUtil.h">
-      <Filter>Source\Utils</Filter>
+      <Filter>Source\Utility</Filter>
     </ClInclude>
     <ClInclude Include="Utility\Matrix.h">
-      <Filter>Source\Utils</Filter>
+      <Filter>Source\Utility</Filter>
     </ClInclude>
     <ClInclude Include="Utility\RTTI.h">
-      <Filter>Source\Utils</Filter>
+      <Filter>Source\Utility</Filter>
     </ClInclude>
     <ClInclude Include="Utility\Timer.h">
-      <Filter>Source\Utils</Filter>
+      <Filter>Source\Utility</Filter>
     </ClInclude>
     <ClInclude Include="Utility\Transform.h">
-      <Filter>Source\Utils</Filter>
+      <Filter>Source\Utility</Filter>
     </ClInclude>
     <ClInclude Include="Utility\Vector.h">
-      <Filter>Source\Utils</Filter>
+      <Filter>Source\Utility</Filter>
     </ClInclude>
     <ClInclude Include="Render\GLFWWindow.h">
       <Filter>Source\Render</Filter>
@@ -319,7 +319,7 @@
     <Filter Include="Source\Render\OpenGL">
       <UniqueIdentifier>{c680a8b2-7fe4-444a-948b-60ba33b60275}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Utils">
+    <Filter Include="Source\Utility">
       <UniqueIdentifier>{749745a2-b94e-47fa-b67f-680f2653312861}</UniqueIdentifier>
     </Filter>
   </ItemGroup>

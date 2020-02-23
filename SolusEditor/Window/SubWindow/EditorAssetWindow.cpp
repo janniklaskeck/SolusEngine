@@ -14,14 +14,11 @@ namespace Editor
 {
 	void EditorAssetWindow::Initialize()
 	{
-		windowFlags = ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize;
+		windowFlags = ImGuiWindowFlags_NoCollapse;
 	}
 
 	void EditorAssetWindow::Render()
 	{
-		auto size = gEngine->GetWindow()->GetWindowSize();
-		ImGui::SetNextWindowPos(ImVec2(size.x * WINDOW_ASSET_POS_X, size.y * WINDOW_ASSET_POS_Y));
-		ImGui::SetNextWindowSize(ImVec2(size.x * WINDOW_ASSET_SIZE_X, size.y * WINDOW_ASSET_SIZE_Y));
 		if (ImGui::Begin("Assets", nullptr, windowFlags))
 		{
 			ImGui::BeginChild("FolderChild", ImVec2(ImGui::GetWindowContentRegionWidth() * 0.2f, ImGui::GetWindowHeight()-35), true);

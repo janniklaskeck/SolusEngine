@@ -15,14 +15,11 @@ namespace Editor
 {
 	void EditorSceneGraph::Initialize()
 	{
-		windowFlags = /*ImGuiWindowFlags_NoCollapse |*/ ImGuiWindowFlags_NoResize;
+		windowFlags = ImGuiWindowFlags_NoCollapse;
 	}
 
 	void EditorSceneGraph::Render()
 	{
-		auto size = gEngine->GetWindow()->GetWindowSize();
-		ImGui::SetNextWindowPos(ImVec2(size.x * WINDOW_GRAPH_POS_X, size.y * WINDOW_GRAPH_POS_Y));
-		ImGui::SetNextWindowSize(ImVec2(size.x * WINDOW_GRAPH_SIZE_X, size.y * WINDOW_GRAPH_SIZE_Y));
 		if (ImGui::Begin("Graph", nullptr, windowFlags))
 		{
 			const auto& entities = gEngine->GetWorld()->GetEntities();
