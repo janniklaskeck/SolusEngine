@@ -25,6 +25,10 @@ namespace Solus
 
 		virtual Asset* GetAsset(std::string& path) = 0;
 
+		std::unordered_map<std::string, Asset*>::const_iterator BeginIter() const;
+
+		std::unordered_map<std::string, Asset*>::const_iterator EndIter() const;
+
 	protected:
 		std::filesystem::path root;
 

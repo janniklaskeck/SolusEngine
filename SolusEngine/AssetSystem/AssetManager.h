@@ -2,14 +2,14 @@
 
 #include "Engine/SolusEngine.h"
 
+#include "AssetSystem/Asset.h"
+#include "AssetSystem/AssetSource.h"
+
 #include <vector>
 #include <string>
 
 namespace Solus
 {
-	class Asset;
-	class AssetSource;
-
 	class SOLUS_API AssetManager : public SubSystem
 	{
 	public:
@@ -23,6 +23,9 @@ namespace Solus
 
 		Asset* GetAsset(std::string path);
 		Asset* GetAsset(const char* path);
+
+		size_t GetNumSources() const;
+		AssetSource* GetAssetSource(size_t index) const;
 
 	private:
 		std::vector<AssetSource*> sources;

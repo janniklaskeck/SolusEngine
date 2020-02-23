@@ -1,6 +1,4 @@
 #include "AssetManager.h"
-#include "Asset.h"
-#include "AssetSource.h"
 
 namespace Solus
 {
@@ -45,6 +43,16 @@ namespace Solus
 	Asset* AssetManager::GetAsset(const char* path)
 	{
 		return GetAsset(std::string(path));
+	}
+
+	size_t AssetManager::GetNumSources() const
+	{
+		return sources.size();
+	}
+
+	AssetSource* AssetManager::GetAssetSource(size_t index) const
+	{
+		return sources[index];
 	}
 
 }

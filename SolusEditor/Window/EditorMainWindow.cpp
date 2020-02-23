@@ -4,6 +4,7 @@
 #include "SubWindow/EditorSceneWindow.h"
 #include "SubWindow/EditorSceneGraph.h"
 #include "SubWindow/EditorPropertyWindow.h"
+#include "SubWindow/EditorAssetWindow.h"
 
 #include "Input/InputDevice.h"
 
@@ -53,6 +54,9 @@ namespace Editor
 
 		propertyWindow = new EditorPropertyWindow;
 		propertyWindow->Initialize();
+
+		assetWindow = new EditorAssetWindow;
+		assetWindow->Initialize();
 	}
 
 	void EditorMainWindow::Update()
@@ -92,6 +96,7 @@ namespace Editor
 		sceneWindow->Render();
 		sceneGraph->Render();
 		propertyWindow->Render();
+		assetWindow->Render();
 
 		RenderUI();
 

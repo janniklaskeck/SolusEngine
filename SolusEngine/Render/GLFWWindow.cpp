@@ -102,9 +102,18 @@ namespace Solus
 		return glfwGetTime();
 	}
 
-	void GLFWWindow::GetWindowSize(int* width, int* height)
+	Vec2i GLFWWindow::GetWindowPosition() const
 	{
-		glfwGetFramebufferSize(window, width, height);
+		Vec2i pos;
+		glfwGetWindowPos(window, &pos.x, &pos.y);
+		return pos;
+	}
+
+	Vec2i GLFWWindow::GetWindowSize() const
+	{
+		Vec2i size;
+		glfwGetFramebufferSize(window, &size.x, &size.y);
+		return size;
 	}
 
 	GLFWwindow* GLFWWindow::GetInternalWindow() const

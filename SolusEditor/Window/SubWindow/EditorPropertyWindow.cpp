@@ -17,12 +17,15 @@ namespace Editor
 {
 	void EditorPropertyWindow::Initialize()
 	{
-		windowFlags = ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_MenuBar;
+		windowFlags = ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_MenuBar;
 	}
 
 	void EditorPropertyWindow::Render()
 	{
-		if (ImGui::Begin("Properties"))
+		auto size = gEngine->GetWindow()->GetWindowSize();
+		ImGui::SetNextWindowPos(ImVec2(size.x * WINDOW_PROPERTY_POS_X, size.y * WINDOW_PROPERTY_POS_Y));
+		ImGui::SetNextWindowSize(ImVec2(size.x * WINDOW_PROPERTY_SIZE_X, size.y * WINDOW_PROPERTY_SIZE_Y));
+		if (ImGui::Begin("Properties", nullptr, windowFlags))
 		{
 			if (entity)
 			{

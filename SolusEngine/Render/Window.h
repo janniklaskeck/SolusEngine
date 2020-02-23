@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Engine/SolusEngine.h"
+#include "Utility/Vector.h"
 
 namespace Solus
 {
@@ -19,7 +20,9 @@ namespace Solus
 
 		virtual void GetCursorPos(double* xPos, double* yPos) = 0;
 		virtual double GetTime() const = 0;
-		virtual void GetWindowSize(int* xSize, int* ySize) = 0;
+
+		virtual Vec2i GetWindowPosition() const = 0;
+		virtual Vec2i GetWindowSize() const = 0;
 
 		virtual void SetMouseVisible(bool isVisible) = 0;
 

@@ -26,7 +26,10 @@ namespace Solus
 
 		virtual void GetCursorPos(double* xPos, double* yPos) override;
 		virtual double GetTime() const override;
-		virtual void GetWindowSize(int* xSize, int* ySize) override;
+
+		virtual Vec2i GetWindowPosition() const override;
+
+		virtual Vec2i GetWindowSize() const override;
 
 		virtual void SetMouseVisible(bool isVisible) override;
 
@@ -40,7 +43,7 @@ namespace Solus
 		static void MouseScrollCallbackForwarder(GLFWwindow* window, double xOffset, double yOffset);
 
 	protected:
-		GLFWwindow* window;
+		GLFWwindow* window = nullptr;
 
 
 	};

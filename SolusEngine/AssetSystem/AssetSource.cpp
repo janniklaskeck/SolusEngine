@@ -62,4 +62,14 @@ namespace Solus
 		std::replace(path.begin(), path.end(), '\\', '/');
 	}
 
+	std::unordered_map<std::string, Asset*>::const_iterator AssetSource::BeginIter() const
+	{
+		return assets.cbegin();
+	}
+
+	std::unordered_map<std::string, Asset*>::const_iterator AssetSource::EndIter() const
+	{
+		return assets.cend();
+	}
+
 }

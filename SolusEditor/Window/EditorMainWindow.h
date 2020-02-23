@@ -6,6 +6,7 @@ namespace Editor
 	class EditorSceneWindow;
 	class EditorSceneGraph;
 	class EditorPropertyWindow;
+	class EditorAssetWindow;
 
 	class EditorMainWindow : public Solus::GLFWWindow
 	{
@@ -20,5 +21,6 @@ namespace Editor
 		EditorSceneWindow* sceneWindow;
 		EditorSceneGraph* sceneGraph;
 		EditorPropertyWindow* propertyWindow;
+		EditorAssetWindow* assetWindow;
 	};
 }

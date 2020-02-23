@@ -20,10 +20,8 @@ namespace Solus
 	private:
 		//static double fixedTimeStep;
 		bool tickDone = false;
-		double lastTickTimeLog;
 		double lastTickTime;
 		double currentTickTime;
-		int frameCount;
 	};
 }
 

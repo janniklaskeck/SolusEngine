@@ -42,9 +42,8 @@ namespace Solus
 		primitiveDrawer = new OpenGLPrimitiveDrawer;
 
 		defaultSurface = new OpenGLSurface;
-		int width, height;
-		gEngine->GetWindow()->GetWindowSize(&width, &height);
-		defaultSurface->Initialize(width, height);
+		Vec2i size = gEngine->GetWindow()->GetWindowSize();
+		defaultSurface->Initialize(size.x, size.y);
 		SetRenderSurface(defaultSurface);
 
 		TextAsset* screenVertexShader = (TextAsset*)gEngine->GetAssetManager()->GetAsset("Shader/ScreenVertexShader.glsl");

@@ -15,12 +15,15 @@ namespace Editor
 	void EditorSceneWindow::Initialize()
 	{
 		sceneCamera = gEngine->GetWorld()->SpawnEntity<Solus::FreeFlyCamera>(Vec3f(0, 0, -5), Vec3f(0, 0, 0));
-		windowFlags = ImGuiWindowFlags_NoCollapse;
+		windowFlags = ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize;
 	}
 
 	void EditorSceneWindow::Render()
 	{
 		auto* renderDevice = gEngine->GetRenderDevice();
+		auto size = gEngine->GetWindow()->GetWindowSize();
+		ImGui::SetNextWindowPos(ImVec2(0, 0));
+		ImGui::SetNextWindowSize(ImVec2(size.x * WINDOW_SCENE_SIZE_X, size.y * WINDOW_SCENE_SIZE_Y));
 		if (ImGui::Begin("Scene", nullptr, windowFlags))
 		{
 			sceneCamera->SetInputEnabled(ImGui::IsWindowFocused() && ImGui::IsMouseDown(1));

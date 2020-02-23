@@ -51,4 +51,9 @@ namespace Solus
 		return dataLength;
 	}
 
+	std::string Asset::GetFileName() const
+	{
+		return path.filename().string();
+	}
+
 }
