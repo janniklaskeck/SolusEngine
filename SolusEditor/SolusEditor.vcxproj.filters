@@ -67,6 +67,9 @@
     <ClCompile Include="Main.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Window\SubWindow\EditorLogWindow.cpp">
+      <Filter>Source\Window\SubWindow</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IMGUI\imconfig.h">
@@ -119,6 +122,9 @@
     </ClInclude>
     <ClInclude Include="EditorInputDevice.h">
       <Filter>Source\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Window\SubWindow\EditorLogWindow.h">
+      <Filter>Source\Window\SubWindow</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

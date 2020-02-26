@@ -45,7 +45,7 @@ namespace Solus
 
 		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 		{
-			gEngine->Log(LogError, "Framebuffer is not complete!");
+			gEngine->Log(LogLevel::LogError, "Framebuffer is not complete!");
 			assert(false);
 		}
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);

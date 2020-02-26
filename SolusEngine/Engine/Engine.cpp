@@ -14,6 +14,8 @@
 #include "Utility/Timer.h"
 #include "Utility/FileUtils.h"
 
+#include "LogListener.h"
+
 #include <iostream>
 #include <cstdarg>
 #include <ctime>
@@ -55,7 +57,7 @@ namespace Solus
 		std::time_t nowTime = std::chrono::system_clock::to_time_t(now);
 		char buffer[64];
 		ctime_s(buffer, 64, &nowTime);
-		gEngine->Log(LogDebug, "Engine initialized at: %s", buffer);
+		gEngine->Log(LogLevel::LogDebug, "Engine initialized at: %s", buffer);
 	}
 
 	Engine::Engine()
@@ -74,7 +76,23 @@ namespace Solus
 		char buf[1024];
 		vsprintf_s(buf, msgFormat, args);
 		printf("[%s] %s \n", LogLevelToChar(level), buf);
+		for (auto* listener : logListeners)
+		{
+			listener->OnLogReceived(level, buf);
+		}
 		va_end(args);
+	}
+
+	void Engine::AddLogListener(LogListener* listener)
+	{
+		// TODO checks
+		logListeners.push_back(listener);
+	}
+
+	void Engine::RemoveLogListener(LogListener* listener)
+	{
+		// TODO checks
+		logListeners.erase(std::find(logListeners.begin(), logListeners.end(), listener));
 	}
 
 	void Engine::Update()
@@ -103,13 +121,13 @@ namespace Solus
 	{
 		switch (level)
 		{
-		case Solus::LogVerbose:
+		case Solus::LogLevel::LogVerbose:
 			return "V";
-		case Solus::LogDebug:
+		case Solus::LogLevel::LogDebug:
 			return "D";
-		case Solus::LogWarning:
+		case Solus::LogLevel::LogWarning:
 			return "W";
-		case Solus::LogError:
+		case Solus::LogLevel::LogError:
 			return "E";
 		default:
 			return "Unknown";

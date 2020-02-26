@@ -284,6 +284,9 @@
     <ClInclude Include="AssetSystem\TextureAsset.h">
       <Filter>Source\AssetManager</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\LogListener.h">
+      <Filter>Source\Engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Resource Files">

@@ -19,7 +19,7 @@ namespace Solus
 		Window::Initialize();
 		if (!glfwInit())
 		{
-			gEngine->Log(LogError, "Could not load glfw!");
+			gEngine->Log(LogLevel::LogError, "Could not load glfw!");
 			assert(false);
 		}
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -31,7 +31,7 @@ namespace Solus
 		if (!window)
 		{
 			glfwTerminate();
-			gEngine->Log(LogError, "Could not create glfw Window!");
+			gEngine->Log(LogLevel::LogError, "Could not create glfw Window!");
 			assert(false);
 		}
 

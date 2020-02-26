@@ -161,7 +161,7 @@ namespace Solus
 												 | aiProcess_Triangulate);
 		if (!scene)
 		{
-			gEngine->Log(LogError, "Could not load OBJ model file: %s", importer.GetErrorString());
+			gEngine->Log(LogLevel::LogError, "Could not load OBJ model file: %s", importer.GetErrorString());
 			return false;
 		}
 		isLoaded = true;

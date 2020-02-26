@@ -110,7 +110,8 @@
     <Link>
       <AdditionalDependencies>glfw3dll.lib;opengl32.lib;SolusEngine.lib;gl3w.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\Libraries\GLFW\lib-vc2017;$(OutDir)</AdditionalLibraryDirectories>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
+      <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
     </Link>
     <PreBuildEvent>
       <Command>py $(SolutionDir)Tools/HeaderTool.py $(SolutionDir) $(ProjectName)</Command>
@@ -167,6 +168,7 @@
     <ClCompile Include="Object\TestEntity.cpp" />
     <ClCompile Include="Window\EditorMainWindow.cpp" />
     <ClCompile Include="Window\SubWindow\EditorAssetWindow.cpp" />
+    <ClCompile Include="Window\SubWindow\EditorLogWindow.cpp" />
     <ClCompile Include="Window\SubWindow\EditorPropertyWindow.cpp" />
     <ClCompile Include="Window\SubWindow\EditorSceneGraph.cpp" />
     <ClCompile Include="Window\SubWindow\EditorSceneWindow.cpp" />
@@ -185,6 +187,7 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Window\EditorMainWindow.h" />
     <ClInclude Include="Window\SubWindow\EditorAssetWindow.h" />
+    <ClInclude Include="Window\SubWindow\EditorLogWindow.h" />
     <ClInclude Include="Window\SubWindow\EditorPropertyWindow.h" />
     <ClInclude Include="Window\SubWindow\EditorSceneGraph.h" />
     <ClInclude Include="Window\SubWindow\EditorSceneWindow.h" />

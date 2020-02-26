@@ -123,7 +123,7 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>NotSet</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>glfw3dll.lib;opengl32.lib;gl3w.lib;assimp-vc142-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
@@ -193,6 +193,7 @@ xcopy /y $(SolutionDir)Libraries\assimp\lib\assimp-vc142-mt.dll  $(OutDir)</Comm
     <ClInclude Include="AssetSystem\TextAsset.h" />
     <ClInclude Include="AssetSystem\TextureAsset.h" />
     <ClInclude Include="Engine\Engine.h" />
+    <ClInclude Include="Engine\LogListener.h" />
     <ClInclude Include="Engine\SolusEngine.h" />
     <ClInclude Include="Input\InputDevice.h" />
     <ClInclude Include="Input\InputListener.h" />

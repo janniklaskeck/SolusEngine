@@ -7,13 +7,19 @@ namespace Editor
 	{
 	public:
 		virtual void Initialize() = 0;
+		virtual void Update(float deltaTime)
+		{}
 		virtual void Render() = 0;
 
-		virtual void OnFocusReceived() = 0;
-		virtual void OnFocusLost() = 0;
+		virtual void OnFocusReceived()
+		{};
+		virtual void OnFocusLost()
+		{};
 
-		virtual void OnMinimized() = 0;
-		virtual void OnMaximized() = 0;
+		virtual void OnMinimized()
+		{};
+		virtual void OnMaximized()
+		{};
 
 	protected:
 		unsigned int windowFlags = 0;

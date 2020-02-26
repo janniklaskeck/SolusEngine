@@ -12,11 +12,12 @@
 #include "Input/InputDevice.h"
 
 #include <cstdint>
+#include <vector>
 
 namespace Solus
 {
 
-	enum LogLevel : uint8_t
+	enum class LogLevel : uint8_t
 	{
 		LogVerbose = 0,
 		LogDebug,
@@ -28,6 +29,7 @@ namespace Solus
 	class Camera;
 	class Timer;
 	class World;
+	class LogListener;
 
 	void SOLUS_API InitializeEngine(Window* window);
 
@@ -42,7 +44,8 @@ namespace Solus
 		virtual void Destroy() override;
 
 		void Log(LogLevel level, const char* msgFormat, ...);
-
+		void AddLogListener(LogListener* listener);
+		void RemoveLogListener(LogListener* listener);
 
 		void Render();
 
@@ -82,6 +85,7 @@ namespace Solus
 
 	private:
 		int tickCounter = 0;
+		std::vector<LogListener*> logListeners;
 	};
 
 	extern SOLUS_API Engine* gEngine;

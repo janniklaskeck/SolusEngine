@@ -5,6 +5,7 @@
 #include "SubWindow/EditorSceneGraph.h"
 #include "SubWindow/EditorPropertyWindow.h"
 #include "SubWindow/EditorAssetWindow.h"
+#include "SubWindow/EditorLogWindow.h"
 
 #include "Input/InputDevice.h"
 
@@ -58,17 +59,16 @@ namespace Editor
 		ImGui_ImplGlfw_InitForOpenGL(window, true);
 		ImGui_ImplOpenGL3_Init("#version 460 core");
 
-		sceneWindow = new EditorSceneWindow;
-		sceneWindow->Initialize();
+		subWindows.push_back(sceneWindow = new EditorSceneWindow);
+		subWindows.push_back(sceneGraph = new EditorSceneGraph);
+		subWindows.push_back(propertyWindow = new EditorPropertyWindow);
+		subWindows.push_back(assetWindow = new EditorAssetWindow);
+		subWindows.push_back(logWindow = new EditorLogWindow);
 
-		sceneGraph = new EditorSceneGraph;
-		sceneGraph->Initialize();
-
-		propertyWindow = new EditorPropertyWindow;
-		propertyWindow->Initialize();
-
-		assetWindow = new EditorAssetWindow;
-		assetWindow->Initialize();
+		for (auto* subWindow : subWindows)
+		{
+			subWindow->Initialize();
+		}
 
 		windowFlags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
 		windowFlags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
@@ -111,10 +111,10 @@ namespace Editor
 
 		ImGui::ShowDemoWindow();
 
-		sceneWindow->Render();
-		sceneGraph->Render();
-		propertyWindow->Render();
-		assetWindow->Render();
+		for (auto* subWindow : subWindows)
+		{
+			subWindow->Render();
+		}
 
 		RenderUI();
 		ImGui::End();

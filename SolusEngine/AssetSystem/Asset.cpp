@@ -23,7 +23,7 @@ namespace Solus
 	{
 		if (dataPtr)
 		{
-			gEngine->Log(LogWarning, "Trying to load loaded Asset: %s", GetFilePath().c_str());
+			gEngine->Log(LogLevel::LogWarning, "Trying to load loaded Asset: %s", GetFilePath().string().c_str());
 			return;
 		}
 		dataPtr = FileUtils::ReadFileRaw(GetFilePath().c_str(), dataLength);

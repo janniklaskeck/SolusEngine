@@ -20,7 +20,7 @@ namespace Solus
 	void APIENTRY GLErrorCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam)
 	{
 		if (type == GL_DEBUG_TYPE_ERROR)
-			gEngine->Log(LogError, "GL ERROR: severity = 0x%x, message = %s", severity, message);
+			gEngine->Log(LogLevel::LogError, "GL ERROR: severity = 0x%x, message = %s", severity, message);
 	}
 
 	void OpenGLDevice::Initialize()
