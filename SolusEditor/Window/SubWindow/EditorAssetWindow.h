@@ -3,6 +3,7 @@
 #include "SubWindow.h"
 
 #include "Render/FreeFlyCamera.h"
+#include "AssetSystem/FolderAssetSource.h"
 
 namespace Editor
 {
@@ -19,6 +20,14 @@ namespace Editor
 		virtual void OnMaximized() override;
 		// <--
 
+	private:
+		void TreeDisplayFolder(Solus::AssetFolder* folder);
+
+		void RenderFiles();
+
+		void SetClickedFolder(Solus::AssetFolder* folder);
+
+		Solus::AssetFolder* clickedFolder;
 	};
 
 }

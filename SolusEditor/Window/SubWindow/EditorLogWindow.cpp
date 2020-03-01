@@ -35,7 +35,7 @@ void Editor::EditorLogWindow::Render()
 	Filter.Draw("Filter", -100.0f);
 
 	ImGui::Separator();
-	ImGui::BeginChild("scrolling", ImVec2(0, 0), false, ImGuiWindowFlags_HorizontalScrollbar);
+	ImGui::BeginChild("scrolling", ImVec2(0, ImGui::GetWindowHeight() - 100), false, ImGuiWindowFlags_HorizontalScrollbar);
 
 	if (clear)
 		Clear();
@@ -61,15 +61,15 @@ void Editor::EditorLogWindow::Render()
 	}
 	else
 	{
-		// The simplest and easy way to display the entire buffer:
-		//   ImGui::TextUnformatted(buf_begin, buf_end);
-		// And it'll just work. TextUnformatted() has specialization for large blob of text and will fast-forward to skip non-visible lines.
-		// Here we instead demonstrate using the clipper to only process lines that are within the visible area.
-		// If you have tens of thousands of items and their processing cost is non-negligible, coarse clipping them on your side is recommended.
-		// Using ImGuiListClipper requires A) random access into your data, and B) items all being the  same height,
-		// both of which we can handle since we an array pointing to the beginning of each line of text.
-		// When using the filter (in the block of code above) we don't have random access into the data to display anymore, which is why we don't use the clipper.
-		// Storing or skimming through the search result would make it possible (and would be recommended if you want to search through tens of thousands of entries)
+		/* The simplest and easy way to display the entire buffer:
+		   ImGui::TextUnformatted(buf_begin, buf_end);
+		 And it'll just work. TextUnformatted() has specialization for large blob of text and will fast-forward to skip non-visible lines.
+		 Here we instead demonstrate using the clipper to only process lines that are within the visible area.
+		 If you have tens of thousands of items and their processing cost is non-negligible, coarse clipping them on your side is recommended.
+		 Using ImGuiListClipper requires A) random access into your data, and B) items all being the  same height,
+		 both of which we can handle since we an array pointing to the beginning of each line of text.
+		 When using the filter (in the block of code above) we don't have random access into the data to display anymore, which is why we don't use the clipper.
+		 Storing or skimming through the search result would make it possible (and would be recommended if you want to search through tens of thousands of entries)*/
 		ImGuiListClipper clipper;
 		clipper.Begin(LineOffsets.Size);
 		while (clipper.Step())
@@ -89,6 +89,8 @@ void Editor::EditorLogWindow::Render()
 		ImGui::SetScrollHereY(1.0f);
 
 	ImGui::EndChild();
+	static std::string buffer;
+	ImGui::InputText("Command", buffer.data(), 1024);
 	ImGui::End();
 }
 

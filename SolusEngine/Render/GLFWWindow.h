@@ -45,6 +45,9 @@ namespace Solus
 	protected:
 		GLFWwindow* window = nullptr;
 
+		int width = 1280;
+		int height = 720;
+		std::string title = "SolusEngine";
 
 	};
 

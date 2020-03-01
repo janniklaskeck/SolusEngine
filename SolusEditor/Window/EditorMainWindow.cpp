@@ -32,6 +32,9 @@ namespace Editor
 {
 	void EditorMainWindow::Initialize()
 	{
+		width = 1600;
+		height = 900;
+		title = "SolusEngine Editor";
 		GLFWWindow::Initialize();
 		isEditorWindow = true;
 		gEngine->RegisterInputDevice(new EditorInputDevice);
@@ -73,6 +76,8 @@ namespace Editor
 		windowFlags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
 		windowFlags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
 		windowFlags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
+
+		gEngine->GetAssetManager()->AddSource(new FolderAssetSource("Editor"));
 	}
 
 	void EditorMainWindow::Update()

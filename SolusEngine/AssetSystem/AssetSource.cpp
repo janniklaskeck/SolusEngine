@@ -2,6 +2,7 @@
 #include "TextAsset.h"
 #include "MeshAsset.h"
 #include "TextureAsset.h"
+#include "Engine/Engine.h"
 
 #include <filesystem>
 
@@ -10,7 +11,8 @@ namespace Solus
 
 	AssetSource::AssetSource(std::string root)
 	{
-		this->root = std::filesystem::absolute(root);
+		auto assetSourceRoot = gEngine->GetAssetManager()->GetEngineAssetRoot() + "/" + root;
+		this->root = std::filesystem::absolute(assetSourceRoot);
 		// Text files
 		extensionTypeMap[".txt"] = AssetType::AT_TEXT;
 		extensionTypeMap[".glsl"] = AssetType::AT_TEXT;

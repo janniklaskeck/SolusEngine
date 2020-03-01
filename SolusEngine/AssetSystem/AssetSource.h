@@ -29,6 +29,11 @@ namespace Solus
 
 		std::unordered_map<std::string, Asset*>::const_iterator EndIter() const;
 
+		std::string GetRootPath() const
+		{
+			return root.string();
+		}
+
 	protected:
 		std::filesystem::path root;
 

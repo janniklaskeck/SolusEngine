@@ -26,7 +26,21 @@ namespace Solus
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-		window = glfwCreateWindow(1280, 720, "SolusEngine Editor", nullptr, nullptr);
+
+
+		window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
+		auto primaryMonitor = glfwGetPrimaryMonitor();
+		auto mode = glfwGetVideoMode(primaryMonitor);
+		if (mode)
+		{
+			int monitorX, monitorY;
+			glfwGetMonitorPos(primaryMonitor, &monitorX, &monitorY);
+
+			int windowWidth, windowHeight;
+			glfwGetWindowSize(window, &windowWidth, &windowHeight);
+
+			glfwSetWindowPos(window, monitorX + (mode->width - windowWidth) / 2, monitorY + (mode->height - windowHeight) / 2);
+		}
 
 		if (!window)
 		{

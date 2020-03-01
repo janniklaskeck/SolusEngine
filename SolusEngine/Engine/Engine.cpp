@@ -36,18 +36,17 @@ namespace Solus
 
 	void Engine::Initialize()
 	{
+		// Add Engine assets
+		assetManager = new AssetManager;
+		assetManager->Initialize();
+		auto engineAssetRoot = FileUtils::GetCurrentFolder() + "/../Assets";
+		gEngine->GetAssetManager()->SetEngineAssetRoot(engineAssetRoot);
+
 		world = new World;
 		window->Initialize();
 
 		mainTimer = new Timer;
-		mainTimer->Initialize();
-
-		assetManager = new AssetManager;
-		assetManager->Initialize();
-		// Add Engine assets
-		auto cwd = FileUtils::GetCurrentFolder();
-		FolderAssetSource* baseAssetFolder = new FolderAssetSource(cwd + "/../Assets");
-		gEngine->GetAssetManager()->AddSource(baseAssetFolder);
+		mainTimer->Initialize();		
 
 		renderDevice = new OpenGLDevice;
 		renderDevice->Initialize();

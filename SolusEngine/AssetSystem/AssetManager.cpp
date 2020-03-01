@@ -27,6 +27,16 @@ namespace Solus
 		sources.push_back(source);
 	}
 
+	std::string AssetManager::GetEngineAssetRoot() const
+	{
+		return engineAssetRoot;
+	}
+
+	void AssetManager::SetEngineAssetRoot(std::string& engineAssetRoot)
+	{
+		this->engineAssetRoot = std::string(engineAssetRoot);
+	}
+
 	Asset* Solus::AssetManager::GetAsset(std::string path)
 	{
 		for (auto* source : sources)

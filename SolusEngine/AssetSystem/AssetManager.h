@@ -20,6 +20,8 @@ namespace Solus
 		virtual void Destroy() override;
 
 		void AddSource(AssetSource* source);
+		std::string GetEngineAssetRoot() const;
+		void SetEngineAssetRoot(std::string& engineAssetRoot);
 
 		Asset* GetAsset(std::string path);
 		Asset* GetAsset(const char* path);
@@ -28,6 +30,8 @@ namespace Solus
 		AssetSource* GetAssetSource(size_t index) const;
 
 	private:
+		std::string engineAssetRoot;
+
 		std::vector<AssetSource*> sources;
 	};
 
