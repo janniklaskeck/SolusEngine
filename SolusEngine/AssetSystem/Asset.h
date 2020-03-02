@@ -38,7 +38,9 @@ namespace Solus
 		uintmax_t GetDataSize() const;
 
 		std::filesystem::path GetFilePath() const;
-		std::string GetFileName() const;
+		std::string GetFileName(bool removeExtension = false) const;
+
+		std::string GetFileType() const;
 	protected:
 		std::filesystem::path path;
 		AssetType type;

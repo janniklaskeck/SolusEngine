@@ -3,6 +3,7 @@
 #include "Engine/Engine.h"
 #include "Object/World.h"
 #include "AssetSystem/AssetManager.h"
+#include "Utils/UIUtils.h"
 
 #include "IMGUI/imgui.h"
 
@@ -21,7 +22,10 @@ namespace Editor
 	{
 		if (ImGui::Begin("Assets", nullptr, windowFlags))
 		{
-			ImGui::BeginChild("FolderChild", ImVec2(ImGui::GetWindowContentRegionWidth() * 0.2f, ImGui::GetWindowHeight() - 35), true);
+			int folderTreeWidth = ImGui::GetWindowContentRegionWidth() * 0.2f;
+			if (folderTreeWidth < 200)
+				folderTreeWidth = 200;
+			ImGui::BeginChild("FolderChild", ImVec2(folderTreeWidth, ImGui::GetWindowHeight() - 35), true);
 			ImGui::Text("Folders");
 
 			auto source = gEngine->GetAssetManager()->GetAssetSource(0);
@@ -29,9 +33,9 @@ namespace Editor
 			auto folders = folderSource->GetFolders();
 
 			ImGui::SetNextItemOpen(true, ImGuiCond_Once);
-			
+
 			TreeDisplayFolder(folders);
-			
+
 			ImGui::EndChild();
 
 			ImGui::SameLine();
@@ -56,6 +60,8 @@ namespace Editor
 
 	void EditorAssetWindow::TreeDisplayFolder(AssetFolder* folder)
 	{
+		if (!folder)
+			return;
 		bool isLeafFolder = folder->childFolders.size() == 0;
 		ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanAvailWidth;
 		std::string folderName = folder->folderName;
@@ -114,42 +120,38 @@ namespace Editor
 						auto* asset = manager->GetAsset(relativePath.string());
 						if (asset)
 						{
-							ImGui::Button(asset->GetFileName().c_str(), buttonSize);
-							if (ImGui::IsItemHovered())
-								ImGui::SetTooltip(asset->GetFileName().c_str());
-							ImGui::SameLine();
+							RenderFile(asset);
 						}
 					}
 				}
 			}
-
-			/*for (size_t i = 0; i < manager->GetNumSources(); i++)
-			{
-				auto* assetSource = manager->GetAssetSource(i);
-				auto iter = assetSource->BeginIter();
-				int count = 0;
-				while (iter != assetSource->EndIter())
-				{
-					Asset* asset = iter->second;
-					ImGui::Button(asset->GetFileName().c_str(), buttonSize);
-					if (ImGui::IsItemHovered())
-						ImGui::SetTooltip(asset->GetFileName().c_str());
-					if (count < 6)
-					{
-						ImGui::SameLine();
-						count++;
-					}
-					else
-						count = 0;
-					iter++;
-				}
-			}*/
 		}
+	}
+
+	void EditorAssetWindow::RenderFile(Solus::Asset* asset)
+	{
+		ImGui::Selectable(asset->GetFileName(true).c_str(), asset == clickedAsset);
+		if (ImGui::IsItemClicked())
+		{
+			if (clickedAsset != asset)
+				SetClickedAsset(asset);
+		}
+		ImGui::SameLine(250);
+		ImGui::Text(asset->GetFileType().c_str());
+		ImGui::SameLine(300);
+		auto sizeString = UIUtils::ConvertSizeToString(asset->GetDataSize());
+		ImGui::Text(sizeString.c_str());
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip(asset->GetFileName().c_str());
 	}
 
 	void EditorAssetWindow::SetClickedFolder(Solus::AssetFolder* folder)
 	{
 		clickedFolder = folder;
-		gEngine->Log(LogLevel::LogDebug, "%s", folder->folderName.c_str());
+	}
+	
+	void EditorAssetWindow::SetClickedAsset(Solus::Asset* asset)
+	{
+		clickedAsset = asset;
 	}
 }

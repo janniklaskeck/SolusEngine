@@ -166,6 +166,7 @@
     <ClCompile Include="IMGUI\imgui_widgets.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Object\TestEntity.cpp" />
+    <ClCompile Include="Utils\UIUtils.cpp" />
     <ClCompile Include="Window\EditorMainWindow.cpp" />
     <ClCompile Include="Window\SubWindow\EditorAssetWindow.cpp" />
     <ClCompile Include="Window\SubWindow\EditorLogWindow.cpp" />
@@ -185,6 +186,7 @@
     <ClInclude Include="IMGUI\imstb_truetype.h" />
     <ClInclude Include="Object\TestEntity.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Utils\UIUtils.h" />
     <ClInclude Include="Window\EditorMainWindow.h" />
     <ClInclude Include="Window\SubWindow\EditorAssetWindow.h" />
     <ClInclude Include="Window\SubWindow\EditorLogWindow.h" />

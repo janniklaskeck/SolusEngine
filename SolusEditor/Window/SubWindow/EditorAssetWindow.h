@@ -7,6 +7,7 @@
 
 namespace Editor
 {
+	class Solus::Asset;
 
 	class EditorAssetWindow : public SubWindow
 	{
@@ -24,10 +25,13 @@ namespace Editor
 		void TreeDisplayFolder(Solus::AssetFolder* folder);
 
 		void RenderFiles();
+		void RenderFile(Solus::Asset* asset);
 
 		void SetClickedFolder(Solus::AssetFolder* folder);
+		void SetClickedAsset(Solus::Asset* asset);
 
 		Solus::AssetFolder* clickedFolder;
+		Solus::Asset* clickedAsset;
 	};
 
 }

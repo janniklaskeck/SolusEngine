@@ -51,9 +51,20 @@ namespace Solus
 		return dataLength;
 	}
 
-	std::string Asset::GetFileName() const
+	std::string Asset::GetFileName(bool removeExtension /*= false*/) const
 	{
+		if (removeExtension)
+		{
+			return path.stem().string();
+		}
 		return path.filename().string();
+	}
+
+	std::string Asset::GetFileType() const
+	{
+		std::string fileType = path.filename().extension().string();
+		ToLower(fileType);
+		return fileType;
 	}
 
 }

@@ -23,6 +23,9 @@
     <Filter Include="Source\Window\SubWindow">
       <UniqueIdentifier>{7ea1fa65-58ad-43d5-bbeb-fff4228333d5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Utils">
+      <UniqueIdentifier>{ea1135fe-a05f-4b22-89b3-7e83c321e749}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EditorInputDevice.cpp">
@@ -69,6 +72,9 @@
     </ClCompile>
     <ClCompile Include="Window\SubWindow\EditorLogWindow.cpp">
       <Filter>Source\Window\SubWindow</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\UIUtils.cpp">
+      <Filter>Source\Utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -125,6 +131,9 @@
     </ClInclude>
     <ClInclude Include="Window\SubWindow\EditorLogWindow.h">
       <Filter>Source\Window\SubWindow</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\UIUtils.h">
+      <Filter>Source\Utils</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
