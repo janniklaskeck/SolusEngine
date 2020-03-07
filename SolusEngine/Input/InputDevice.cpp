@@ -27,8 +27,8 @@ namespace Solus
 		gEngine->GetWindow()->GetCursorPos(&xPos, &yPos);
 		previousMouseXPos = mouseXPos;
 		previousMouseYPos = mouseYPos;
-		mouseXPos = xPos;
-		mouseYPos = yPos;
+		mouseXPos = (float)xPos;
+		mouseYPos = (float)yPos;
 	}
 
 	void InputDevice::Destroy()
@@ -83,7 +83,7 @@ namespace Solus
 
 	void InputDevice::MouseScrollEventUpdate(double xOffset, double yOffset)
 	{
-		scrollXOffset = xOffset;
-		scrollYOffset = yOffset;
+		scrollXOffset = (float)xOffset;
+		scrollYOffset = (float)yOffset;
 	}
 }

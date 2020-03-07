@@ -1,6 +1,7 @@
 #include "World.h"
 
 #include "Entity.h"
+#include "Component/MeshComponent.h"
 
 namespace Solus
 {
@@ -14,8 +15,7 @@ namespace Solus
 	{
 		for (auto it = globalEntities->begin(); it != globalEntities->end(); it++)
 		{
-			auto entry = *it;
-			delete entry.second;
+			delete it->second;
 		}
 	}
 
@@ -23,6 +23,7 @@ namespace Solus
 	{
 		if (entity)
 		{
+			entity->EndPlay();
 			globalEntities->erase(entity->GetId());
 			delete entity;
 			return true;
@@ -69,7 +70,11 @@ namespace Solus
 	{
 		for (auto it = globalEntities->begin(); it != globalEntities->end(); it++)
 		{
-			it->second->Render();
+			auto* meshComponent = it->second->GetComponent<MeshComponent>();
+			if (meshComponent)
+			{
+				meshComponent->Render();
+			}
 		}
 	}
 

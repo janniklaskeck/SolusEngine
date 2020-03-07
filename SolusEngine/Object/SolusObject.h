@@ -17,5 +17,8 @@ namespace Solus
 		virtual void BeginPlay();
 		virtual void Update(float deltaTime);
 		virtual void EndPlay();
+
+	protected:
+		bool hasBegunPlay = false;
 	};
 }

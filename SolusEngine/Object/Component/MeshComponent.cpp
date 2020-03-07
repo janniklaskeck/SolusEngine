@@ -4,14 +4,20 @@
 
 namespace Solus
 {
+	SCLASS_IMPL(MeshComponent);
+
 	void MeshComponent::BeginPlay()
 	{
-		
 	}
 
 	void MeshComponent::Update(float deltaTime)
 	{
 		
+	}
+
+	void MeshComponent::Render()
+	{
+		renderMesh->Render();
 	}
 
 	void MeshComponent::EndPlay()
@@ -22,6 +28,7 @@ namespace Solus
 	void MeshComponent::SetMesh(MeshAsset* meshAsset)
 	{
 		this->meshAsset = meshAsset;
-		this->renderMesh = gEngine->GetRenderDevice()->CreateMesh(meshAsset);
+		renderMesh = gEngine->GetRenderDevice()->CreateMesh(meshAsset);
+		renderMesh->owner = parent;
 	}
 }

@@ -24,9 +24,9 @@ namespace Solus
 			virtual void* GetValuePtr(void* object) = 0;
 		};
 
-		size_t id;
-		const char* name;
-		size_t size;
+		size_t id = 0;
+		const char* name = nullptr;
+		size_t size = 0;
 
 		std::vector<ClassMetaData*> parents;
 		

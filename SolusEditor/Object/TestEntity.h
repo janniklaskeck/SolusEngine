@@ -9,7 +9,8 @@ namespace Editor
 	class TestEntity : public Solus::Entity
 	{
 	public:
-		TestEntity(Solus::MeshAsset* mesh);
+		TestEntity();
+		virtual void BeginPlay() override;
 
 	private:
 		Solus::MeshComponent* meshComponent;

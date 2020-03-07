@@ -35,7 +35,7 @@ namespace Solus
 		virtual void Unload();
 
 		void* GetRawData() const;
-		uintmax_t GetDataSize() const;
+		uintmax_t GetDataSize(bool readFromFile = false) const;
 
 		std::filesystem::path GetFilePath() const;
 		std::string GetFileName(bool removeExtension = false) const;

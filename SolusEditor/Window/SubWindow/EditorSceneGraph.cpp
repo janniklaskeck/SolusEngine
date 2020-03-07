@@ -5,6 +5,8 @@
 
 #include "Render/RenderDevice.h"
 
+#include "Object/TestEntity.h"
+
 #include "IMGUI/imgui.h"
 
 #include <algorithm>
@@ -30,7 +32,7 @@ namespace Editor
 				auto* info = Solus::ClassMetaData::Get(entity->GetClassId());
 				char name[128];
 				sprintf_s(name, "%s", info->name);
-				ImGui::PushID(entity->GetId());
+				ImGui::PushID((int)entity->GetId());
 				if (ImGui::Selectable(name, selected == i))
 				{
 					selected = i;
@@ -38,6 +40,10 @@ namespace Editor
 				}
 				ImGui::PopID();
 			}
+		}
+		if (ImGui::Button("Test"))
+		{
+			gEngine->GetWorld()->SpawnEntity<TestEntity>();
 		}
 		ImGui::End();
 	}

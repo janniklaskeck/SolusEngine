@@ -18,15 +18,11 @@ namespace Solus
 
 		Entity(Vec3f initialPosition = Vec3f(), Vec3f initalRotation = Vec3f());
 		virtual ~Entity();
-
-		void TEMP();
-
+		
 		void AttachComponent(SComponent* component);
 		virtual void BeginPlay() override;
 		virtual void Update(float deltaTime) override;
 		virtual void EndPlay() override;
-
-		virtual bool Render();
 
 		uint64_t GetId() const
 		{
@@ -50,13 +46,24 @@ namespace Solus
 
 		Mat4f GetTransform() const;
 
+		template<typename T>
+		T* GetComponent() const
+		{
+			for (SComponent* component : components)
+			{
+				auto id = typeid(T).hash_code();
+				if (component->GetClassId() == id)
+					return (T*)component;
+			}
+			return nullptr;
+		}
+
 	protected:
 		std::vector<SComponent*> components;
 
 		SPROPERTY();
 		uint64_t entityId;
 
-		class RenderMesh* mesh;
 		Mat4f mTransform;
 
 		SPROPERTY();

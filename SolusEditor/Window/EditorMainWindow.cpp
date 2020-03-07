@@ -82,19 +82,7 @@ namespace Editor
 
 	void EditorMainWindow::Update()
 	{
-		if (!firstRun)
-		{
-			gEngine->GetRenderDevice()->SetShouldRenderScene(false);
-			
-			auto* entity = gEngine->GetWorld()->SpawnEntity<Entity>(Vec3f(0, 0, 0), Vec3f(0, 0, 0));
-			entity->TEMP();
-
-			entity = gEngine->GetWorld()->SpawnEntity<Entity>(Vec3f(5, 2, 0), Vec3f(0, 0, 0));
-			entity->TEMP();
-
-			firstRun = true;
-		}
-
+		gEngine->GetRenderDevice()->SetShouldRenderScene(false);
 		propertyWindow->SetEntity(sceneGraph->GetSelectedEntity());
 	}
 
@@ -141,7 +129,6 @@ namespace Editor
 		ImGui_ImplGlfw_Shutdown();
 		ImGui::DestroyContext();
 		GLFWWindow::Destroy();
-
 	}
 	
 	void EditorMainWindow::RenderDockspace()

@@ -29,7 +29,7 @@ namespace Solus
 		glDebugMessageCallback(GLErrorCallback, 0);
 
 		glEnable(GL_CULL_FACE);
-		glClearColor(0.f, 0.f, 4.f, 0.f);
+		glClearColor(0.f, 0.f, 1.f, 0.f);
 
 		// Enable depth test
 		glEnable(GL_DEPTH_TEST);
@@ -91,7 +91,8 @@ namespace Solus
 	void OpenGLDevice::PostRenderScene()
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-		glViewport(0, 0, 1280, 720);
+		Vec2i size = gEngine->GetWindow()->GetWindowSize();
+		glViewport(0, 0, size.x, size.y);
 		glDisable(GL_DEPTH_TEST);
 		glClearColor(0.f, 0.f, 0.f, 0.f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

@@ -46,9 +46,12 @@ namespace Solus
 		return dataPtr;
 	}
 
-	uintmax_t Asset::GetDataSize() const
+	uintmax_t Asset::GetDataSize(bool readFromFile /*= false*/) const
 	{
-		return dataLength;
+		if (readFromFile)
+			return std::filesystem::file_size(path);
+		else
+			return dataLength;
 	}
 
 	std::string Asset::GetFileName(bool removeExtension /*= false*/) const

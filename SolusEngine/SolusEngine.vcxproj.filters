@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <ItemGroup>
-    <ClCompile Include="AssetSystem\Asset.cpp">
-      <Filter>Source\AssetManager</Filter>
-    </ClCompile>
     <ClCompile Include="AssetSystem\AssetManager.cpp">
       <Filter>Source\AssetManager</Filter>
     </ClCompile>
@@ -85,15 +82,6 @@
     <ClCompile Include="Utility\Timer.cpp">
       <Filter>Source\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="AssetSystem\TextAsset.cpp">
-      <Filter>Source\AssetManager</Filter>
-    </ClCompile>
-    <ClCompile Include="AssetSystem\TextureAsset.cpp">
-      <Filter>Source\AssetManager</Filter>
-    </ClCompile>
-    <ClCompile Include="AssetSystem\MeshAsset.cpp">
-      <Filter>Source\AssetManager</Filter>
-    </ClCompile>
     <ClCompile Include="Object\Level.cpp">
       <Filter>Source\Object</Filter>
     </ClCompile>
@@ -130,7 +118,22 @@
     <ClCompile Include="Object\Component\MeshComponent.cpp">
       <Filter>Source\Object\Component</Filter>
     </ClCompile>
-  </ItemGroup>
+    <ClCompile Include="AssetSystem\Asset.cpp">
+      <Filter>Source\AssetManager\Assets</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetSystem\MeshAsset.cpp">
+      <Filter>Source\AssetManager\Assets</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetSystem\TextAsset.cpp">
+      <Filter>Source\AssetManager\Assets</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetSystem\TextureAsset.cpp">
+      <Filter>Source\AssetManager\Assets</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetSystem\PrefabAsset.cpp">
+      <Filter>Source\AssetManager\Assets</Filter>
+    </ClCompile>
+  <ClCompile Include="..\intermediates\generated\SComponent.generated.cpp"><Filter>Generated</Filter></ClCompile><ClCompile Include="..\intermediates\generated\MeshComponent.generated.cpp"><Filter>Generated</Filter></ClCompile></ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
     <ClInclude Include="targetver.h" />
@@ -260,9 +263,6 @@
     <ClInclude Include="SubSystem.h">
       <Filter>Source\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="AssetSystem\Asset.h">
-      <Filter>Source\AssetManager</Filter>
-    </ClInclude>
     <ClInclude Include="AssetSystem\AssetManager.h">
       <Filter>Source\AssetManager</Filter>
     </ClInclude>
@@ -275,19 +275,25 @@
     <ClInclude Include="AssetSystem\FolderAssetSource.h">
       <Filter>Source\AssetManager</Filter>
     </ClInclude>
-    <ClInclude Include="AssetSystem\MeshAsset.h">
-      <Filter>Source\AssetManager</Filter>
-    </ClInclude>
-    <ClInclude Include="AssetSystem\TextAsset.h">
-      <Filter>Source\AssetManager</Filter>
-    </ClInclude>
-    <ClInclude Include="AssetSystem\TextureAsset.h">
-      <Filter>Source\AssetManager</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\LogListener.h">
       <Filter>Source\Engine</Filter>
     </ClInclude>
-  </ItemGroup>
+    <ClInclude Include="AssetSystem\Asset.h">
+      <Filter>Source\AssetManager\Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetSystem\MeshAsset.h">
+      <Filter>Source\AssetManager\Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetSystem\TextAsset.h">
+      <Filter>Source\AssetManager\Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetSystem\TextureAsset.h">
+      <Filter>Source\AssetManager\Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetSystem\PrefabAsset.h">
+      <Filter>Source\AssetManager\Assets</Filter>
+    </ClInclude>
+  <ClInclude Include="..\intermediates\generated\SComponent.generated.h"><Filter>Generated</Filter></ClInclude><ClInclude Include="..\intermediates\generated\MeshComponent.generated.h"><Filter>Generated</Filter></ClInclude></ItemGroup>
   <ItemGroup>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{30caf233-bccc-4bd1-aa21-a3af5a62987d}</UniqueIdentifier>
@@ -324,6 +330,9 @@
     </Filter>
     <Filter Include="Source\Utility">
       <UniqueIdentifier>{749745a2-b94e-47fa-b67f-680f2653312861}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\AssetManager\Assets">
+      <UniqueIdentifier>{3786050e-702e-47ec-a38d-e952f7cd6fc4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

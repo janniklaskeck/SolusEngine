@@ -98,7 +98,7 @@ namespace Solus
 	{
 		mainTimer->Update();
 		GetInputDevice()->Update();
-		GetWorld()->Update(mainTimer->GetDeltaTime());
+		GetWorld()->Update((float)mainTimer->GetDeltaTime());
 		GetWindow()->Update();
 	}
 

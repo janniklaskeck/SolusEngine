@@ -190,6 +190,7 @@ xcopy /y $(SolutionDir)Libraries\assimp\lib\assimp-vc142-mt.dll  $(OutDir)</Comm
     <ClInclude Include="AssetSystem\AssetSource.h" />
     <ClInclude Include="AssetSystem\FolderAssetSource.h" />
     <ClInclude Include="AssetSystem\MeshAsset.h" />
+    <ClInclude Include="AssetSystem\PrefabAsset.h" />
     <ClInclude Include="AssetSystem\TextAsset.h" />
     <ClInclude Include="AssetSystem\TextureAsset.h" />
     <ClInclude Include="Engine\Engine.h" />
@@ -237,7 +238,7 @@ xcopy /y $(SolutionDir)Libraries\assimp\lib\assimp-vc142-mt.dll  $(OutDir)</Comm
     <ClInclude Include="..\intermediates\generated\Camera.generated.h" />
     <ClInclude Include="..\intermediates\generated\FreeFlyCamera.generated.h" />
     <ClInclude Include="..\intermediates\generated\SolusEngine.generated.h" />
-  </ItemGroup>
+  <ClInclude Include="..\intermediates\generated\SComponent.generated.h" /><ClInclude Include="..\intermediates\generated\MeshComponent.generated.h" /></ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssetSystem\Asset.cpp" />
     <ClCompile Include="AssetSystem\AssetManager.cpp" />
@@ -245,6 +246,7 @@ xcopy /y $(SolutionDir)Libraries\assimp\lib\assimp-vc142-mt.dll  $(OutDir)</Comm
     <ClCompile Include="AssetSystem\AssetSource.cpp" />
     <ClCompile Include="AssetSystem\FolderAssetSource.cpp" />
     <ClCompile Include="AssetSystem\MeshAsset.cpp" />
+    <ClCompile Include="AssetSystem\PrefabAsset.cpp" />
     <ClCompile Include="AssetSystem\TextAsset.cpp" />
     <ClCompile Include="AssetSystem\TextureAsset.cpp" />
     <ClCompile Include="Engine\Engine.cpp" />
@@ -282,7 +284,7 @@ xcopy /y $(SolutionDir)Libraries\assimp\lib\assimp-vc142-mt.dll  $(OutDir)</Comm
     <ClCompile Include="..\intermediates\generated\SolusObject.generated.cpp" />
     <ClCompile Include="..\intermediates\generated\Camera.generated.cpp" />
     <ClCompile Include="..\intermediates\generated\FreeFlyCamera.generated.cpp" />
-  </ItemGroup>
+  <ClCompile Include="..\intermediates\generated\SComponent.generated.cpp" /><ClCompile Include="..\intermediates\generated\MeshComponent.generated.cpp" /></ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\gl3w\gl3w.vcxproj">
       <Project>{efe5400e-9531-43ea-9822-4796faed73e0}</Project>

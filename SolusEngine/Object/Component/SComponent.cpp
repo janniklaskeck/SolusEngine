@@ -4,8 +4,11 @@
 
 namespace Solus
 {
+	SCLASS_IMPL(SComponent);
+
 	void SComponent::Attach(Entity* parent)
 	{
 		this->parent = parent;
+		BeginPlay();
 	}
 }

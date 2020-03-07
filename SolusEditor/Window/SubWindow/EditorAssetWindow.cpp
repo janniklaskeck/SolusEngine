@@ -22,10 +22,10 @@ namespace Editor
 	{
 		if (ImGui::Begin("Assets", nullptr, windowFlags))
 		{
-			int folderTreeWidth = ImGui::GetWindowContentRegionWidth() * 0.2f;
+			int folderTreeWidth = (int)(ImGui::GetWindowContentRegionWidth() * 0.2f);
 			if (folderTreeWidth < 200)
 				folderTreeWidth = 200;
-			ImGui::BeginChild("FolderChild", ImVec2(folderTreeWidth, ImGui::GetWindowHeight() - 35), true);
+			ImGui::BeginChild("FolderChild", ImVec2((float)folderTreeWidth, ImGui::GetWindowHeight() - 35.f), true);
 			ImGui::Text("Folders");
 
 			auto source = gEngine->GetAssetManager()->GetAssetSource(0);
@@ -139,7 +139,7 @@ namespace Editor
 		ImGui::SameLine(250);
 		ImGui::Text(asset->GetFileType().c_str());
 		ImGui::SameLine(300);
-		auto sizeString = UIUtils::ConvertSizeToString(asset->GetDataSize());
+		auto sizeString = UIUtils::ConvertSizeToString(asset->GetDataSize(true));
 		ImGui::Text(sizeString.c_str());
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip(asset->GetFileName().c_str());

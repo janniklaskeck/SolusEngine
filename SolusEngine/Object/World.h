@@ -43,7 +43,7 @@ namespace Solus
 		entity->SetPosition(position);
 		entity->SetRotation(rotation);
 		entity->SetScale(scale);
-		//entity->BeginPlay();
+		entity->BeginPlay();
 		globalEntities->insert({ {entity->GetId(), entity } });
 		return instance;
 	}

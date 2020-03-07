@@ -33,18 +33,18 @@ namespace Solus
 
 	private:
 		std::unordered_map<int, int> keyState;
-		double mouseXPos;
-		double mouseYPos;
+		float mouseXPos;
+		float mouseYPos;
 
-		double previousMouseXPos; 
-		double previousMouseYPos;
+		float previousMouseXPos; 
+		float previousMouseYPos;
 
 		std::unordered_map<int, int> mouseButtonState;
-		double scrollXOffset;
-		double scrollYOffset;
+		float scrollXOffset;
+		float scrollYOffset;
 
-		double previousScrollXOffset;
-		double previousScrollYOffset;
+		float previousScrollXOffset;
+		float previousScrollYOffset;
 	};
 }
 

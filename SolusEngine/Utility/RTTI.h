@@ -24,5 +24,8 @@ namespace Solus
 		return classHash; \
 	} \
 	Solus::type##_Reflection type::Reflection;
+
+//#define ISA(instance) \
+//this->
 }
 

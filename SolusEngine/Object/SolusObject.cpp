@@ -8,7 +8,7 @@ namespace Solus
 
 	void SolusObject::BeginPlay()
 	{
-
+		hasBegunPlay = true;
 	}
 
 	void SolusObject::EndPlay()

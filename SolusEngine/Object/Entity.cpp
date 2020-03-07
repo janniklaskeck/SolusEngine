@@ -3,7 +3,6 @@
 #include "Engine/Engine.h"
 
 #include "Render/RenderDevice.h"
-#include "Render/RenderMesh.h"
 #include "Render/FreeFlyCamera.h"
 
 #include "Utility/Helper.h"
@@ -15,7 +14,6 @@ namespace Solus
 	SCLASS_IMPL(Entity);
 
 	Entity::Entity(Vec3f initialPosition, Vec3f initialRotation)
-		: mesh(nullptr)
 	{
 		mTransform = Mat4f(1.f);
 		position = initialPosition;
@@ -28,18 +26,12 @@ namespace Solus
 	Entity::~Entity()
 	{}
 
-	void Entity::TEMP()
-	{
-		auto* meshAsset = (MeshAsset*)gEngine->GetAssetManager()->GetAsset("Model/suzanne.obj");
-		mesh = gEngine->GetRenderDevice()->CreateMesh(meshAsset);
-		mesh->owner = this;
-	}
-
 	void Entity::AttachComponent(SComponent* component)
 	{
 		if (!component)
 			return;
 		component->Attach(this);
+		components.push_back(component);
 	}
 
 	void Entity::BeginPlay()
@@ -67,13 +59,6 @@ namespace Solus
 		{
 			component->Update(deltaTime);
 		}
-	}
-
-	bool Entity::Render()
-	{
-		if (mesh)
-			mesh->Render();
-		return false;
 	}
 
 	void Entity::SetPosition(Vec3f newPosition)

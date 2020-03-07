@@ -25,7 +25,6 @@ namespace Editor
 		void RenderDockspace();
 	private:
 		int windowFlags;
-		bool firstRun = false;
 		EditorSceneWindow* sceneWindow;
 		EditorSceneGraph* sceneGraph;
 		EditorPropertyWindow* propertyWindow;
