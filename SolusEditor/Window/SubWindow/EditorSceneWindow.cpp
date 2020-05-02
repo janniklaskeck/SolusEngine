@@ -3,6 +3,7 @@
 #include "Engine/Engine.h"
 #include "Object/World.h"
 #include "Render/RenderDevice.h"
+#include "Utility/Timer.h"
 
 #include "IMGUI/imgui.h"
 
@@ -31,7 +32,12 @@ namespace Editor
 			auto* renderDevice = gEngine->GetRenderDevice();
 			auto texture = renderDevice->GetCurrentRenderSurface()->GetColorTexture();
 			ImGui::GetWindowDrawList()->AddImage((void*)texture, windowTopLeft, windowBottomRight, ImVec2(0, 1), ImVec2(1, 0));
-			ImGui::TextColored(ImVec4(1.f, 0.f, 1.f, 1.f), "FPS: %.2f, DeltaTime: %.2f ms", 1.f / gEngine->DeltaTime(), gEngine->DeltaTime() * 1000.f);
+			auto fps = 1.f / gEngine->DeltaTime();
+			auto deltaTime = gEngine->DeltaTime() * 1000.f;
+			ImGui::TextColored(ImVec4(1.f, 0.f, 1.f, 1.f), "TPS: %.2f, DeltaTime: %.2f ms", fps, deltaTime);
+			fps = 1.f / gEngine->GetRenderTimer()->GetDeltaTime();
+			deltaTime = gEngine->GetRenderTimer()->GetDeltaTime() * 1000.f;
+			ImGui::TextColored(ImVec4(1.f, 1.f, 1.f, 1.f), "FPS: %.2f, RenderDeltaTime: %.2f ms", fps, deltaTime);
 
 			ImVec2 windowSize = ImGui::GetWindowSize();
 			sceneCamera->UpdateProjectionMatrix(90.f, windowSize.x, windowSize.y);

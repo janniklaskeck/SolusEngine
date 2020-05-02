@@ -3,7 +3,7 @@
 
 namespace Solus
 {
-	//double Timer::fixedTimeStep = 1.0 / 60.0;
+	double Timer::fixedTimeStep = 1.0 / 60.0;
 
 	Timer::Timer()
 		: currentTickTime(0),
@@ -12,16 +12,19 @@ namespace Solus
 
 	void Timer::Initialize()
 	{
-		currentTickTime = gEngine->GetWindow()->GetTime();
-		lastTickTime = currentTickTime;
+		lastTickTime = gEngine->GetWindow()->GetTime();
 	}
 
 	void Timer::Update()
 	{
-		lastTickTime = currentTickTime;
-		currentTickTime = gEngine->GetWindow()->GetTime();
-
-		//tickDone = (diff) >= fixedTimeStep;
+		auto currentTime = gEngine->GetWindow()->GetTime();
+		auto delta = currentTime - lastTickTime;
+		tickDone = delta >= fixedTimeStep;
+		if (tickDone)
+		{
+			lastTickTime = currentTime;
+			currentTickTime = delta;
+		}
 	}
 
 	void Timer::Destroy()
@@ -34,10 +37,11 @@ namespace Solus
 
 	void Timer::Reset()
 	{
-		lastTickTime = currentTickTime;
+		lastTickTime = gEngine->GetWindow()->GetTime();
 	}
+
 	double Timer::GetDeltaTime() const
 	{
-		return currentTickTime - lastTickTime;
+		return currentTickTime;
 	}
 }
