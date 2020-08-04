@@ -22,6 +22,14 @@ namespace Editor
 	{
 		if (ImGui::Begin("Scene", nullptr, windowFlags))
 		{
+			if (ImGui::Button("SaveWorld"))
+			{
+				gEngine->GetWorld()->SaveToFile();
+			}
+			if (ImGui::Button("LoadWorld"))
+			{
+				gEngine->GetWorld()->ReadFromFile("c:\\Spiele\\test.txt");
+			}
 			sceneCamera->SetInputEnabled(ImGui::IsWindowFocused() && ImGui::IsMouseDown(1));
 			ImVec2 pos = ImGui::GetCursorScreenPos();
 			ImVec2 windowTopLeft = ImGui::GetCursorScreenPos();

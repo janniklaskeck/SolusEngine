@@ -30,7 +30,7 @@ namespace Solus
 		std::stringstream ss;
 		ss << fileStream.rdbuf();
 
-		return ss.str();
+		return std::string(ss.str());
 	}
 
 	char* FileUtils::ReadFileRaw(std::filesystem::path path, uintmax_t& length)

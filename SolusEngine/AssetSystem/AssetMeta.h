@@ -11,9 +11,11 @@ namespace Solus
 	{
 	public:
 		AssetMeta();
-		void Initialize(class Asset* asset);
-		void ReadMetaData(std::string& path);
-		void CreateMetaData(std::string& path);
+		void Initialize(const class Asset* asset);
+		void ReadMetaData(const std::string& path);
+		void WriteMetaData(const std::string& path);
+
+		uint32_t GetMetaId() const;
 
 	private:
 		nlohmann::json metaData;

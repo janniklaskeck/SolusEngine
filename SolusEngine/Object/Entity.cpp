@@ -11,7 +11,18 @@
 
 namespace Solus
 {
+
 	SCLASS_IMPL(Entity);
+
+	Entity::Entity()
+	{
+		mTransform = Mat4f(1.f);
+		position = Vec3f(0.0f);
+		rotation = Vec3f(0.0f);
+		scale = Vec3f(1.0f);
+
+		instanceId = GenerateUUID();
+	}
 
 	Entity::Entity(Vec3f initialPosition, Vec3f initialRotation)
 	{
@@ -20,7 +31,7 @@ namespace Solus
 		rotation = initialRotation;
 		scale = Vec3f(1.0f);
 
-		entityId = GenerateUUID();
+		instanceId = GenerateUUID();
 	}
 
 	Entity::~Entity()
@@ -34,9 +45,14 @@ namespace Solus
 		components.push_back(component);
 	}
 
+	const std::vector<SComponent*>& Entity::GetComponents() const
+	{
+		return components;
+	}
+
 	void Entity::BeginPlay()
 	{
-		SolusObject::BeginPlay();
+		hasBegunPlay = true;
 		for (auto* component : components)
 		{
 			component->BeginPlay();
@@ -45,7 +61,6 @@ namespace Solus
 
 	void Entity::EndPlay()
 	{
-		SolusObject::EndPlay();
 		for (auto* component : components)
 		{
 			component->EndPlay();
@@ -54,7 +69,6 @@ namespace Solus
 
 	void Entity::Update(float deltaTime)
 	{
-		SolusObject::Update(deltaTime);
 		for (auto* component : components)
 		{
 			component->Update(deltaTime);
@@ -124,6 +138,7 @@ namespace Solus
 	{
 		return Vec3f(glm::cross(GetRight(), GetForward()));
 	}
+	
 	Mat4f Entity::GetTransform() const
 	{
 		return glm::lookAt(GetPosition(), GetPosition() + GetForward(), GetUp());

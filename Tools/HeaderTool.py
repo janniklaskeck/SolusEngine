@@ -2,6 +2,19 @@ import sys
 import os
 
 import VSProjectUtil
+import MetaDataTool
+
+class TypeNameHeader(object):
+    def __init__(self, typeName, header):
+        super().__init__()
+        self.typeName = typeName
+        self.headerPath = header.replace("\\", "/")
+        if self.headerPath[0] == ".":
+            self.headerPath = self.headerPath[1:]
+        if self.headerPath[0] == "/":
+            self.headerPath = self.headerPath[1:]
+
+typeNames = []
 
 class ReflectionMember(object):
     def __init__(self, memberType: str, memberName: str):
@@ -60,6 +73,7 @@ def GenerateReflectionHeaders(solutionFolder: str, projectName: str):
             print("Write Reflection file for: " + classMeta.className)
             WriteMetaFiles(classMeta, projectFolder, projectName)
     BuildReflectionHeader(projectFolder, projectName, reflectedClasses)
+    #BuildReflectionUtil(projectFolder, projectName)
 
 def ParseReflectionHeader(filepath: str):
     parsedClass = None
@@ -132,10 +146,19 @@ def ParseHeaderFile(relativeFilePath: str):
                     Add SOLUS_CLASS() macro to class declaration!""")
                     continue
                 nextLine = lines[e + 1]
-                nextLineSplit = nextLine.split(" ")
-                for i in range(0, len(nextLineSplit)):
-                    nextLineSplit[i] = nextLineSplit[i].strip().replace(";", "")
-                classMeta.members.append(ReflectionMember(nextLineSplit[0], nextLineSplit[1]))
+                declaration = nextLine.replace(";", "").strip()
+                declarationDefaultValueStart = declaration.rfind("=")
+                if declarationDefaultValueStart == -1:
+                    nameStartIndex = declaration.rfind(" ")
+                    memberName = declaration[nameStartIndex+1:].strip()    
+                else:
+                    declaration = declaration[:declarationDefaultValueStart-1]
+                    nameStartIndex = declaration.rfind(" ")
+                    memberName = declaration[nameStartIndex+1:].strip()    
+                
+                memberType = declaration[:nameStartIndex].strip()
+                typeNames.append(TypeNameHeader(memberType, relativeFilePath))
+                classMeta.members.append(ReflectionMember(memberType, memberName))
 
     return classMeta
 
@@ -190,9 +213,12 @@ def WriteMetaFiles(classMeta: ReflectionClass, folder: str, projectName: str):
         newHeader.write("\t" + classMeta.className + "_Reflection();\n\n")
         newHeader.write("\tstruct TypeInfo_" + classMeta.className + " : public TypeInfo\n\t{\n")
         newHeader.write("\t\tTypeInfo_" + classMeta.className + "(const char* name, size_t size, std::function<void* (" + classMeta.className + "*)> accessor)\n\t\t: accessor(accessor)\n\t\t{\n")
-        newHeader.write("\t\t\tthis->name = name;\n\t\t\tthis->size = size;\n\t\t}\n\n")
+        newHeader.write("\t\t\tthis->name = name;\n")
+        newHeader.write("\t\t\tthis->size = size;\n")
+        newHeader.write("\t\t\tthis->type = TypenameToReflectionType(name);\n")
+        newHeader.write("\t\t}\n\n")
         newHeader.write("\t\tstd::function<void* (" + classMeta.className + "*)> accessor = nullptr;\n\n")
-        newHeader.write("\t\tvirtual void* GetValuePtr(void* object) override\n\t\t{\n")
+        newHeader.write("\t\tvirtual void* GetValuePtr(const void* object) const override\n\t\t{\n")
         newHeader.write("\t\t\treturn accessor((" + classMeta.className + "*)object);\n\t\t}\n")
         newHeader.write("\n\t};\n\n")
         for member in classMeta.members:
@@ -253,7 +279,47 @@ def BuildReflectionHeader(folder: str, projectName: str, reflectedClasses: list)
     helper.AddHeader("SolusEngine")
     helper.WriteFiles()
 
+def BuildReflectionUtil(folder: str, projectName: str):
+    path = os.path.abspath("..\\intermediates\\generated\\")
+    with open(path + os.path.sep + "ReflectionUtil" + projectName + ".generated.h", "w+") as utilHeader:
+        content = ("#include <nlohman/json.hpp>\n"
+                "#include \"Object/SolusObject.h\"\n"
+                "#include \"Utility/ClassMetaData.h\"\n")
+        typeHeaders = []
+        for typeName in typeNames:
+            typeHeaders.append(typeName.headerPath)
+        typeHeaders = list(dict.fromkeys(typeHeaders))
+
+        typeNamesLocal = []
+        for typeName in typeNames:
+            typeNamesLocal.append(typeName.typeName)
+        typeNamesLocal = list(dict.fromkeys(typeNamesLocal))
+
+        for typeName in typeHeaders:
+            content += "#include \"" + typeName + "\"\n"
+
+        content += (
+            "namespace Solus\n{\n"
+            "\nvoid SerializeField(const char* name, const ClassMetaData::TypeInfo* typeInfo, const void* objectPtr, nlohmann::json& parent)\n{\n"
+        )
+        
+        for typeName in typeNamesLocal:
+            content += (
+                "if (typeInfo->IsType(\"" + typeName + "\"))\n{\n"
+                "parent[name] = *Solus::ClassMetaData::GetValuePtr<" + typeName + ">(name, objectPtr);\n"
+            )
+            content += "\n}\n"
+        utilHeader.write(content)
+
+    helper = VSProjectUtil.VcxprojHelper(folder, projectName)
+    helper.AddHeader("ReflectionUtil" + projectName)
+    helper.WriteFiles()
+
+
 if __name__ == '__main__':
-    solutionFolder = sys.argv[1] # "E:\\Projects\\SolusEngine\\"
-    projectName = sys.argv[2] # "SolusEngine"
-    GenerateReflectionHeaders(solutionFolder, projectName)
+    #solutionFolder = "E:\\Projects\\SolusEngine\\"
+    #projectName = "SolusEngine"
+    solutionFolder = sys.argv[1]
+    projectName = sys.argv[2]
+    #GenerateReflectionHeaders(solutionFolder, projectName)
+    MetaDataTool.GenerateMetaDataClasses(solutionFolder, projectName)

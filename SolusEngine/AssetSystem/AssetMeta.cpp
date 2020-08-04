@@ -1,6 +1,7 @@
 #include "AssetMeta.h"
 #include "Asset.h"
 #include "Utility/FileUtils.h"
+#include "Utility/Helper.h"
 
 #include <filesystem>
 
@@ -9,7 +10,7 @@ namespace Solus
 	AssetMeta::AssetMeta()
 	{}
 
-	void AssetMeta::Initialize(Asset* asset)
+	void AssetMeta::Initialize(const Asset* asset)
 	{
 		std::filesystem::path filePath(asset->GetFilePath());
 		std::filesystem::path parentFolder = filePath.parent_path();
@@ -26,18 +27,32 @@ namespace Solus
 		}
 		else
 		{
-			CreateMetaData(metaDataFilePathString);
+			WriteMetaData(metaDataFilePathString);
 			ReadMetaData(metaDataFilePathString);
+		}
+		if (!metaData.contains("id"))
+		{
+			metaData["id"] = GenerateUUID();
+			WriteMetaData(metaDataFilePathString);
 		}
 	}
 
-	void AssetMeta::ReadMetaData(std::string& path)
+	void AssetMeta::ReadMetaData(const std::string& path)
 	{
-		metaData = nlohmann::json::parse(FileUtils::ReadFile(path.c_str()).c_str());
+		auto contents = FileUtils::ReadFile(path.c_str());
+		metaData = nlohmann::json::parse(contents);
 	}
 
-	void AssetMeta::CreateMetaData(std::string& path)
+	uint32_t AssetMeta::GetMetaId() const
 	{
-		FileUtils::WriteFile(path.c_str(), metaData.dump().c_str());
+		return metaData["id"];
+	}
+
+	void AssetMeta::WriteMetaData(const std::string& path)
+	{
+		if (metaData.is_null())
+			metaData = nlohmann::json({});
+		std::string content = metaData.dump();
+		FileUtils::WriteFile(path.c_str(), content.c_str());
 	}
 }

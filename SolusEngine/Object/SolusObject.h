@@ -5,20 +5,25 @@
 
 #include "Utility/RTTI.h"
 
-
 namespace Solus
 {
 
 	SOLUS_CLASS();
 	class SOLUS_API SolusObject
 	{
-		REFLECT(SolusObject)
+		META_ROOT(SolusObject)
 	public:
-		virtual void BeginPlay();
-		virtual void Update(float deltaTime);
-		virtual void EndPlay();
+		SolusObject();
 
-	protected:
-		bool hasBegunPlay = false;
+		void Serialize(ArchiveStream& archive) const;
+
+		void Deserialize(ArchiveStream& archive);
+
+		virtual void PostSerialize()
+		{}
+
+		ClassMetaData* GetClassMetaData() const;
 	};
+
+
 }

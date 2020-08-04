@@ -22,7 +22,8 @@ namespace Editor
 		void SetEntity(Solus::Entity* entity);
 
 	private:
-		void ShowPropertyFields(Solus::Entity* entity, Solus::ClassMetaData* metaData);
+		void ShowPropertyFields(const Solus::Entity* entity) const;
+		void ShowComponentPropertyFields(const Solus::SComponent* component) const;
 
 		Solus::Entity* entity;
 	};

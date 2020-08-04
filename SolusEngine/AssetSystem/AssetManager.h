@@ -25,6 +25,7 @@ namespace Solus
 
 		Asset* GetAsset(std::string path);
 		Asset* GetAsset(const char* path);
+		Asset* GetAsset(const uint32_t assetId) const;
 
 		size_t GetNumSources() const;
 		AssetSource* GetAssetSource(size_t index) const;

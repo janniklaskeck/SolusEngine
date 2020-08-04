@@ -1,6 +1,9 @@
 #pragma once
 #include "Object/SolusObject.h"
+#include "World.generated.h"
 #include "Object/Entity.h"
+
+#include "AssetSystem/Asset.h"
 
 #include "Utility/Vector.h"
 #include <unordered_map>
@@ -8,9 +11,10 @@
 
 namespace Solus
 {
-
-	class SOLUS_API World : public SolusObject
+	SOLUS_CLASS();
+	class SOLUS_API World : public Entity
 	{
+		META(World, Entity)
 	public:
 		World();
 		~World();
@@ -26,8 +30,15 @@ namespace Solus
 		virtual void EndPlay() override;
 		void Render();
 
-	protected:
-		std::unordered_map<uint64_t, Entity*>* globalEntities;
+		void SaveToFile() const;
+		void ReadFromFile(const std::string& path);
+
+	//protected:
+		SPROPERTY();
+		std::unordered_map<uint64_t, Entity*> globalEntities;
+
+	private:
+		Asset* worldAsset = nullptr;
 	};
 
 	template<class T>
@@ -44,7 +55,7 @@ namespace Solus
 		entity->SetRotation(rotation);
 		entity->SetScale(scale);
 		entity->BeginPlay();
-		globalEntities->insert({ {entity->GetId(), entity } });
+		globalEntities.insert({ {entity->GetId(), entity } });
 		return instance;
 	}
 

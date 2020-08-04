@@ -27,6 +27,8 @@ namespace Solus
 	
 	void MeshComponent::SetMesh(MeshAsset* meshAsset)
 	{
+		if (renderMesh)
+			delete renderMesh;
 		this->meshAsset = meshAsset;
 		renderMesh = gEngine->GetRenderDevice()->CreateMesh(meshAsset);
 		renderMesh->owner = parent;

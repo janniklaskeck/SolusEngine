@@ -46,7 +46,7 @@ namespace Solus
 		window->Initialize();
 
 		mainTimer = new Timer;
-		mainTimer->Initialize();		
+		mainTimer->Initialize();
 
 		renderDevice = new OpenGLDevice;
 		renderDevice->Initialize();

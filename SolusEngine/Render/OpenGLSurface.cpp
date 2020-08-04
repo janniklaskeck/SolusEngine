@@ -20,7 +20,7 @@ namespace Solus
 		this->height = height;
 		glGenFramebuffers(1, &framebufferId);
 		glBindFramebuffer(GL_FRAMEBUFFER, framebufferId);
-
+		CHECK_OPENGL_ERROR();
 		glActiveTexture(GL_TEXTURE0);
 		glGenTextures(1, &colorBufferId);
 		glBindTexture(GL_TEXTURE_2D, colorBufferId);
@@ -31,13 +31,13 @@ namespace Solus
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, colorBufferId, 0);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
 		glBindTexture(GL_TEXTURE_2D, 0);
-
+		CHECK_OPENGL_ERROR();
 		glGenRenderbuffers(1, &depthBufferId);
 		glBindRenderbuffer(GL_RENDERBUFFER, depthBufferId);
 		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
 		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthBufferId);
 		glBindRenderbuffer(GL_RENDERBUFFER, 0);
-
+		CHECK_OPENGL_ERROR();
 
 
 		drawBuffers[0] = { GL_COLOR_ATTACHMENT0 };

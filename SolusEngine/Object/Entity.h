@@ -13,20 +13,21 @@ namespace Solus
 	SOLUS_CLASS();
 	class SOLUS_API Entity : public SolusObject
 	{
-		REFLECT(Entity)
+		META(Entity, SolusObject)
 	public:
 
-		Entity(Vec3f initialPosition = Vec3f(), Vec3f initalRotation = Vec3f());
+		Entity();
+		Entity(Vec3f initialPosition, Vec3f initalRotation);
 		virtual ~Entity();
 		
 		void AttachComponent(SComponent* component);
-		virtual void BeginPlay() override;
-		virtual void Update(float deltaTime) override;
-		virtual void EndPlay() override;
+		virtual void BeginPlay();
+		virtual void Update(float deltaTime);
+		virtual void EndPlay();
 
 		uint64_t GetId() const
 		{
-			return entityId;
+			return instanceId;
 		}
 
 		void SetPosition(Vec3f newPosition);
@@ -49,29 +50,32 @@ namespace Solus
 		template<typename T>
 		T* GetComponent() const
 		{
-			for (SComponent* component : components)
+			for (const SComponent* component : components)
 			{
-				auto id = typeid(T).hash_code();
-				if (component->GetClassId() == id)
+				if (component->get_type() == rttr::type::get<T>())
 					return (T*)component;
 			}
 			return nullptr;
 		}
 
-	protected:
-		std::vector<SComponent*> components;
-
+		const std::vector<SComponent*>& GetComponents() const;
 		SPROPERTY();
-		uint64_t entityId;
+		std::vector<SComponent*> components;
+	protected:
+
+		bool hasBegunPlay = false;
+
+
+		uint64_t instanceId;
 
 		Mat4f mTransform;
 
 		SPROPERTY();
-		Vec3f position;
+		Vec3f position = Vec3f(0.0f);
 		SPROPERTY();
-		Vec3f rotation;
+		Vec3f rotation = Vec3f(0.0f);
 		SPROPERTY();
-		Vec3f scale;
+		Vec3f scale = Vec3f(1.0f);
 	};
 }
 

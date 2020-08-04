@@ -30,7 +30,11 @@ namespace Solus
 
 	void FolderAssetSource::InitializeSubFolder(AssetFolder* folder, bool isRoot)
 	{
-		assert(folder);
+		if (!folder)
+		{
+			assert(folder);
+			return;
+		}
 		filesystem::path path(root);
 		path /= folder->GetFullRelativePath();
 		filesystem::directory_iterator end;

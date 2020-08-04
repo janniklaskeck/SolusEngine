@@ -55,6 +55,11 @@ namespace Solus
 		return GetAsset(std::string(path));
 	}
 
+	Asset* AssetManager::GetAsset(const uint32_t assetId) const
+	{
+		return nullptr;
+	}
+
 	size_t AssetManager::GetNumSources() const
 	{
 		return sources.size();

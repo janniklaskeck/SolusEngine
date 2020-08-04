@@ -1,7 +1,10 @@
 #pragma once
 
+#include "Asset.generated.h"
 #include "Engine/SolusEngine.h"
+#include "Object/SolusObject.h"
 #include "Utility/Vector.h"
+#include "Utility/RTTI.h"
 
 #include <string>
 #include <vector>
@@ -22,8 +25,10 @@ namespace Solus
 
 #define ASSET_FILE_EXTENSION ".asset"
 
-	class SOLUS_API Asset
+	SOLUS_CLASS();
+	class SOLUS_API Asset : public SolusObject
 	{
+		META(Asset, SolusObject)
 	public:
 
 		Asset();
@@ -37,11 +42,19 @@ namespace Solus
 		void* GetRawData() const;
 		uintmax_t GetDataSize(bool readFromFile = false) const;
 
-		std::filesystem::path GetFilePath() const;
+		std::filesystem::path GetFilePath(bool relativePath = false) const;
 		std::string GetFileName(bool removeExtension = false) const;
 
 		std::string GetFileType() const;
+
+		const uint32_t GetAssetId() const;
+
+		virtual void PostSerialize() override;
+
 	protected:
+		SPROPERTY();
+		uint32_t assetId;
+
 		std::filesystem::path path;
 		AssetType type;
 

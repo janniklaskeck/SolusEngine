@@ -8,11 +8,14 @@ namespace Solus
 	SOLUS_CLASS();
 	class SOLUS_API Camera : public Entity
 	{
-		REFLECT(Camera)
+		META(Camera, Entity)
 	public:
 		Camera(float fovY = 90.f, float windowWidth = 1280.f, float windowHeight = 720.f, float near = .1f, float far = 1000.f);
 
-		virtual Mat4f* GetViewMatrix() = 0;
+		virtual Mat4f* GetViewMatrix()
+		{
+			return nullptr;
+		}
 
 		void UpdateProjectionMatrix(float fovY, float windowWidth, float windowHeight, float near = .1f, float far = 1000.f);
 

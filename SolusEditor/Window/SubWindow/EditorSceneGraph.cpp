@@ -29,14 +29,13 @@ namespace Editor
 			for (int i = 0; i < entities.size(); i++)
 			{
 				auto entity = entities[i];
-				auto* info = Solus::ClassMetaData::Get(entity->GetClassId());
-				char name[128];
-				sprintf_s(name, "%s", info->name);
+				
+				std::string name(entity->get_type().get_name());
 				ImGui::PushID((int)entity->GetId());
-				if (ImGui::Selectable(name, selected == i))
+				if (ImGui::Selectable(name.c_str(), selected == i))
 				{
 					selected = i;
-					selectedEntity = const_cast<Solus::Entity*>(entity);
+					selectedEntity = entity;
 				}
 				ImGui::PopID();
 			}

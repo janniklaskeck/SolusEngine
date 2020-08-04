@@ -2,18 +2,21 @@
 
 #include "Entity.h"
 #include "Component/MeshComponent.h"
+#include "Engine/Engine.h"
+
+#include "Utility/SerializeUtil.h"
 
 namespace Solus
 {
 
+	SCLASS_IMPL(World);
 	World::World()
 	{
-		globalEntities = new std::unordered_map<uint64_t, Entity*>;
 	}
 
 	World::~World()
 	{
-		for (auto it = globalEntities->begin(); it != globalEntities->end(); it++)
+		for (auto it = globalEntities.begin(); it != globalEntities.end(); it++)
 		{
 			delete it->second;
 		}
@@ -24,7 +27,7 @@ namespace Solus
 		if (entity)
 		{
 			entity->EndPlay();
-			globalEntities->erase(entity->GetId());
+			globalEntities.erase(entity->GetId());
 			delete entity;
 			return true;
 		}
@@ -34,7 +37,7 @@ namespace Solus
 	std::vector<class Entity*> World::GetEntities() const
 	{
 		std::vector<Entity*> entities;
-		for (auto it = globalEntities->begin(); it != globalEntities->end(); it++)
+		for (auto it = globalEntities.begin(); it != globalEntities.end(); it++)
 		{
 			auto entry = *it;
 			entities.push_back(entry.second);
@@ -44,7 +47,7 @@ namespace Solus
 
 	void World::BeginPlay()
 	{
-		for (auto it = globalEntities->begin(); it != globalEntities->end(); it++)
+		for (auto it = globalEntities.begin(); it != globalEntities.end(); it++)
 		{
 			it->second->BeginPlay();
 		}
@@ -52,7 +55,7 @@ namespace Solus
 
 	void World::Update(float deltaTime)
 	{
-		for (auto it = globalEntities->begin(); it != globalEntities->end(); it++)
+		for (auto it = globalEntities.begin(); it != globalEntities.end(); it++)
 		{
 			it->second->Update(deltaTime);
 		}
@@ -60,7 +63,7 @@ namespace Solus
 
 	void World::EndPlay()
 	{
-		for (auto it = globalEntities->begin(); it != globalEntities->end(); it++)
+		for (auto it = globalEntities.begin(); it != globalEntities.end(); it++)
 		{
 			it->second->EndPlay();
 		}
@@ -68,7 +71,7 @@ namespace Solus
 
 	void World::Render()
 	{
-		for (auto it = globalEntities->begin(); it != globalEntities->end(); it++)
+		for (auto it = globalEntities.begin(); it != globalEntities.end(); it++)
 		{
 			auto* meshComponent = it->second->GetComponent<MeshComponent>();
 			if (meshComponent)
@@ -78,4 +81,22 @@ namespace Solus
 		}
 	}
 
+	void World::SaveToFile() const
+	{
+		if (worldAsset)
+		{
+
+		}
+		else
+		{
+			ArchiveStream stream("c:\\Spiele\\test.txt", ArchiveMode::WRITE);
+			Serialize(stream);
+		}
+	}
+
+	void World::ReadFromFile(const std::string& path)
+	{
+		ArchiveStream stream(path);
+		Deserialize(stream);
+	}
 }

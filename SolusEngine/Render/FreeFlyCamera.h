@@ -8,7 +8,7 @@ namespace Solus
 	SOLUS_CLASS();
 	class SOLUS_API FreeFlyCamera : public Camera
 	{
-		REFLECT(FreeFlyCamera) 
+		META(FreeFlyCamera, Camera)
 	public:
 		virtual Mat4f* GetViewMatrix() override;
 

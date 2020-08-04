@@ -25,9 +25,11 @@ namespace Solus
 
 	void OpenGLDevice::Initialize()
 	{
+		CHECK_OPENGL_ERROR();
 		glEnable(GL_DEBUG_OUTPUT);
+		CHECK_OPENGL_ERROR();
 		glDebugMessageCallback(GLErrorCallback, 0);
-
+		CHECK_OPENGL_ERROR();
 		glEnable(GL_CULL_FACE);
 		glClearColor(0.f, 0.f, 1.f, 0.f);
 
@@ -35,7 +37,7 @@ namespace Solus
 		glEnable(GL_DEPTH_TEST);
 		// Accept fragment if it closer to the camera than the former one
 		glDepthFunc(GL_LESS);
-
+		CHECK_OPENGL_ERROR();
 		//glEnable(GL_BLEND);
 		//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 

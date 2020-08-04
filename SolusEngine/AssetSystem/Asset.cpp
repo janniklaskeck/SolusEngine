@@ -5,6 +5,8 @@
 
 namespace Solus
 {
+	SCLASS_IMPL(Asset);
+
 	Asset::Asset()
 		: dataPtr(nullptr), dataLength(0L), path(""), type(AssetType::AT_UNKNOWN)
 	{}
@@ -17,13 +19,13 @@ namespace Solus
 		this->path = filePath;
 		metaData.reset(new AssetMeta);
 		metaData->Initialize(this);
+		assetId = metaData->GetMetaId();
 	}
 
 	void Asset::Load()
 	{
 		if (dataPtr)
 		{
-			gEngine->Log(LogLevel::LogWarning, "Trying to load loaded Asset: %s", GetFilePath().string().c_str());
 			return;
 		}
 		dataPtr = FileUtils::ReadFileRaw(GetFilePath().c_str(), dataLength);
@@ -36,8 +38,14 @@ namespace Solus
 		dataPtr = nullptr;
 	}
 
-	std::filesystem::path Asset::GetFilePath() const
+	std::filesystem::path Asset::GetFilePath(bool relativePath /*= false*/) const
 	{
+		if (relativePath)
+		{
+			const auto& root = gEngine->GetAssetManager()->GetEngineAssetRoot();
+			auto relPath = std::filesystem::relative(path, root);
+			return relPath;
+		}
 		return path;
 	}
 
@@ -68,6 +76,16 @@ namespace Solus
 		std::string fileType = path.filename().extension().string();
 		ToLower(fileType);
 		return fileType;
+	}
+
+	const uint32_t Asset::GetAssetId() const
+	{
+		return assetId;
+	}
+
+	void Asset::PostSerialize()
+	{
+
 	}
 
 }

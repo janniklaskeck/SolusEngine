@@ -3,16 +3,16 @@
 #include "MeshComponent.generated.h"
 
 #include "SComponent.h"
+#include "AssetSystem/MeshAsset.h"
 
 namespace Solus
 {
 	class RenderMesh;
-	class MeshAsset;
 
 	SOLUS_CLASS();
 	class SOLUS_API MeshComponent : public SComponent
 	{
-		REFLECT(MeshComponent)
+		META(MeshComponent, SComponent)
 	public:
 		virtual void BeginPlay() override;
 		virtual void Update(float deltaTime) override;
@@ -23,6 +23,8 @@ namespace Solus
 
 	protected:
 		RenderMesh* renderMesh = nullptr;
+	public:
+		SPROPERTY();
 		MeshAsset* meshAsset = nullptr;
 	};
 }

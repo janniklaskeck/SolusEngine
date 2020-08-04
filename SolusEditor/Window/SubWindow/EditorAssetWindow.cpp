@@ -131,6 +131,11 @@ namespace Editor
 	void EditorAssetWindow::RenderFile(Solus::Asset* asset)
 	{
 		ImGui::Selectable(asset->GetFileName(true).c_str(), asset == clickedAsset);
+		if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
+		{
+			ImGui::SetDragDropPayload("TESTDRAG", &asset, sizeof(Solus::Asset*));
+			ImGui::EndDragDropSource();
+		}
 		if (ImGui::IsItemClicked())
 		{
 			if (clickedAsset != asset)
@@ -143,6 +148,8 @@ namespace Editor
 		ImGui::Text(sizeString.c_str());
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip(asset->GetFileName().c_str());
+		ImGui::SameLine(420);
+			ImGui::Text(std::to_string(asset->GetAssetId()).c_str());
 	}
 
 	void EditorAssetWindow::SetClickedFolder(Solus::AssetFolder* folder)
