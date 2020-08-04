@@ -45,8 +45,11 @@ namespace Solus
 		world = new World;
 		window->Initialize();
 
-		mainTimer = new Timer;
-		mainTimer->Initialize();
+		tickTimer = new Timer;
+		tickTimer->Initialize();
+
+		renderTimer = new Timer;
+		renderTimer->Initialize();
 
 		renderDevice = new OpenGLDevice;
 		renderDevice->Initialize();
@@ -64,6 +67,8 @@ namespace Solus
 
 	Engine::~Engine()
 	{
+		delete tickTimer;
+		delete renderTimer;
 		delete window;
 		delete world;
 	}
@@ -96,24 +101,36 @@ namespace Solus
 
 	void Engine::Update()
 	{
-		mainTimer->Update();
-		GetInputDevice()->Update();
-		GetWorld()->Update((float)mainTimer->GetDeltaTime());
-		GetWindow()->Update();
-	}
-
-	void Engine::Destroy()
-	{
-		mainTimer->Destroy();
-		assetManager->Destroy();
-		renderDevice->Destroy();
-		inputDevice->Destroy();
-		window->Destroy();
+		tickTimer->Update();
+		if (tickTimer->TickDone())
+		{
+			GetInputDevice()->Update();
+			GetWorld()->Update((float)tickTimer->GetDeltaTime());
+			GetWindow()->Update();
+		}
 	}
 
 	void Engine::Render()
 	{
-		GetWindow()->Render();
+		renderTimer->Update();
+		if (renderTimer->TickDone())
+		{
+			auto* renderDevice = GetRenderDevice();
+			renderDevice->PreRenderScene();
+			GetWorld()->Render();
+			renderDevice->PostRenderScene();
+
+			GetWindow()->Render();
+		}
+	}
+
+	void Engine::Destroy()
+	{
+		tickTimer->Destroy();
+		assetManager->Destroy();
+		renderDevice->Destroy();
+		inputDevice->Destroy();
+		window->Destroy();
 	}
 
 	const char* Engine::LogLevelToChar(LogLevel level)
@@ -183,14 +200,19 @@ namespace Solus
 		return assetManager;
 	}
 
-	Timer* Engine::GetMainTimer() const
+	const Timer* Engine::GetTickTimer() const
 	{
-		return mainTimer;
+		return tickTimer;
+	}
+
+	const Timer* Engine::GetRenderTimer() const
+	{
+		return renderTimer;
 	}
 
 	double Engine::DeltaTime() const
 	{
-		return mainTimer->GetDeltaTime();
+		return tickTimer->GetDeltaTime();
 	}
 
 }

@@ -65,7 +65,8 @@ namespace Solus
 
 		AssetManager* GetAssetManager() const;
 
-		Timer* GetMainTimer() const;
+		const Timer* GetTickTimer() const;
+		const Timer* GetRenderTimer() const;
 
 		double DeltaTime() const;
 	private:
@@ -81,7 +82,8 @@ namespace Solus
 
 		AssetManager* assetManager = nullptr;
 
-		Timer* mainTimer = nullptr;
+		Timer* tickTimer = nullptr;
+		Timer* renderTimer = nullptr;
 
 	private:
 		int tickCounter = 0;

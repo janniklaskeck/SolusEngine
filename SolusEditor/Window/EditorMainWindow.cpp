@@ -88,12 +88,6 @@ namespace Editor
 
 	void EditorMainWindow::Render()
 	{
-		auto* renderDevice = gEngine->GetRenderDevice();
-		renderDevice->PreRenderScene();
-
-		gEngine->GetWorld()->Render();
-		renderDevice->PostRenderScene();
-
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 

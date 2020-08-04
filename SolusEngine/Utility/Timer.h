@@ -18,7 +18,7 @@ namespace Solus
 
 		double GetDeltaTime() const;
 	private:
-		//static double fixedTimeStep;
+		static double fixedTimeStep;
 		bool tickDone = false;
 		double lastTickTime;
 		double currentTickTime;
