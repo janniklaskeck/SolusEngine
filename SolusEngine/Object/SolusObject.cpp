@@ -24,7 +24,7 @@ namespace Solus
 	{
 		ClassMetaData* metaDataPtr = GetClassMetaData();
 		if (metaDataPtr)
-			metaDataPtr->Deserialize(&archive, this);
+			metaDataPtr->Deserialize(&archive, archive.root, this);
 	}
 
 	ClassMetaData* SolusObject::GetClassMetaData() const

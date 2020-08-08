@@ -216,8 +216,7 @@ def WriteMetaHeader(classMeta: MetaDataClass, folder: str, projectName: str):
     headerString += "\t" + classMeta.className + "_ClassMetaData();\n\n"
 
     headerString += "\tvirtual void Serialize(ArchiveStream* archive, const SolusObject* object) const override;\n"
-    headerString += "\tvirtual void Deserialize(ArchiveStream* archive, SolusObject* object) override;\n"
-    headerString += "\tvirtual const bool DeserializeMember(const SolusObject* object, const std::string& name, const unsigned char* ptr, uint32_t length) override;\n"
+    headerString += "\tvirtual const bool DeserializeMember(ArchiveStream* archive, const SolusObject* object, ArchiveEntry& entry) override;\n"
     headerString += "\tvirtual void* GetMemberPtrInternal(const SolusObject* object, const std::string& name) override;\n"
     headerString += "};\n"
     headerString += "}\n"
@@ -273,25 +272,14 @@ def WriteMetaSource(classMeta: MetaDataClass, folder: str, projectName: str):
     sourceString += "}\n\n"
 
 
-    sourceString += "void " + reflectionClassName + "::Deserialize(ArchiveStream* archive, SolusObject* object)\n{\n"
-    sourceString += "\t" + classMeta.className + "* cast = (" + classMeta.className + "*)object;\n"
-    sourceString += "\tstd::string typeName;\n"
-    for member in classMeta.members:
-        sourceString += "\ttypeName = \"" + member.type + "\";\n"
-        sourceString += "\tarchive->Deserialize(object, typeName, \"" + member.name + "\", cast->" + member.name + ");\n"
-    if len(classMeta.parentClasses) > 0:
-        sourceString += "\t" + classMeta.parentClasses[0] + "_ClassMetaData::Deserialize(archive, object);\n"
-    sourceString += "}\n\n"
-
-
-    sourceString += "\nconst bool " + reflectionClassName + "::DeserializeMember(const SolusObject* object, const std::string& name, const unsigned char* ptr, uint32_t length)\n{\n"
+    sourceString += "\nconst bool " + reflectionClassName + "::DeserializeMember(ArchiveStream* archive, const SolusObject* object, ArchiveEntry& entry)\n{\n"
     sourceString += "\t" + classMeta.className + "* cast = (" + classMeta.className +  "*)object;\n"
     for member in classMeta.members:
-        sourceString += "\tif (name == \"" + member.name + "\")\n\t{\n"
-        sourceString += "\t\tvoid* dst = &cast->" + member.name + ";\n"
-        sourceString += "\t\tmemcpy(dst, ptr, length);\n\t\treturn true;\n\t}\n"
+        sourceString += "\tif (entry.name == \"" + member.name + "\")\n\t{\n"
+        sourceString += "\t\tarchive->DeserializeInternal(entry, cast->" + member.name + ");\n"
+        sourceString += "\t\treturn true;\n\t}\n"
     if len(classMeta.parentClasses) > 0:
-        sourceString += "\treturn " + classMeta.parentClasses[0] + "_ClassMetaData::DeserializeMember(object, name, ptr, length);\n"
+        sourceString += "\treturn " + classMeta.parentClasses[0] + "_ClassMetaData::DeserializeMember(archive, object, entry);\n"
     else:
         sourceString += "\treturn false;\n"
     sourceString += "}\n\n"

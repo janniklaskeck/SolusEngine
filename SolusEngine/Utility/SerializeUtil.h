@@ -41,33 +41,13 @@ namespace Solus
 		std::string name;
 		std::string typeName;
 		EntryType type = EntryType::None;
-		uint32_t size = 0;
-		const unsigned char* value = nullptr;
+		uint64_t size = 0;
+		unsigned char* value = nullptr;
+		mutable uint32_t currentPosition = 0;
 
-		ArchiveEntry* parentEntry;
-		std::vector<ArchiveEntry> subEntries;
-
-		uint32_t Read(const unsigned char* ptr);
-
-		void Rebuild(SolusObject* root) const;
-
-	private:
-
-		const EntryType GetType(const std::string& typeString) const;
-
-		uint32_t ReadUInt(const unsigned char* ptr)
-		{
-			return uint32_t((unsigned char)(ptr[3]) << 24 |
-							(unsigned char)(ptr[2]) << 16 |
-							(unsigned char)(ptr[1]) << 8 |
-							(unsigned char)(ptr[0]));
-		}
-
-		std::string ReadString(const unsigned char* ptr)
-		{
-			uint32_t size = ReadUInt(ptr);
-			return std::string((const char*)(ptr + sizeof(uint32_t)), size);
-		}
+		void ReadString(std::string& out) const;
+		uint32_t ReadUInt32() const;
+		uint8_t ReadUInt8() const;
 	};
 
 	class SOLUS_API ArchiveStream
@@ -89,6 +69,8 @@ namespace Solus
 		std::ofstream writer;
 
 		bool readBuffered = false;
+		char* buffer = nullptr;
+	public:
 		ArchiveEntry root;
 
 	public:
@@ -97,11 +79,14 @@ namespace Solus
 		ArchiveStream(const ArchiveStream&) = delete;
 		ArchiveStream& operator=(const ArchiveStream&) = delete;
 
-		template<typename T>
-		std::enable_if_t<std::is_base_of_v<SolusObject, T> || std::is_base_of_v<SComponent, T> || std::is_base_of_v<Asset, T>> Deserialize1(T* object);
+		~ArchiveStream()
+		{
+			if (buffer)
+				free((void*)buffer);
+		}
+	public:
 
-		template<typename T>
-		void Deserialize(std::string& name, std::string& type, T& value);
+		bool Deserialize(ArchiveEntry& nextEntry, ArchiveEntry& parent);
 
 		template<typename T>
 		void Serialize(const std::string& name, const std::string& type, const T& value);
@@ -112,7 +97,10 @@ namespace Solus
 		std::enable_if_t<!std::is_pointer_v<T>> SerializeInternal(const std::string& name, const T& value);
 
 		template<typename T>
-		void SerializeInternal(const std::string& name, const std::vector<T>& value);
+		std::enable_if_t<std::is_trivial_v<T>> SerializeInternal(const std::string& name, const std::vector<T>& value);
+
+		template<typename T>
+		std::enable_if_t<std::is_base_of_v<SolusObject, T> || std::is_base_of_v<SComponent, T> || std::is_base_of_v<Asset, T>> SerializeInternal(const std::string& name, const std::vector<T*>& value);
 
 		template<typename T>
 		std::enable_if_t<std::is_base_of_v<SolusObject, T> || std::is_base_of_v<SComponent, T> || std::is_base_of_v<Asset, T>> SerializeInternal(const std::string& name, const T* value);
@@ -121,74 +109,60 @@ namespace Solus
 		template <typename Key, typename Value>
 		std::enable_if_t<std::is_integral_v<Key>> SerializeInternal(const std::string& name, const std::unordered_map<Key, Value>& map);
 
-	private:
-		void ParseFile()
-		{
-			std::string nextName;
-			ReadString(nextName);
-			std::string nextType;
-			ReadString(nextType);
-
-			char blockStart = ReadUInt8();
-		}
+	public:
 
 		template<typename T>
-		std::enable_if_t<!std::is_pointer_v<T>> DeserializeInternal(T& value);
+		std::enable_if_t<!std::is_pointer_v<T>> DeserializeInternal(ArchiveEntry& entry, T& value);
 
 		template<typename T>
-		std::enable_if_t<std::is_base_of_v<SolusObject, T> || std::is_base_of_v<SComponent, T> || std::is_base_of_v<Asset, T>> DeserializeInternal(T* value);
+		std::enable_if_t<std::is_base_of_v<SolusObject, T> || std::is_base_of_v<SComponent, T> || std::is_base_of_v<Asset, T>> DeserializeInternal(ArchiveEntry& entry, T* value);
 
 		template <typename Key, typename Value>
-		std::enable_if_t<std::is_integral_v<Key>> DeserializeInternal(std::unordered_map<Key, Value>& map);
+		std::enable_if_t<std::is_integral_v<Key>> DeserializeInternal(ArchiveEntry& entry, std::unordered_map<Key, Value>& map);
 
 		template<typename T>
-		void DeserializeInternal(std::vector<T>& value);
+		std::enable_if_t<std::is_trivial_v<T>> DeserializeInternal(ArchiveEntry& entry, std::vector<T>& value);
+
+		template<typename T>
+		std::enable_if_t<std::is_base_of_v<SolusObject, T> || std::is_base_of_v<SComponent, T> || std::is_base_of_v<Asset, T>> DeserializeInternal(ArchiveEntry& entry, std::vector<T*>& value);
 
 	private:
 
 		void WriteString(const std::string& string);
-
-		void ReadString(std::string& out);
-
 		void WriteUInt32(const uint32_t value);
-
-		uint32_t ReadUInt32();
-
 		void WriteUInt8(const uint8_t value);
-
-		uint8_t ReadUInt8();
 	};
 
 	///
 	/// Serialize 
 	///
-
-	template<typename T>
-	inline std::enable_if_t<std::is_base_of_v<SolusObject, T> || std::is_base_of_v<SComponent, T> || std::is_base_of_v<Asset, T>> ArchiveStream::Deserialize1(T* object)
+	
+	inline bool ArchiveStream::Deserialize(ArchiveEntry& outEntry, ArchiveEntry& parent)
 	{
-		ArchiveEntry root;
-		if (reader)
+		if (parent.currentPosition >= parent.size)
+			return false;
+
+		parent.ReadString(outEntry.name);
+		parent.ReadString(outEntry.typeName);
+		outEntry.size = 0;
+		outEntry.currentPosition = 0;
+		
+		parent.ReadUInt8(); // block begin
+		outEntry.value = (unsigned char*)parent.value + parent.currentPosition;
+		
+		uint32_t stack = 1;
+		while (stack > 0)
 		{
-			reader.seekg(0, std::ios::end);
-			const uint64_t size = reader.tellg();
-			reader.seekg(0, std::ios::beg);
-			char* buffer = (char*)malloc(size);
-			reader.read(buffer, size);
-
-			root.Read((const unsigned char*)(buffer));
-			root.Rebuild(object);
-
-			free(buffer);
+			char nextChar = parent.value[parent.currentPosition++];
+			if (nextChar == BEGIN_BLOCK)
+				stack++;
+			else if (nextChar == END_BLOCK)
+				stack--;
+			if (stack > 0)
+				outEntry.size++;
 		}
-	}
-
-	template<typename T>
-	inline void ArchiveStream::Deserialize(std::string& name, std::string& type, T& value)
-	{
-		ReadString(name);
-		ReadString(type);
-
-		DeserializeInternal(value);
+		
+		return true;
 	}
 
 	template<typename T>
@@ -205,27 +179,41 @@ namespace Solus
 	template<typename T>
 	inline std::enable_if_t<!std::is_pointer_v<T>> ArchiveStream::SerializeInternal(const std::string& name, const T& value)
 	{
-		WriteUInt8(OBJECT_TYPE_ID);
+		//WriteUInt8(OBJECT_TYPE_ID);
 		WriteUInt32(sizeof(T));
 		writer.write((char*)&value, sizeof(T));
 	}
 
 	template<typename T>
-	void ArchiveStream::SerializeInternal(const std::string& name, const std::vector<T>& value)
+	std::enable_if_t<std::is_trivial_v<T>> ArchiveStream::SerializeInternal(const std::string& name, const std::vector<T>& value)
 	{
-		WriteUInt8(VECTOR_TYPE_ID);
+		//WriteUInt8(VECTOR_TYPE_ID);
 		WriteUInt32((uint32_t)value.size());
 
 		for (size_t i = 0; i < value.size(); i++)
 		{
-			SerializeInternal(std::to_string(i), value[i]);
+			const std::string typeName = std::string(rttr::type::get<T>().get_name());
+			Serialize(std::to_string(i), typeName, value[i]);
+		}
+	}
+
+	template<typename T>
+	std::enable_if_t<std::is_base_of_v<SolusObject, T> || std::is_base_of_v<SComponent, T> || std::is_base_of_v<Asset, T>> ArchiveStream::SerializeInternal(const std::string& name, const std::vector<T*>& value)
+	{
+		//WriteUInt8(VECTOR_TYPE_ID);
+		WriteUInt32((uint32_t)value.size());
+
+		for (size_t i = 0; i < value.size(); i++)
+		{
+			const std::string typeName = std::string(value[i]->get_type().get_name());
+			Serialize(std::to_string(i), typeName, value[i]);
 		}
 	}
 
 	template<typename T>
 	inline std::enable_if_t<std::is_base_of_v<SolusObject, T> || std::is_base_of_v<SComponent, T> || std::is_base_of_v<Asset, T>> ArchiveStream::SerializeInternal(const std::string& name, const T* value)
 	{
-		WriteUInt8(POINTER_TYPE_ID);
+		//WriteUInt8(POINTER_TYPE_ID);
 		if (value)
 			value->Serialize(*this);
 	}
@@ -233,14 +221,14 @@ namespace Solus
 	template<typename Key, typename Value>
 	std::enable_if_t<std::is_integral_v<Key>> ArchiveStream::SerializeInternal(const std::string& name, const std::unordered_map<Key, Value>& map)
 	{
-		WriteUInt8(MAP_TYPE_ID);
+		//WriteUInt8(MAP_TYPE_ID);
 		WriteUInt32((uint32_t)map.size());
 
 		for (const auto& keyValue : map)
 		{
 			const auto key = keyValue.first;
 			const auto value = keyValue.second;
-			const std::string typeName = std::string(rttr::type::get<Value>().get_name());
+			const std::string typeName = std::string(value->get_type().get_name());
 			Serialize(std::to_string(key), typeName, value);
 		}
 	}
@@ -250,28 +238,69 @@ namespace Solus
 	///
 
 	template<typename T>
-	inline std::enable_if_t<!std::is_pointer_v<T>> ArchiveStream::DeserializeInternal(T& value)
+	inline std::enable_if_t<!std::is_pointer_v<T>> ArchiveStream::DeserializeInternal(ArchiveEntry& entry, T& value)
 	{
-		
+		//entry.ReadUInt8(); // read type
+		uint32_t size = entry.ReadUInt32();
+		memcpy(&value, entry.value + entry.currentPosition, size);
 	}
 
 	template<typename T>
-	inline std::enable_if_t<std::is_base_of_v<SolusObject, T> || std::is_base_of_v<SComponent, T> || std::is_base_of_v<Asset, T>> ArchiveStream::DeserializeInternal(T* value)
+	inline std::enable_if_t<std::is_base_of_v<SolusObject, T> || std::is_base_of_v<SComponent, T> || std::is_base_of_v<Asset, T>> ArchiveStream::DeserializeInternal(ArchiveEntry& entry, T* value)
 	{
+		value->GetClassMetaData()->Deserialize(this, entry, value);
 	}
 
 	template<typename Key, typename Value>
-	inline std::enable_if_t<std::is_integral_v<Key>> ArchiveStream::DeserializeInternal(std::unordered_map<Key, Value>& map)
+	inline std::enable_if_t<std::is_integral_v<Key>> ArchiveStream::DeserializeInternal(ArchiveEntry& entry, std::unordered_map<Key, Value>& map)
 	{
+		//entry.ReadUInt8();
+		uint32_t elements = entry.ReadUInt32();
+		for (size_t i = 0; i < elements; i++)
+		{
+			ArchiveEntry newEntry;
+			if (Deserialize(newEntry, entry))
+			{
+				rttr::variant keyValueString = newEntry.name;
+				rttr::variant keyValue = keyValueString.convert<Key>();
+				Key key = keyValue.get_value<Key>();
+				Value newValue = rttr::type::get_by_name(newEntry.typeName).create().get_value<Value>();
+				map[key] = newValue;
+				DeserializeInternal(newEntry, newValue);
+			}
+		}
 	}
 
 	template<typename T>
-	inline void ArchiveStream::DeserializeInternal(std::vector<T>& value)
+	inline std::enable_if_t<std::is_trivial_v<T>> ArchiveStream::DeserializeInternal(ArchiveEntry& entry, std::vector<T>& value)
 	{
-		const int count = 0;
-		for (size_t i = 0; i < count; i++)
+		//entry.ReadUInt8();
+		uint32_t elements = entry.ReadUInt32();
+		for (size_t i = 0; i < elements; i++)
 		{
+			ArchiveEntry newEntry;
+			if (Deserialize(newEntry, entry))
+			{
+				value[i] = rttr::type::get_by_name(newEntry.typeName).create().get_value<T*>();
+				DeserializeInternal(newEntry, value[i]);
+			}
+		}
+	}
 
+	template<typename T>
+	std::enable_if_t<std::is_base_of_v<SolusObject, T> || std::is_base_of_v<SComponent, T> || std::is_base_of_v<Asset, T>> ArchiveStream::DeserializeInternal(ArchiveEntry& entry, std::vector<T*>& value)
+	{
+		//entry.ReadUInt8();
+		uint32_t elements = entry.ReadUInt32();
+		value.resize(elements);
+		for (size_t i = 0; i < elements; i++)
+		{
+			ArchiveEntry newEntry;
+			if (Deserialize(newEntry, entry))
+			{
+				value[i] = rttr::type::get_by_name(newEntry.typeName).create().get_value<T*>();
+				DeserializeInternal(newEntry, value[i]);
+			}
 		}
 	}
 

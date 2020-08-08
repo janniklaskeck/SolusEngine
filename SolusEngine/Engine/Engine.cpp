@@ -113,7 +113,7 @@ namespace Solus
 	void Engine::Render()
 	{
 		renderTimer->Update();
-		if (renderTimer->TickDone())
+		//if (renderTimer->TickDone())
 		{
 			auto* renderDevice = GetRenderDevice();
 			renderDevice->PreRenderScene();

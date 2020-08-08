@@ -58,14 +58,14 @@ namespace Solus
 		if (glfwRawMouseMotionSupported())
 			glfwSetInputMode(window, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
 
-		glfwSwapInterval(1);
+		//glfwSwapInterval(2);
 		glfwMakeContextCurrent(window);
 
 		if (gl3wInit())
 		{
 			fprintf(stderr, "failed to initialize OpenGL\n");
 		}
-		if (!gl3wIsSupported(3, 2))
+		if (!gl3wIsSupported(4, 0))
 		{
 			fprintf(stderr, "OpenGL 3.2 not supported\n");
 		}

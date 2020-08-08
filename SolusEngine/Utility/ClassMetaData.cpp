@@ -6,4 +6,12 @@
 
 namespace Solus
 {
+    void ClassMetaData::Deserialize(ArchiveStream* archive, ArchiveEntry& entry, SolusObject* object)
+	{
+		ArchiveEntry nextEntry;
+		while (archive->Deserialize(nextEntry, entry))
+		{
+			DeserializeMember(archive, object, nextEntry);
+		}
+	};
 }

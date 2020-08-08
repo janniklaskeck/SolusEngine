@@ -16,9 +16,9 @@ namespace Solus
 
 	World::~World()
 	{
-		for (auto it = globalEntities.begin(); it != globalEntities.end(); it++)
+		for (auto& entity : globalEntities)
 		{
-			delete it->second;
+			delete entity.second;
 		}
 	}
 
@@ -37,43 +37,42 @@ namespace Solus
 	std::vector<class Entity*> World::GetEntities() const
 	{
 		std::vector<Entity*> entities;
-		for (auto it = globalEntities.begin(); it != globalEntities.end(); it++)
+		for (auto& entity : globalEntities)
 		{
-			auto entry = *it;
-			entities.push_back(entry.second);
+			entities.push_back(entity.second);
 		}
 		return entities;
 	}
 
 	void World::BeginPlay()
 	{
-		for (auto it = globalEntities.begin(); it != globalEntities.end(); it++)
+		for (auto& entity : globalEntities)
 		{
-			it->second->BeginPlay();
+			entity.second->BeginPlay();
 		}
 	}
 
 	void World::Update(float deltaTime)
 	{
-		for (auto it = globalEntities.begin(); it != globalEntities.end(); it++)
+		for (auto& entity : globalEntities)
 		{
-			it->second->Update(deltaTime);
+			entity.second->Update(deltaTime);
 		}
 	}
 
 	void World::EndPlay()
 	{
-		for (auto it = globalEntities.begin(); it != globalEntities.end(); it++)
+		for (auto& entity : globalEntities)
 		{
-			it->second->EndPlay();
+			entity.second->EndPlay();
 		}
 	}
 
 	void World::Render()
 	{
-		for (auto it = globalEntities.begin(); it != globalEntities.end(); it++)
+		for (auto& entity : globalEntities)
 		{
-			auto* meshComponent = it->second->GetComponent<MeshComponent>();
+			auto* meshComponent = entity.second->GetComponent<MeshComponent>();
 			if (meshComponent)
 			{
 				meshComponent->Render();

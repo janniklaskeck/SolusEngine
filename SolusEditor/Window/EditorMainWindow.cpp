@@ -82,7 +82,7 @@ namespace Editor
 
 	void EditorMainWindow::Update()
 	{
-		gEngine->GetRenderDevice()->SetShouldRenderScene(false);
+		//gEngine->GetRenderDevice()->SetShouldRenderScene(false);
 		propertyWindow->SetEntity(sceneGraph->GetSelectedEntity());
 	}
 

@@ -9,6 +9,7 @@
 namespace Solus
 {
 	class ArchiveStream;
+	struct ArchiveEntry;
 	class SolusObject;
 
 	struct SOLUS_API ClassMetaData
@@ -18,10 +19,9 @@ namespace Solus
 		{
 		};
 
-		virtual void Deserialize(ArchiveStream* archive, SolusObject* object)
-		{};
+		void Deserialize(ArchiveStream* archive, ArchiveEntry& entry, SolusObject* object);
 
-		virtual const bool DeserializeMember(const SolusObject* object, const std::string& name, const unsigned char* ptr, uint32_t length)
+		virtual const bool DeserializeMember(ArchiveStream* archive, const SolusObject* object, ArchiveEntry& nextEntry)
 		{
 			return false;
 		}
