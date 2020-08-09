@@ -26,6 +26,8 @@ namespace Solus
 
 		virtual void SetMouseVisible(bool isVisible) = 0;
 
+		virtual void SetWindowTitle(const std::string title) = 0;
+
 		bool IsEditorWindow() const
 		{
 			return isEditorWindow;

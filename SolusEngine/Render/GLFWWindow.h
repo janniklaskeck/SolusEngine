@@ -33,6 +33,8 @@ namespace Solus
 
 		virtual void SetMouseVisible(bool isVisible) override;
 
+		virtual void SetWindowTitle(const std::string title) override;
+
 		GLFWwindow* GetInternalWindow() const;
 
 	protected:

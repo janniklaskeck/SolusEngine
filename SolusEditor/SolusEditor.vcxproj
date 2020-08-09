@@ -101,7 +101,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\SolusEngine;..\Libraries\glm;..\Libraries\GLFW\include;..\gl3w\include;.\;..\intermediates\generated;..\Libraries\json;..\Libraries\RTTR\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\SolusEngine;..\Libraries\glm;..\Libraries\GLFW\include;..\gl3w\include;.\;..\intermediates\generated;..\Libraries\json;..\Libraries\RTTR\include;..\Libraries\portable-file-dialogs-0.1.0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DisableSpecificWarnings>4251</DisableSpecificWarnings>
@@ -139,7 +139,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\Libraries\GLFW\include;..\SolusEngine;..\SolusEngine\IMGUI;..\Libraries\glm;..\Libraries\gl3w\include;..\Libraries\RTTR\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Libraries\GLFW\include;..\SolusEngine;..\SolusEngine\IMGUI;..\Libraries\glm;..\Libraries\gl3w\include;..\Libraries\RTTR\include;..\Libraries\portable-file-dialogs-0.1.0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
@@ -170,6 +170,7 @@
     <ClCompile Include="Window\EditorMainWindow.cpp" />
     <ClCompile Include="Window\SubWindow\EditorAssetWindow.cpp" />
     <ClCompile Include="Window\SubWindow\EditorLogWindow.cpp" />
+    <ClCompile Include="Window\SubWindow\EditorMenuBar.cpp" />
     <ClCompile Include="Window\SubWindow\EditorPropertyWindow.cpp" />
     <ClCompile Include="Window\SubWindow\EditorSceneGraph.cpp" />
     <ClCompile Include="Window\SubWindow\EditorSceneWindow.cpp" />
@@ -190,6 +191,7 @@
     <ClInclude Include="Window\EditorMainWindow.h" />
     <ClInclude Include="Window\SubWindow\EditorAssetWindow.h" />
     <ClInclude Include="Window\SubWindow\EditorLogWindow.h" />
+    <ClInclude Include="Window\SubWindow\EditorMenuBar.h" />
     <ClInclude Include="Window\SubWindow\EditorPropertyWindow.h" />
     <ClInclude Include="Window\SubWindow\EditorSceneGraph.h" />
     <ClInclude Include="Window\SubWindow\EditorSceneWindow.h" />

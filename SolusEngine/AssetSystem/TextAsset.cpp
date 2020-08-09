@@ -2,6 +2,8 @@
 
 namespace Solus
 {
+	SCLASS_IMPL(TextAsset);
+
 	std::string TextAsset::GetStringContent() const
 	{
 		std::string content = (char*)GetRawData();

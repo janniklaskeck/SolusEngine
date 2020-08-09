@@ -53,7 +53,7 @@ namespace Solus
 
 	protected:
 		SPROPERTY();
-		uint32_t assetId;
+		uint32_t assetId = 0;
 
 		std::filesystem::path path;
 		AssetType type;

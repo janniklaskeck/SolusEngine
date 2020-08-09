@@ -22,7 +22,7 @@ namespace Editor
 		// <--
 
 	private:
-		void TreeDisplayFolder(Solus::AssetFolder* folder);
+		void TreeDisplayFolder(Solus::AssetFolder* folder, const std::string& folderNameOverride = "");
 
 		void RenderFiles();
 		void RenderFile(Solus::Asset* asset);

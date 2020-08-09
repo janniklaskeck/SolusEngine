@@ -28,13 +28,27 @@ namespace Editor
 			ImGui::BeginChild("FolderChild", ImVec2((float)folderTreeWidth, ImGui::GetWindowHeight() - 35.f), true);
 			ImGui::Text("Folders");
 
-			auto source = gEngine->GetAssetManager()->GetAssetSource(0);
-			FolderAssetSource* folderSource = (FolderAssetSource*)source;
-			auto folders = folderSource->GetFolders();
+			AssetSource* projectSource = gEngine->GetAssetManager()->GetProjectAssetSource();
+			if (projectSource)
+			{
+				FolderAssetSource* folderSource = (FolderAssetSource*)projectSource;
+				AssetFolder* folders = folderSource->GetFolders();
 
-			ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+				ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+				static std::string projectFolderName = "Project";
+				TreeDisplayFolder(folders, projectFolderName);
+			}
 
-			TreeDisplayFolder(folders);
+			AssetSource* engineSource = gEngine->GetAssetManager()->GetEngineAssetSource();
+			if (engineSource)
+			{
+				FolderAssetSource* folderSource = (FolderAssetSource*)engineSource;
+				AssetFolder* folders = folderSource->GetFolders();
+
+				ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+				static std::string engineFolderName = "Engine";
+				TreeDisplayFolder(folders, engineFolderName);
+			}
 
 			ImGui::EndChild();
 
@@ -58,13 +72,15 @@ namespace Editor
 	void EditorAssetWindow::OnMaximized()
 	{}
 
-	void EditorAssetWindow::TreeDisplayFolder(AssetFolder* folder)
+	void EditorAssetWindow::TreeDisplayFolder(AssetFolder* folder, const std::string& folderNameOverride)
 	{
 		if (!folder)
 			return;
 		bool isLeafFolder = folder->childFolders.size() == 0;
 		ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanAvailWidth;
 		std::string folderName = folder->folderName;
+		if (!folderNameOverride.empty())
+			folderName = folderNameOverride;
 		if (folderName.empty())
 		{
 			folderName = "Root";
@@ -105,7 +121,7 @@ namespace Editor
 		{
 			auto* manager = gEngine->GetAssetManager();
 			ImVec2 buttonSize(80, 80);
-			auto root = manager->GetAssetSource(0)->GetRootPath();
+			auto root = manager->GetEngineAssetSource()->GetRootPath();
 			std::filesystem::path path(root);
 			path /= clickedFolder->GetFullRelativePath();
 			std::filesystem::directory_iterator end;

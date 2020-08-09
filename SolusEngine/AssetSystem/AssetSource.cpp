@@ -11,8 +11,7 @@ namespace Solus
 
 	AssetSource::AssetSource(std::string root)
 	{
-		auto assetSourceRoot = gEngine->GetAssetManager()->GetEngineAssetRoot() + "/" + root;
-		this->root = std::filesystem::absolute(assetSourceRoot);
+		this->root = std::filesystem::absolute(root);
 		// Text files
 		extensionTypeMap[".txt"] = AssetType::AT_TEXT;
 		extensionTypeMap[".glsl"] = AssetType::AT_TEXT;

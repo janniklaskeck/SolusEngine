@@ -1,14 +1,11 @@
 #include "AssetManager.h"
 
+#include "AssetSystem/FolderAssetSource.h"
+
 namespace Solus
 {
 	AssetManager::~AssetManager()
-	{
-		for (auto* source : sources)
-		{
-			delete source;
-		}
-	}
+	{}
 
 	void AssetManager::Initialize()
 	{}
@@ -19,29 +16,34 @@ namespace Solus
 	void AssetManager::Destroy()
 	{}
 
-	void Solus::AssetManager::AddSource(AssetSource* source)
+	void AssetManager::SetEngineAssetRoot(const std::string& engineAssetRoot)
 	{
-		if (!source)
-			return;
-		source->Initialize();
-		sources.push_back(source);
+		engineAssetSource.reset(new FolderAssetSource(engineAssetRoot));
+		engineAssetSource->Initialize();
 	}
 
-	std::string AssetManager::GetEngineAssetRoot() const
+	void AssetManager::SetProjectAssetRoot(const std::string& projectAssetRoot)
 	{
-		return engineAssetRoot;
-	}
-
-	void AssetManager::SetEngineAssetRoot(std::string& engineAssetRoot)
-	{
-		this->engineAssetRoot = std::string(engineAssetRoot);
+		if (!projectAssetRoot.empty())
+		{
+			projectAssetSource.reset(new FolderAssetSource(projectAssetRoot));
+			projectAssetSource->Initialize();
+		}
 	}
 
 	Asset* Solus::AssetManager::GetAsset(std::string path)
 	{
-		for (auto* source : sources)
+		if (projectAssetSource)
 		{
-			Asset* foundAsset = source->GetAsset(path);
+			Asset* foundAsset = projectAssetSource->GetAsset(path);
+			if (foundAsset)
+			{
+				return foundAsset;
+			}
+		}
+		if (engineAssetSource)
+		{
+			Asset* foundAsset = engineAssetSource->GetAsset(path);
 			if (foundAsset)
 			{
 				return foundAsset;
@@ -60,14 +62,14 @@ namespace Solus
 		return nullptr;
 	}
 
-	size_t AssetManager::GetNumSources() const
+	AssetSource* AssetManager::GetEngineAssetSource() const
 	{
-		return sources.size();
+		return engineAssetSource.get();
 	}
 
-	AssetSource* AssetManager::GetAssetSource(size_t index) const
+	AssetSource* AssetManager::GetProjectAssetSource() const
 	{
-		return sources[index];
+		return projectAssetSource.get();
 	}
 
 }

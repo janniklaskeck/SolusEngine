@@ -1,12 +1,6 @@
 #include "EditorMainWindow.h"
 #include "EditorInputDevice.h"
 
-#include "SubWindow/EditorSceneWindow.h"
-#include "SubWindow/EditorSceneGraph.h"
-#include "SubWindow/EditorPropertyWindow.h"
-#include "SubWindow/EditorAssetWindow.h"
-#include "SubWindow/EditorLogWindow.h"
-
 #include "Input/InputDevice.h"
 
 #include "Engine/Engine.h"
@@ -62,11 +56,19 @@ namespace Editor
 		ImGui_ImplGlfw_InitForOpenGL(window, true);
 		ImGui_ImplOpenGL3_Init("#version 460 core");
 
-		subWindows.push_back(sceneWindow = new EditorSceneWindow);
-		subWindows.push_back(sceneGraph = new EditorSceneGraph);
-		subWindows.push_back(propertyWindow = new EditorPropertyWindow);
-		subWindows.push_back(assetWindow = new EditorAssetWindow);
-		subWindows.push_back(logWindow = new EditorLogWindow);
+		menuBar.reset(new EditorMenuBar);
+		sceneWindow.reset(new EditorSceneWindow);
+		sceneGraph.reset(new EditorSceneGraph);
+		propertyWindow.reset(new EditorPropertyWindow);
+		assetWindow.reset(new EditorAssetWindow);
+		logWindow.reset(new EditorLogWindow);
+
+		subWindows.push_back(menuBar.get());
+		subWindows.push_back(sceneWindow.get());
+		subWindows.push_back(sceneGraph.get());
+		subWindows.push_back(propertyWindow.get());
+		subWindows.push_back(assetWindow.get());
+		subWindows.push_back(logWindow.get());
 
 		for (auto* subWindow : subWindows)
 		{
@@ -77,14 +79,14 @@ namespace Editor
 		windowFlags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
 		windowFlags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
 
-		gEngine->GetAssetManager()->AddSource(new FolderAssetSource("Editor"));
+		SetWindowTitle("Editor - " + gEngine->GetCurrentProject()->GetProjectName());
 	}
 
 	void EditorMainWindow::Update()
 	{
 		gEngine->GetRenderDevice()->SetShouldRenderScene(false);
 
-		const float deltaTime = gEngine->DeltaTime();
+		const float deltaTime = (float)gEngine->DeltaTime();
 		for (auto* subWindow : subWindows)
 		{
 			subWindow->Update(deltaTime);
@@ -123,7 +125,7 @@ namespace Editor
 			glfwMakeContextCurrent(backup_current_context);
 		}
 	}
-	
+
 	void EditorMainWindow::Destroy()
 	{
 		ImGui_ImplOpenGL3_Shutdown();
@@ -131,7 +133,7 @@ namespace Editor
 		ImGui::DestroyContext();
 		GLFWWindow::Destroy();
 	}
-	
+
 	void EditorMainWindow::RenderDockspace()
 	{
 		ImGuiViewport* viewport = ImGui::GetMainViewport();

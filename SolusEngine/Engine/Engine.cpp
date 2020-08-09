@@ -27,10 +27,11 @@ namespace Solus
 {
 	Engine* gEngine = nullptr;
 
-	void InitializeEngine(Window* window)
+	void InitializeEngine(Window* window, const std::string& projectFilePath)
 	{
 		gEngine = new Engine;
 		gEngine->InitWindow(window); // Do Window first, necessary for now
+		gEngine->SetCurrentProject(projectFilePath);
 		gEngine->Initialize();
 	}
 
@@ -41,6 +42,8 @@ namespace Solus
 		assetManager->Initialize();
 		auto engineAssetRoot = FileUtils::GetCurrentFolder() + "/../Assets";
 		gEngine->GetAssetManager()->SetEngineAssetRoot(engineAssetRoot);
+
+		gEngine->GetAssetManager()->SetProjectAssetRoot(currentProject.get()->GetProjectRootFolder());
 
 		world.reset(new World);
 		window->Initialize();
@@ -208,6 +211,18 @@ namespace Solus
 	double Engine::DeltaTime() const
 	{
 		return tickTimer->GetDeltaTime();
+	}
+
+	void Engine::SetCurrentProject(const std::string& projectFile)
+	{
+		gEngine->Log(LogLevel::LogDebug, "Opening project at '%s'", projectFile.c_str());
+		currentProject.reset(new ProjectFile(projectFile));
+		window->SetWindowTitle(currentProject->GetProjectName());
+	}
+
+	const ProjectFile* Engine::GetCurrentProject() const
+	{
+		return currentProject.get();
 	}
 
 }

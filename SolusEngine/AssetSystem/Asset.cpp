@@ -40,12 +40,12 @@ namespace Solus
 
 	std::filesystem::path Asset::GetFilePath(bool relativePath /*= false*/) const
 	{
-		if (relativePath)
-		{
-			const auto& root = gEngine->GetAssetManager()->GetEngineAssetRoot();
-			auto relPath = std::filesystem::relative(path, root);
-			return relPath;
-		}
+		//if (relativePath)
+		//{
+		//	const auto& root = gEngine->GetAssetManager()->GetEngineAssetRoot();
+		//	auto relPath = std::filesystem::relative(path, root);
+		//	return relPath;
+		//}
 		return path;
 	}
 

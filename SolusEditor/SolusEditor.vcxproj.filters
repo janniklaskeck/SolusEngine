@@ -76,6 +76,9 @@
     <ClCompile Include="Utils\UIUtils.cpp">
       <Filter>Source\Utils</Filter>
     </ClCompile>
+    <ClCompile Include="Window\SubWindow\EditorMenuBar.cpp">
+      <Filter>Source\Window\SubWindow</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IMGUI\imconfig.h">
@@ -134,6 +137,9 @@
     </ClInclude>
     <ClInclude Include="Utils\UIUtils.h">
       <Filter>Source\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Window\SubWindow\EditorMenuBar.h">
+      <Filter>Source\Window\SubWindow</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

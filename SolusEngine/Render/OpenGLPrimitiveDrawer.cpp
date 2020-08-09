@@ -12,8 +12,8 @@ namespace Solus
 {
 	OpenGLPrimitiveDrawer::OpenGLPrimitiveDrawer()
 	{
-		auto* rectangleVS = (TextAsset*)gEngine->GetAssetManager()->GetAsset("Shader/DefaultScreenVS.glsl");
-		auto* rectangleFS = (TextAsset*)gEngine->GetAssetManager()->GetAsset("Shader/DefaultScreenFS.glsl");
+		auto* rectangleVS = (TextAsset*)gEngine->GetAssetManager()->GetAsset("Editor/Shader/DefaultScreenVS.glsl");
+		auto* rectangleFS = (TextAsset*)gEngine->GetAssetManager()->GetAsset("Editor/Shader/DefaultScreenFS.glsl");
 
 		rectangleShader = (OpenGLShader*)gEngine->GetRenderDevice()->CreateShader(rectangleVS, rectangleFS);
 		glGenVertexArrays(1, &rectangleVAO);

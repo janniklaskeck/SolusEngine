@@ -139,7 +139,28 @@
     <ClCompile Include="Utility\SerializeUtil.cpp">
       <Filter>Source\Utility</Filter>
     </ClCompile>
-  <ClCompile Include="..\intermediates\generated\World.generated.cpp"><Filter>Generated</Filter></ClCompile><ClCompile Include="..\intermediates\generated\Asset.generated.cpp"><Filter>Generated</Filter></ClCompile><ClCompile Include="..\intermediates\generated\MeshAsset.generated.cpp"><Filter>Generated</Filter></ClCompile></ItemGroup>
+    <ClCompile Include="..\intermediates\generated\World.generated.cpp">
+      <Filter>Generated</Filter>
+    </ClCompile>
+    <ClCompile Include="..\intermediates\generated\Asset.generated.cpp">
+      <Filter>Generated</Filter>
+    </ClCompile>
+    <ClCompile Include="..\intermediates\generated\MeshAsset.generated.cpp">
+      <Filter>Generated</Filter>
+    </ClCompile>
+    <ClCompile Include="..\intermediates\generated\PrefabAsset.generated.cpp">
+      <Filter>Generated</Filter>
+    </ClCompile>
+    <ClCompile Include="..\intermediates\generated\TextureAsset.generated.cpp">
+      <Filter>Generated</Filter>
+    </ClCompile>
+    <ClCompile Include="..\intermediates\generated\TextAsset.generated.cpp">
+      <Filter>Generated</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\ProjectFile.cpp">
+      <Filter>Source\Engine</Filter>
+    </ClCompile>
+  </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
     <ClInclude Include="targetver.h" />
@@ -305,7 +326,28 @@
     <ClInclude Include="Utility\SerializeUtil.h">
       <Filter>Source\Utility</Filter>
     </ClInclude>
-  <ClInclude Include="..\intermediates\generated\World.generated.h"><Filter>Generated</Filter></ClInclude><ClInclude Include="..\intermediates\generated\Asset.generated.h"><Filter>Generated</Filter></ClInclude><ClInclude Include="..\intermediates\generated\MeshAsset.generated.h"><Filter>Generated</Filter></ClInclude></ItemGroup>
+    <ClInclude Include="..\intermediates\generated\World.generated.h">
+      <Filter>Generated</Filter>
+    </ClInclude>
+    <ClInclude Include="..\intermediates\generated\Asset.generated.h">
+      <Filter>Generated</Filter>
+    </ClInclude>
+    <ClInclude Include="..\intermediates\generated\MeshAsset.generated.h">
+      <Filter>Generated</Filter>
+    </ClInclude>
+    <ClInclude Include="..\intermediates\generated\PrefabAsset.generated.h">
+      <Filter>Generated</Filter>
+    </ClInclude>
+    <ClInclude Include="..\intermediates\generated\TextureAsset.generated.h">
+      <Filter>Generated</Filter>
+    </ClInclude>
+    <ClInclude Include="..\intermediates\generated\TextAsset.generated.h">
+      <Filter>Generated</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ProjectFile.h">
+      <Filter>Source\Engine</Filter>
+    </ClInclude>
+  </ItemGroup>
   <ItemGroup>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{30caf233-bccc-4bd1-aa21-a3af5a62987d}</UniqueIdentifier>

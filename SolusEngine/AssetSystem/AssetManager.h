@@ -19,21 +19,20 @@ namespace Solus
 		virtual void Update() override;
 		virtual void Destroy() override;
 
-		void AddSource(AssetSource* source);
-		std::string GetEngineAssetRoot() const;
-		void SetEngineAssetRoot(std::string& engineAssetRoot);
+		void SetEngineAssetRoot(const std::string& engineAssetRoot);
+		void SetProjectAssetRoot(const std::string& projectAssetRoot);
 
 		Asset* GetAsset(std::string path);
 		Asset* GetAsset(const char* path);
 		Asset* GetAsset(const uint32_t assetId) const;
-
-		size_t GetNumSources() const;
-		AssetSource* GetAssetSource(size_t index) const;
+		AssetSource* GetEngineAssetSource() const;
+		AssetSource* GetProjectAssetSource() const;
 
 	private:
 		std::string engineAssetRoot;
 
-		std::vector<AssetSource*> sources;
+		std::unique_ptr<AssetSource> engineAssetSource;
+		std::unique_ptr<AssetSource> projectAssetSource;
 	};
 
 }

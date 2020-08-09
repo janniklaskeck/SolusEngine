@@ -1,8 +1,15 @@
 #pragma once
 #include "Render/GLFWWindow.h"
 #include "SubWindow/SubWindow.h"
+#include "SubWindow/EditorSceneWindow.h"
+#include "SubWindow/EditorSceneGraph.h"
+#include "SubWindow/EditorPropertyWindow.h"
+#include "SubWindow/EditorAssetWindow.h"
+#include "SubWindow/EditorLogWindow.h"
+#include "SubWindow/EditorMenuBar.h"
 
 #include <vector>
+#include <memory>
 
 namespace Editor
 {
@@ -11,6 +18,7 @@ namespace Editor
 	class EditorPropertyWindow;
 	class EditorAssetWindow;
 	class EditorLogWindow;
+	class EditorMenuBar;
 
 	class EditorMainWindow : public Solus::GLFWWindow
 	{
@@ -25,11 +33,12 @@ namespace Editor
 		void RenderDockspace();
 	private:
 		int windowFlags;
-		EditorSceneWindow* sceneWindow;
-		EditorSceneGraph* sceneGraph;
-		EditorPropertyWindow* propertyWindow;
-		EditorAssetWindow* assetWindow;
-		EditorLogWindow* logWindow;
+		std::unique_ptr<EditorSceneWindow> sceneWindow;
+		std::unique_ptr<EditorSceneGraph> sceneGraph;
+		std::unique_ptr<EditorPropertyWindow> propertyWindow;
+		std::unique_ptr<EditorAssetWindow> assetWindow;
+		std::unique_ptr<EditorLogWindow> logWindow;
+		std::unique_ptr<EditorMenuBar> menuBar;
 
 		std::vector<SubWindow*> subWindows;
 

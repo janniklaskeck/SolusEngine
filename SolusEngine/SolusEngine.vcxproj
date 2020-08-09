@@ -115,7 +115,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;SOLUSENGINE_EXPORT;GLFW_INCLUDE_NONE;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\Libraries\GLFW\include;..\Libraries\glm;..\gl3w\include;..\Libraries\assimp\include;..\Libraries\json;./;..\intermediates\generated;..\Libraries\RTTR\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Libraries\GLFW\include;..\Libraries\glm;..\gl3w\include;..\Libraries\assimp\include;..\Libraries\json;./;..\intermediates\generated;..\Libraries\RTTR\include;..\Libraries\dirent-1.23.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DisableSpecificWarnings>4251;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -166,7 +166,7 @@ xcopy /y $(SolutionDir)Libraries\assimp\lib\assimp-vc142-mt.dll  $(OutDir)</Comm
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;SOLUSENGINE_EXPORT;GLFW_INCLUDE_NONE;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\Libraries\GLFW\include;..\Libraries\glm;..\gl3w\include;..\Libraries\assimp\include;..\Libraries\json;./;..\intermediates\generated;..\Libraries\RTTR\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Libraries\GLFW\include;..\Libraries\glm;..\gl3w\include;..\Libraries\assimp\include;..\Libraries\json;./;..\intermediates\generated;..\Libraries\RTTR\include;..\Libraries\dirent-1.23.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
@@ -196,6 +196,7 @@ xcopy /y $(SolutionDir)Libraries\RTTR\bin\rttr_core.dll  $(OutDir)</Command>
     <ClInclude Include="AssetSystem\TextureAsset.h" />
     <ClInclude Include="Engine\Engine.h" />
     <ClInclude Include="Engine\LogListener.h" />
+    <ClInclude Include="Engine\ProjectFile.h" />
     <ClInclude Include="Engine\SolusEngine.h" />
     <ClInclude Include="Input\InputDevice.h" />
     <ClInclude Include="Input\InputListener.h" />
@@ -244,6 +245,9 @@ xcopy /y $(SolutionDir)Libraries\RTTR\bin\rttr_core.dll  $(OutDir)</Command>
     <ClInclude Include="..\intermediates\generated\World.generated.h" />
     <ClInclude Include="..\intermediates\generated\Asset.generated.h" />
     <ClInclude Include="..\intermediates\generated\MeshAsset.generated.h" />
+    <ClInclude Include="..\intermediates\generated\PrefabAsset.generated.h" />
+    <ClInclude Include="..\intermediates\generated\TextureAsset.generated.h" />
+    <ClInclude Include="..\intermediates\generated\TextAsset.generated.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssetSystem\Asset.cpp" />
@@ -256,6 +260,7 @@ xcopy /y $(SolutionDir)Libraries\RTTR\bin\rttr_core.dll  $(OutDir)</Command>
     <ClCompile Include="AssetSystem\TextAsset.cpp" />
     <ClCompile Include="AssetSystem\TextureAsset.cpp" />
     <ClCompile Include="Engine\Engine.cpp" />
+    <ClCompile Include="Engine\ProjectFile.cpp" />
     <ClCompile Include="Input\InputDevice.cpp" />
     <ClCompile Include="Object\Component\MeshComponent.cpp" />
     <ClCompile Include="Object\Component\SComponent.cpp" />
@@ -295,6 +300,9 @@ xcopy /y $(SolutionDir)Libraries\RTTR\bin\rttr_core.dll  $(OutDir)</Command>
     <ClCompile Include="..\intermediates\generated\World.generated.cpp" />
     <ClCompile Include="..\intermediates\generated\Asset.generated.cpp" />
     <ClCompile Include="..\intermediates\generated\MeshAsset.generated.cpp" />
+    <ClCompile Include="..\intermediates\generated\PrefabAsset.generated.cpp" />
+    <ClCompile Include="..\intermediates\generated\TextureAsset.generated.cpp" />
+    <ClCompile Include="..\intermediates\generated\TextAsset.generated.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\gl3w\gl3w.vcxproj">

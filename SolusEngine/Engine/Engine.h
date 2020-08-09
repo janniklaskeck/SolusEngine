@@ -1,6 +1,7 @@
 #pragma once
 
 #include "SolusEngine.h"
+#include "ProjectFile.h"
 
 #include "AssetSystem/AssetManager.h"
 
@@ -32,7 +33,7 @@ namespace Solus
 	class World;
 	class LogListener;
 
-	void SOLUS_API InitializeEngine(Window* window);
+	void SOLUS_API InitializeEngine(Window* window, const std::string& projectFilePath);
 
 	class SOLUS_API Engine : public SubSystem
 	{
@@ -70,8 +71,13 @@ namespace Solus
 		const Timer* GetRenderTimer() const;
 
 		double DeltaTime() const;
+
+		void SetCurrentProject(const std::string& projectFile);
+		const ProjectFile* GetCurrentProject() const;
 	private:
-		static Engine* engineInstance;
+
+		std::unique_ptr<ProjectFile> currentProject;
+
 		static const char* LogLevelToChar(LogLevel level);
 
 		std::unique_ptr<Window> window;

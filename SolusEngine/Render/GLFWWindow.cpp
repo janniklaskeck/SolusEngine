@@ -164,4 +164,9 @@ namespace Solus
 		else
 			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	}
+	
+	void GLFWWindow::SetWindowTitle(const std::string title)
+	{
+		glfwSetWindowTitle(window, title.c_str());
+	}
 }
