@@ -17,7 +17,7 @@ namespace Solus
 		RenderMesh();
 		virtual ~RenderMesh();
 
-		virtual void Render();
+		virtual void Render(const Entity* owner) {};
 
 		virtual bool Load(MeshAsset* meshAsset) = 0;
 

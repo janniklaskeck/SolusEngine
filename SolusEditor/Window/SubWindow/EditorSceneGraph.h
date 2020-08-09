@@ -12,6 +12,7 @@ namespace Editor
 	public:
 		// Inherited via SubWindow -->
 		virtual void Initialize() override;
+		virtual void Update(float deltaTime) override;
 		virtual void Render() override;
 		virtual void OnFocusReceived() override;
 		virtual void OnFocusLost() override;

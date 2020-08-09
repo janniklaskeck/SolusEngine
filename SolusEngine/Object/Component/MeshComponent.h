@@ -20,9 +20,6 @@ namespace Solus
 		virtual void EndPlay() override;
 
 		void SetMesh(MeshAsset* meshAsset);
-
-	protected:
-		RenderMesh* renderMesh = nullptr;
 	public:
 		SPROPERTY();
 		MeshAsset* meshAsset = nullptr;

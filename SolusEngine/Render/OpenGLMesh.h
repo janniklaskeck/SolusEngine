@@ -32,7 +32,7 @@ namespace Solus
 	public:
 		OpenGLMesh();
 		~OpenGLMesh();
-		virtual void Render() override;
+		virtual void Render(const Entity* owner) override;
 
 		virtual bool Load(MeshAsset* meshAsset) override;
 

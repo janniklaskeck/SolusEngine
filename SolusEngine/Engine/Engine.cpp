@@ -37,21 +37,21 @@ namespace Solus
 	void Engine::Initialize()
 	{
 		// Add Engine assets
-		assetManager = new AssetManager;
+		assetManager.reset(new AssetManager);
 		assetManager->Initialize();
 		auto engineAssetRoot = FileUtils::GetCurrentFolder() + "/../Assets";
 		gEngine->GetAssetManager()->SetEngineAssetRoot(engineAssetRoot);
 
-		world = new World;
+		world.reset(new World);
 		window->Initialize();
 
-		tickTimer = new Timer;
+		tickTimer.reset(new Timer);
 		tickTimer->Initialize();
 
-		renderTimer = new Timer;
+		renderTimer.reset(new Timer);
 		renderTimer->Initialize();
 
-		renderDevice = new OpenGLDevice;
+		renderDevice.reset(new OpenGLDevice);
 		renderDevice->Initialize();
 
 
@@ -66,12 +66,7 @@ namespace Solus
 	{}
 
 	Engine::~Engine()
-	{
-		delete tickTimer;
-		delete renderTimer;
-		delete window;
-		delete world;
-	}
+	{}
 
 	void Engine::Log(LogLevel level, const char* msgFormat, ...)
 	{
@@ -152,27 +147,27 @@ namespace Solus
 
 	void Engine::InitWindow(Window* windowInstance)
 	{
-		window = windowInstance;
+		window.reset(windowInstance);
 	}
 
 	Window* Engine::GetWindow() const
 	{
-		return window;
+		return window.get();
 	}
 
 	void Engine::SetWorld(World* newWorld)
 	{
-		world = newWorld;
+		world.reset(newWorld);
 	}
 
 	World* Engine::GetWorld() const
 	{
-		return world;
+		return world.get();
 	}
 
 	RenderDevice* Engine::GetRenderDevice()
 	{
-		return renderDevice;
+		return renderDevice.get();
 	}
 
 	Camera* Engine::GetMainCamera() const
@@ -197,17 +192,17 @@ namespace Solus
 
 	AssetManager* Engine::GetAssetManager() const
 	{
-		return assetManager;
+		return assetManager.get();
 	}
 
 	const Timer* Engine::GetTickTimer() const
 	{
-		return tickTimer;
+		return tickTimer.get();
 	}
 
 	const Timer* Engine::GetRenderTimer() const
 	{
-		return renderTimer;
+		return renderTimer.get();
 	}
 
 	double Engine::DeltaTime() const

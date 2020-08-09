@@ -89,14 +89,23 @@ namespace Solus
 	OpenGLMesh::~OpenGLMesh()
 	{
 		glDeleteVertexArrays(1, &VAO);
+		for (RenderTexture* texture : textures)
+		{
+			delete texture;
+		}
 	}
 
-	void OpenGLMesh::Render()
+	void OpenGLMesh::Render(const Entity* owner)
 	{
 		glUseProgram(GetOpenGLShader()->GetShaderProgram());
 		Mat4f projection = *gEngine->GetMainCamera()->GetProjectionMatrix();
 		Mat4f view = gEngine->GetMainCamera()->GetTransform();
 		glm::mat4 model = glm::translate(glm::mat4(1.0f), owner->GetPosition());
+		model = glm::scale(model, owner->GetScale());
+		const Vec3f rot = owner->GetRotation();
+		model = glm::rotate(model, glm::radians(rot.x), Vec3f(1.0f, 0.f, 0.f));
+		model = glm::rotate(model, glm::radians(rot.y), Vec3f(0.f, 1.f, 0.f));
+		model = glm::rotate(model, glm::radians(rot.z), Vec3f(0.f, 0.f, 1.f));
 		glm::mat4 mvp = projection * view * model;
 
 		glUniformMatrix4fv(mvpUniformLoc, 1, GL_FALSE, &mvp[0][0]);

@@ -7,15 +7,14 @@ namespace Editor
 
 	TestEntity::TestEntity()
 	{
-		meshComponent = new Solus::MeshComponent();
-		//meshComponent->Attach(this);
-		AttachComponent(meshComponent);
+		meshComponent.reset(new Solus::MeshComponent());
+		AttachComponent(meshComponent.get());
 	}
 
 	void TestEntity::BeginPlay()
 	{
-		Solus::MeshAsset* asset = (Solus::MeshAsset*)Solus::gEngine->GetAssetManager()->GetAsset("Model/suzanne.obj");
-		meshComponent->SetMesh(asset);
+		//Solus::MeshAsset* asset = (Solus::MeshAsset*)Solus::gEngine->GetAssetManager()->GetAsset("Model/suzanne.obj");
+		//meshComponent->SetMesh(asset);
 	}
 
 }

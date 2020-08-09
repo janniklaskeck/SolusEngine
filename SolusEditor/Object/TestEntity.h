@@ -13,6 +13,6 @@ namespace Editor
 		virtual void BeginPlay() override;
 
 	private:
-		Solus::MeshComponent* meshComponent;
+		std::unique_ptr<Solus::MeshComponent> meshComponent;
 	};
 }

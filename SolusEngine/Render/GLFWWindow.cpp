@@ -27,7 +27,6 @@ namespace Solus
 		//glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
-
 		window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
 		auto primaryMonitor = glfwGetPrimaryMonitor();
 		auto mode = glfwGetVideoMode(primaryMonitor);
@@ -58,8 +57,8 @@ namespace Solus
 		if (glfwRawMouseMotionSupported())
 			glfwSetInputMode(window, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
 
-		//glfwSwapInterval(2);
 		glfwMakeContextCurrent(window);
+		glfwSwapInterval(0);
 
 		if (gl3wInit())
 		{
@@ -76,7 +75,7 @@ namespace Solus
 	{
 		while (!glfwWindowShouldClose(window))
 		{
-			//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
 			gEngine->Update();

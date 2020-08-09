@@ -18,12 +18,5 @@ namespace Solus
 
 	RenderMesh::~RenderMesh()
 	{}
-
-	void Solus::RenderMesh::Render()
-	{}
-
 	
-
-
-
 }

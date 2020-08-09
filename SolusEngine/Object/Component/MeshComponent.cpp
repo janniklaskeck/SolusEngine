@@ -17,20 +17,17 @@ namespace Solus
 
 	void MeshComponent::Render()
 	{
-		renderMesh->Render();
+		if (meshAsset && meshAsset->GetRenderMesh())
+			meshAsset->GetRenderMesh()->Render(parent);
 	}
 
 	void MeshComponent::EndPlay()
 	{
-		
 	}
 	
 	void MeshComponent::SetMesh(MeshAsset* meshAsset)
 	{
-		if (renderMesh)
-			delete renderMesh;
 		this->meshAsset = meshAsset;
-		renderMesh = gEngine->GetRenderDevice()->CreateMesh(meshAsset);
-		renderMesh->owner = parent;
+		meshAsset->Load();
 	}
 }

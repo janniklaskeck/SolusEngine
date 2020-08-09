@@ -82,7 +82,14 @@ namespace Editor
 
 	void EditorMainWindow::Update()
 	{
-		//gEngine->GetRenderDevice()->SetShouldRenderScene(false);
+		gEngine->GetRenderDevice()->SetShouldRenderScene(false);
+
+		const float deltaTime = gEngine->DeltaTime();
+		for (auto* subWindow : subWindows)
+		{
+			subWindow->Update(deltaTime);
+		}
+
 		propertyWindow->SetEntity(sceneGraph->GetSelectedEntity());
 	}
 

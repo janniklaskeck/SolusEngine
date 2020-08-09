@@ -13,6 +13,7 @@
 
 #include <cstdint>
 #include <vector>
+#include <memory>
 
 namespace Solus
 {
@@ -73,17 +74,17 @@ namespace Solus
 		static Engine* engineInstance;
 		static const char* LogLevelToChar(LogLevel level);
 
-		Window* window = nullptr;
-		RenderDevice* renderDevice = nullptr;
+		std::unique_ptr<Window> window;
+		std::unique_ptr<RenderDevice> renderDevice;
 
 		InputDevice* inputDevice = nullptr;
-		World* world = nullptr;
+		std::unique_ptr<World> world;
 		Camera* mainCamera = nullptr;
 
-		AssetManager* assetManager = nullptr;
+		std::unique_ptr<AssetManager> assetManager;
 
-		Timer* tickTimer = nullptr;
-		Timer* renderTimer = nullptr;
+		std::unique_ptr<Timer> tickTimer;
+		std::unique_ptr<Timer> renderTimer;
 
 	private:
 		int tickCounter = 0;
