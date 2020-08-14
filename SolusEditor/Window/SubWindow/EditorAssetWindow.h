@@ -3,11 +3,18 @@
 #include "SubWindow.h"
 
 #include "Render/FreeFlyCamera.h"
-#include "AssetSystem/FolderAssetSource.h"
+
+namespace Solus
+{
+	class Asset;
+	class AssetSource;
+	class FolderAssetSource;
+	class AssetFolder;
+}
 
 namespace Editor
 {
-	class Solus::Asset;
+	
 
 	class EditorAssetWindow : public SubWindow
 	{
@@ -22,7 +29,9 @@ namespace Editor
 		// <--
 
 	private:
-		void TreeDisplayFolder(Solus::AssetFolder* folder, const std::string& folderNameOverride = "");
+		void RenderAssetSource(Solus::FolderAssetSource* source, const char* title);
+
+		void RenderAssetFolder(const Solus::AssetFolder* folder, const char* folderNameOverride = nullptr);
 
 		void RenderFiles();
 		void RenderFile(Solus::Asset* asset);
@@ -30,8 +39,9 @@ namespace Editor
 		void SetClickedFolder(Solus::AssetFolder* folder);
 		void SetClickedAsset(Solus::Asset* asset);
 
-		Solus::AssetFolder* clickedFolder;
-		Solus::Asset* clickedAsset;
+		std::string clickedFolderPath;
+		Solus::AssetSource* clickedAssetSource = nullptr;
+		Solus::Asset* clickedAsset = nullptr;
 	};
 
 }

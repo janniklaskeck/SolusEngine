@@ -154,7 +154,7 @@ namespace Solus
 	{
 		if (!defaultTexture.get())
 		{
-			auto* defaultTextureAsset = (TextureAsset*)gEngine->GetAssetManager()->GetAsset("texture/defaultTexture.dds");
+			auto* defaultTextureAsset = (TextureAsset*)gEngine->GetAssetManager()->GetAsset("Editor/texture/defaultTexture.dds");
 			defaultTexture.reset(new OpenGLTexture(GL_TEXTURE_2D));
 			defaultTexture.get()->Load(defaultTextureAsset);
 		}

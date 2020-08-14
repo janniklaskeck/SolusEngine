@@ -7,24 +7,42 @@ namespace Solus
 {
 	class Asset;
 
-	struct SOLUS_API AssetFolder
+	class SOLUS_API AssetFolder
 	{
-		AssetFolder(std::string folderName, AssetFolder* _parent = nullptr)
-			: folderName(folderName), parent(_parent)
-		{}
+	public:
+		AssetFolder(AssetSource* parentSource, std::string folderName, AssetFolder* _parent = nullptr);
 
-		std::filesystem::path GetFullRelativePath() const
-		{
-			if (!parent)
-				return folderName;
-			auto tmpPath = parent->GetFullRelativePath();
-			tmpPath /= folderName;
-			return tmpPath;
-		}
+		void Initialize();
 
+		filepath GetRelativePath() const;
+
+		filepath GetAbsolutePath() const;
+
+		const std::string& GetFolderName() const;
+
+		void Refresh();
+
+		bool Rename(const std::string& newName) const;
+
+		bool Delete() const;
+
+		bool CreateChildFolder(const std::string& childFolderName) const;
+
+		void GetChildFolders(std::vector<AssetFolder*>& folders) const;
+
+		AssetSource* GetAssetSource() const;
+
+	private:
+
+		void GetChildFolders(std::vector<filepath>& childFolders);
+
+		void GetChildFiles(std::vector<filepath>& childFiles);
+
+	private:
 		AssetFolder* parent;
 		std::string folderName;
 		std::vector<std::shared_ptr<AssetFolder>> childFolders;
+		AssetSource* source = nullptr;
 	};
 
 	class SOLUS_API FolderAssetSource : public AssetSource
@@ -36,13 +54,13 @@ namespace Solus
 
 		Asset* GetAsset(std::string& path);
 
-		AssetFolder* GetFolders() const
+		AssetFolder* GetRootFolder() const
 		{
 			return sourceRoot.get();
 		}
 
-	private:
-		void InitializeSubFolder(AssetFolder* subFolder, bool isRoot = false);
+		virtual void Refresh() override;
+
 	private:
 		std::unique_ptr<AssetFolder> sourceRoot;
 	};

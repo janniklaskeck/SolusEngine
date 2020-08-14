@@ -13,6 +13,8 @@
 namespace Solus
 {
 
+	typedef std::filesystem::path filepath;
+
 	class Asset;
 
 	class SOLUS_API AssetSource
@@ -22,6 +24,8 @@ namespace Solus
 		AssetSource(std::string root);
 
 		virtual void Initialize() = 0;
+
+		virtual void Refresh() = 0;
 
 		virtual Asset* GetAsset(std::string& path) = 0;
 
@@ -34,12 +38,12 @@ namespace Solus
 			return root.string();
 		}
 
+		void InitializeAsset(std::filesystem::path relativePath);
 	protected:
 		std::filesystem::path root;
 
-		void InitializeAsset(std::filesystem::path relativePath);
-
 		void CleanPath(std::string& path);
+
 	private:
 		struct case_insensitive_hasher
 		{

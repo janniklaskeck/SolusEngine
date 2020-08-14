@@ -3,6 +3,7 @@
 #include "Engine/Engine.h"
 #include "Object/World.h"
 #include "AssetSystem/AssetManager.h"
+#include "AssetSystem/FolderAssetSource.h"
 #include "Utils/UIUtils.h"
 
 #include "IMGUI/imgui.h"
@@ -26,28 +27,18 @@ namespace Editor
 			if (folderTreeWidth < 200)
 				folderTreeWidth = 200;
 			ImGui::BeginChild("FolderChild", ImVec2((float)folderTreeWidth, ImGui::GetWindowHeight() - 35.f), true);
-			ImGui::Text("Folders");
 
 			AssetSource* projectSource = gEngine->GetAssetManager()->GetProjectAssetSource();
 			if (projectSource)
 			{
-				FolderAssetSource* folderSource = (FolderAssetSource*)projectSource;
-				AssetFolder* folders = folderSource->GetFolders();
-
 				ImGui::SetNextItemOpen(true, ImGuiCond_Once);
-				static std::string projectFolderName = "Project";
-				TreeDisplayFolder(folders, projectFolderName);
+				RenderAssetSource((Solus::FolderAssetSource*)projectSource, "Project");
 			}
 
 			AssetSource* engineSource = gEngine->GetAssetManager()->GetEngineAssetSource();
 			if (engineSource)
 			{
-				FolderAssetSource* folderSource = (FolderAssetSource*)engineSource;
-				AssetFolder* folders = folderSource->GetFolders();
-
-				ImGui::SetNextItemOpen(true, ImGuiCond_Once);
-				static std::string engineFolderName = "Engine";
-				TreeDisplayFolder(folders, engineFolderName);
+				RenderAssetSource((Solus::FolderAssetSource*)engineSource, "Engine");
 			}
 
 			ImGui::EndChild();
@@ -72,40 +63,95 @@ namespace Editor
 	void EditorAssetWindow::OnMaximized()
 	{}
 
-	void EditorAssetWindow::TreeDisplayFolder(AssetFolder* folder, const std::string& folderNameOverride)
+	void EditorAssetWindow::RenderAssetSource(Solus::FolderAssetSource* source, const char* title)
 	{
-		if (!folder)
-			return;
-		bool isLeafFolder = folder->childFolders.size() == 0;
-		ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanAvailWidth;
-		std::string folderName = folder->folderName;
-		if (!folderNameOverride.empty())
+		RenderAssetFolder(source->GetRootFolder(), title);
+	}
+
+	void EditorAssetWindow::RenderAssetFolder(const Solus::AssetFolder* folder, const char* folderNameOverride /*= nullptr*/)
+	{
+		const char* folderName = folder->GetFolderName().c_str();
+		if (folderNameOverride)
 			folderName = folderNameOverride;
-		if (folderName.empty())
-		{
-			folderName = "Root";
-		}
+
+		ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanAvailWidth;
+
+		std::vector<AssetFolder*> childFolders;
+		folder->GetChildFolders(childFolders);
+		const bool isLeafFolder = childFolders.size() == 0;
 		if (isLeafFolder)
-		{
 			flags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen;
-		}
-		if (clickedFolder && clickedFolder->GetFullRelativePath() == folder->GetFullRelativePath())
+
+		const std::string folderRelativePath = folder->GetRelativePath().string();
+		if (clickedFolderPath == folderRelativePath && clickedAssetSource == folder->GetAssetSource())
 		{
 			flags |= ImGuiTreeNodeFlags_Selected;
 		}
 
-		bool isFolderTreeOpen = ImGui::TreeNodeEx(folderName.c_str(), flags);
+		bool isFolderTreeOpen = ImGui::TreeNodeEx(folderName, flags);
 
 		if (ImGui::IsItemClicked())
 		{
-			if (clickedFolder != folder)
-				SetClickedFolder(folder);
+			if (clickedFolderPath != folderRelativePath || clickedAssetSource != folder->GetAssetSource())
+			{
+				clickedFolderPath = folderRelativePath;
+				clickedAssetSource = folder->GetAssetSource();
+				folder->GetAssetSource()->Refresh();
+			}
 		}
+		
+		const char* popupName = "CreateFolder...";
+		bool createFolderClicked = false;
+		static char buffer[32];
+		std::string uniqueID = folderName + folderRelativePath;
+		if (ImGui::BeginPopupContextItem(uniqueID.c_str()))
+		{
+			if (ImGui::Selectable("Create Folder"))
+			{
+				createFolderClicked = true;
+				memset(buffer, 0, 32);
+			}
+
+			if (ImGui::Selectable("Delete Folder"))
+			{
+				folder->Delete();
+				folder->GetAssetSource()->Refresh();
+			}
+			
+			ImGui::EndPopup();
+		}
+
+
+		std::string uniqueID2 = folderName + folderRelativePath + "2";
+		if (createFolderClicked)
+			ImGui::OpenPopup(uniqueID2.c_str());
+		if (ImGui::BeginPopupModal(uniqueID2.c_str(), NULL, ImGuiWindowFlags_AlwaysAutoResize))
+		{
+			ImGui::Text("All those beautiful files will be deleted.\nThis operation cannot be undone!\n\n");
+			ImGui::Separator();
+			ImGui::InputText("Folder Name", buffer, IM_ARRAYSIZE(buffer));
+
+			if (ImGui::Button("OK", ImVec2(120, 0)))
+			{
+				folder->CreateChildFolder(buffer);
+				folder->GetAssetSource()->Refresh();
+				ImGui::CloseCurrentPopup();
+			}
+			ImGui::SetItemDefaultFocus();
+			ImGui::SameLine();
+			if (ImGui::Button("Cancel", ImVec2(120, 0)))
+			{
+				ImGui::CloseCurrentPopup();
+				
+			}
+			ImGui::EndPopup();
+		}
+
 		if (isFolderTreeOpen)
 		{
-			for (auto& subFolder : folder->childFolders)
+			for (const AssetFolder* subFolder : childFolders)
 			{
-				TreeDisplayFolder(subFolder.get());
+				RenderAssetFolder(subFolder);
 			}
 			if (!isLeafFolder)
 				ImGui::TreePop();
@@ -114,29 +160,32 @@ namespace Editor
 
 	void EditorAssetWindow::RenderFiles()
 	{
-		if (!clickedFolder)
+		if (clickedFolderPath.empty() && !clickedAssetSource)
 			return;
 
 		ImGui::Text("Files");
 		{
 			auto* manager = gEngine->GetAssetManager();
 			ImVec2 buttonSize(80, 80);
-			auto root = manager->GetEngineAssetSource()->GetRootPath();
+			auto root = clickedAssetSource->GetRootPath();
 			std::filesystem::path path(root);
-			path /= clickedFolder->GetFullRelativePath();
-			std::filesystem::directory_iterator end;
-			for (std::filesystem::directory_iterator i(path); i != end; ++i)
+			path /= clickedFolderPath;
+			if (std::filesystem::exists(path))
 			{
-				const std::filesystem::path cp = (*i);
-				if (!std::filesystem::is_directory(cp))
+				std::filesystem::directory_iterator end;
+				for (std::filesystem::directory_iterator i(path); i != end; ++i)
 				{
-					if (_stricmp(cp.extension().string().c_str(), ASSET_FILE_EXTENSION) > 0)
+					const std::filesystem::path cp = (*i);
+					if (!std::filesystem::is_directory(cp))
 					{
-						auto relativePath = std::filesystem::relative(cp, root);
-						auto* asset = manager->GetAsset(relativePath.string());
-						if (asset)
+						if (_stricmp(cp.extension().string().c_str(), ASSET_FILE_EXTENSION) > 0)
 						{
-							RenderFile(asset);
+							auto relativePath = std::filesystem::relative(cp, root);
+							auto* asset = manager->GetAsset(relativePath.string());
+							if (asset)
+							{
+								RenderFile(asset);
+							}
 						}
 					}
 				}
@@ -170,7 +219,6 @@ namespace Editor
 
 	void EditorAssetWindow::SetClickedFolder(Solus::AssetFolder* folder)
 	{
-		clickedFolder = folder;
 	}
 	
 	void EditorAssetWindow::SetClickedAsset(Solus::Asset* asset)
