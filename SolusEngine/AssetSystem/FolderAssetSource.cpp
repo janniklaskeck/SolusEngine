@@ -116,8 +116,9 @@ namespace Solus
 
 	bool AssetFolder::Delete() const
 	{
-		std::filesystem::remove_all(GetAbsolutePath());
-		return false;
+		if (!parent)
+			return false;
+		return std::filesystem::remove_all(GetAbsolutePath()) > 0;
 	}
 
 	bool AssetFolder::CreateChildFolder(const std::string& childFolderName) const
@@ -136,6 +137,11 @@ namespace Solus
 	AssetSource* AssetFolder::GetAssetSource() const
 	{
 		return source;
+	}
+
+	bool AssetFolder::IsRootFolder() const
+	{
+		return !parent;
 	}
 
 	void AssetFolder::GetChildFolders(std::vector<filepath>& childFolders)

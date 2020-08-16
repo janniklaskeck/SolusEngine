@@ -5,7 +5,7 @@
 
 
 
-namespace Editor
+namespace Solus
 {
 	EditorInputDevice::EditorInputDevice()
 	{}

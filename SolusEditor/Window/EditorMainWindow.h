@@ -11,7 +11,7 @@
 #include <vector>
 #include <memory>
 
-namespace Editor
+namespace Solus
 {
 	class EditorSceneWindow;
 	class EditorSceneGraph;

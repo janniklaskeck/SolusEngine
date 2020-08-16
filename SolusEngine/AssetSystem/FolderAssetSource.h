@@ -32,6 +32,8 @@ namespace Solus
 
 		AssetSource* GetAssetSource() const;
 
+		bool IsRootFolder() const;
+
 	private:
 
 		void GetChildFolders(std::vector<filepath>& childFolders);

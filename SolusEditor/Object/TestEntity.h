@@ -4,7 +4,7 @@
 #include "Object/Component/MeshComponent.h"
 #include "AssetSystem/MeshAsset.h"
 
-namespace Editor
+namespace Solus
 {
 	class TestEntity : public Solus::Entity
 	{

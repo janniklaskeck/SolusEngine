@@ -10,11 +10,6 @@ namespace Solus
 	class AssetSource;
 	class FolderAssetSource;
 	class AssetFolder;
-}
-
-namespace Editor
-{
-	
 
 	class EditorAssetWindow : public SubWindow
 	{

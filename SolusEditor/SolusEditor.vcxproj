@@ -164,6 +164,7 @@
     <ClCompile Include="IMGUI\imgui_impl_glfw.cpp" />
     <ClCompile Include="IMGUI\imgui_impl_opengl3.cpp" />
     <ClCompile Include="IMGUI\imgui_widgets.cpp" />
+    <ClCompile Include="IMGUI\misc\cpp\imgui_stdlib.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Object\TestEntity.cpp" />
     <ClCompile Include="Utils\UIUtils.cpp" />
@@ -185,6 +186,7 @@
     <ClInclude Include="IMGUI\imstb_rectpack.h" />
     <ClInclude Include="IMGUI\imstb_textedit.h" />
     <ClInclude Include="IMGUI\imstb_truetype.h" />
+    <ClInclude Include="IMGUI\misc\cpp\imgui_stdlib.h" />
     <ClInclude Include="Object\TestEntity.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Utils\UIUtils.h" />

@@ -6,7 +6,7 @@
 
 #include "IMGUI/imgui.h"
 
-namespace Editor
+namespace Solus
 {
 
 

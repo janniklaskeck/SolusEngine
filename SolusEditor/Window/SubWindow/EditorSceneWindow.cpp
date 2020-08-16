@@ -9,9 +9,7 @@
 
 #include <algorithm>
 
-using namespace Solus;
-
-namespace Editor
+namespace Solus
 {
 	void EditorSceneWindow::Initialize()
 	{

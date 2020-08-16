@@ -4,7 +4,7 @@
 
 #include "Object/Entity.h"
 
-namespace Editor
+namespace Solus
 {
 
 	class EditorSceneGraph : public SubWindow

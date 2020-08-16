@@ -3,7 +3,7 @@
 
 #include <vector>
 
-namespace Editor
+namespace Solus
 {
 	class EditorInputDevice : public Solus::InputDevice
 	{

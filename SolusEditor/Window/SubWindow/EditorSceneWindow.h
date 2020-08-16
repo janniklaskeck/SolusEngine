@@ -4,7 +4,7 @@
 
 #include "Render/FreeFlyCamera.h"
 
-namespace Editor
+namespace Solus
 {
 
 	class EditorSceneWindow : public SubWindow

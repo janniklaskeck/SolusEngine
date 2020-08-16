@@ -13,9 +13,7 @@
 
 #include "Render/FreeFlyCamera.h"
 
-using namespace Solus;
-
-namespace Editor
+namespace Solus
 {
 
 	void EditorPropertyWindow::Initialize()

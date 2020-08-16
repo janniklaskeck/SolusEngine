@@ -10,9 +10,7 @@
 #include <algorithm>
 #include <portable-file-dialogs.h>
 
-using namespace Solus;
-
-namespace Editor
+namespace Solus
 {
 	void EditorMenuBar::Initialize()
 	{}

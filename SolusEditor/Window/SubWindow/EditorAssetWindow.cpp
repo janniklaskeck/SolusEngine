@@ -10,9 +10,7 @@
 
 #include <algorithm>
 
-using namespace Solus;
-
-namespace Editor
+namespace Solus
 {
 	void EditorAssetWindow::Initialize()
 	{
@@ -100,52 +98,50 @@ namespace Editor
 			}
 		}
 		
-		const char* popupName = "CreateFolder...";
-		bool createFolderClicked = false;
-		static char buffer[32];
+		static UIUtils::PopupData data;
+
 		std::string uniqueID = folderName + folderRelativePath;
 		if (ImGui::BeginPopupContextItem(uniqueID.c_str()))
 		{
 			if (ImGui::Selectable("Create Folder"))
 			{
-				createFolderClicked = true;
-				memset(buffer, 0, 32);
+				data.answerType = UIUtils::PopupAnswerType::OK_CANCEL;
+				data.inputQuestion = "Folder Name";
+				data.isModal = true;
+				data.question = "Enter Folder Name: ";
+				data.title = "Create new Folder in " + std::string(folderName);
+				data.type = UIUtils::PopupType::STRING_INPUT;
+				data.id = (void*)folder;
+				data.okAction = [folder](std::string& str)
+				{
+					folder->CreateChildFolder(str);
+					folder->GetAssetSource()->Refresh();
+				};
+
+				UIUtils::OpenPopup(data.title);
 			}
 
-			if (ImGui::Selectable("Delete Folder"))
+			if (!folder->IsRootFolder() && ImGui::Selectable("Delete Folder"))
 			{
-				folder->Delete();
-				folder->GetAssetSource()->Refresh();
+				data.answerType = UIUtils::PopupAnswerType::OK_CANCEL;
+				data.isModal = true;
+				data.question = "Delete Folder?";
+				data.title = "Delete Folder: " + std::string(folderName);
+				data.type = UIUtils::PopupType::WARNING;
+				data.id = (void*)folder;
+
+				data.okAction = [folder](std::string& str)
+				{
+					folder->Delete();
+					folder->GetAssetSource()->Refresh();
+				};
+				UIUtils::OpenPopup(data.title);
 			}
 			
 			ImGui::EndPopup();
 		}
-
-
-		std::string uniqueID2 = folderName + folderRelativePath + "2";
-		if (createFolderClicked)
-			ImGui::OpenPopup(uniqueID2.c_str());
-		if (ImGui::BeginPopupModal(uniqueID2.c_str(), NULL, ImGuiWindowFlags_AlwaysAutoResize))
-		{
-			ImGui::Text("All those beautiful files will be deleted.\nThis operation cannot be undone!\n\n");
-			ImGui::Separator();
-			ImGui::InputText("Folder Name", buffer, IM_ARRAYSIZE(buffer));
-
-			if (ImGui::Button("OK", ImVec2(120, 0)))
-			{
-				folder->CreateChildFolder(buffer);
-				folder->GetAssetSource()->Refresh();
-				ImGui::CloseCurrentPopup();
-			}
-			ImGui::SetItemDefaultFocus();
-			ImGui::SameLine();
-			if (ImGui::Button("Cancel", ImVec2(120, 0)))
-			{
-				ImGui::CloseCurrentPopup();
-				
-			}
-			ImGui::EndPopup();
-		}
+		if (data.id && data.id == (void*)folder)
+			UIUtils::RenderPopup(data);		
 
 		if (isFolderTreeOpen)
 		{

@@ -20,9 +20,7 @@
 #include "IMGUI/imgui_impl_glfw.h"
 #include "IMGUI/imgui_impl_opengl3.h"
 
-using namespace Solus;
-
-namespace Editor
+namespace Solus
 {
 	void EditorMainWindow::Initialize()
 	{

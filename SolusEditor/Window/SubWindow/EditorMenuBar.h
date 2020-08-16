@@ -2,7 +2,7 @@
 
 #include "SubWindow.h"
 
-namespace Editor
+namespace Solus
 {
 
 	class EditorMenuBar : public SubWindow

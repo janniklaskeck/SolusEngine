@@ -2,7 +2,7 @@
 
 #include "Engine/Engine.h"
 
-namespace Editor
+namespace Solus
 {
 
 	TestEntity::TestEntity()
