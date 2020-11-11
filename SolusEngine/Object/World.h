@@ -1,8 +1,7 @@
 #pragma once
-#include "Object/SolusObject.h"
+#include "Object/SObject.h"
 #include "World.generated.h"
 #include "Object/Entity.h"
-
 #include "AssetSystem/Asset.h"
 
 #include "Utility/Vector.h"
@@ -11,6 +10,7 @@
 
 namespace Solus
 {
+
 	SOLUS_CLASS();
 	class SOLUS_API World : public Entity
 	{
@@ -30,15 +30,15 @@ namespace Solus
 		virtual void EndPlay() override;
 		void Render();
 
-		void SaveToFile() const;
-		void ReadFromFile(const std::string& path);
+		bool SaveWorld(Asset worldAsset);
+		void LoadWorld(Asset worldAsset);
 
 	//protected:
 		SPROPERTY();
-		std::unordered_map<uint64_t, Entity*> globalEntities;
+		std::unordered_map<SUUID, Entity*> globalEntities;
 
 	private:
-		Asset* worldAsset = nullptr;
+		Asset worldAsset;
 	};
 
 	template<class T>

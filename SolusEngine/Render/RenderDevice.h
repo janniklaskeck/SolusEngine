@@ -12,9 +12,7 @@
 
 namespace Solus
 {
-	class MeshAsset;
-	class TextAsset;
-	class TextureAsset;
+	class Asset;
 	class PrimitiveDrawer;
 
 	enum class TextureType : uint8_t
@@ -35,9 +33,11 @@ namespace Solus
 		virtual void PreRenderScene() = 0;
 		virtual void PostRenderScene() = 0;
 
-		virtual RenderShader* CreateShader(TextAsset* vertexShaderFile, TextAsset* fragmentShaderFile) = 0;
-		virtual RenderMesh* CreateMesh(MeshAsset* meshFileName) = 0;
-		virtual RenderTexture* CreateTexture(TextureAsset* sourceFile, bool doLoading = true, TextureType = TextureType::TEX_DDS) = 0;
+		virtual RenderShader* CreateShader(const Asset& shaderAsset) = 0;
+		virtual RenderMesh* CreateMesh(const Asset& meshFileName) = 0;
+		
+		virtual RenderTexture* CreateTexture(const Asset& sourceFile, bool doLoading = true, TextureType = TextureType::TEX_DDS) = 0;
+		virtual bool DestroyTexture(RenderTexture* texture) = 0;
 
 		virtual PrimitiveDrawer* GetPrimitiveDrawer() = 0;
 

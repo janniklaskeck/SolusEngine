@@ -40,7 +40,7 @@ namespace Solus
 				auto entity = entities[i];
 				
 				std::string name(entity->get_type().get_name());
-				ImGui::PushID((int)entity->GetId());
+				ImGui::PushID(entity->GetId().ToString().c_str());
 				if (ImGui::Selectable(name.c_str(), selected == i))
 				{
 					selected = i;

@@ -8,11 +8,8 @@
 
 namespace Solus
 {
-
-	SCLASS_IMPL(World);
 	World::World()
-	{
-	}
+	{}
 
 	World::~World()
 	{
@@ -80,22 +77,19 @@ namespace Solus
 		}
 	}
 
-	void World::SaveToFile() const
+	bool World::SaveWorld(Asset _worldAsset)
 	{
-		if (worldAsset)
-		{
+		worldAsset = _worldAsset;
 
-		}
-		else
-		{
-			ArchiveStream stream("c:\\Spiele\\test.txt", ArchiveMode::WRITE);
-			Serialize(stream);
-		}
+		ArchiveStream stream(worldAsset->GetSourceFilePath().string(), ArchiveMode::WRITE);
+		Serialize(stream);
+		return true;
 	}
 
-	void World::ReadFromFile(const std::string& path)
+	void World::LoadWorld(Asset _worldAsset)
 	{
-		ArchiveStream stream(path);
+		worldAsset = _worldAsset;
+		ArchiveStream stream(worldAsset->GetSourceFilePath().string());
 		Deserialize(stream);
 	}
 }

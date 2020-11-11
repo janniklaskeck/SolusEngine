@@ -2,13 +2,13 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <ItemGroup>
     <ClCompile Include="AssetSystem\AssetManager.cpp">
-      <Filter>Source\AssetManager</Filter>
+      <Filter>Source\AssetSystem</Filter>
     </ClCompile>
     <ClCompile Include="AssetSystem\AssetMeta.cpp">
-      <Filter>Source\AssetManager</Filter>
+      <Filter>Source\AssetSystem</Filter>
     </ClCompile>
     <ClCompile Include="AssetSystem\AssetSource.cpp">
-      <Filter>Source\AssetManager</Filter>
+      <Filter>Source\AssetSystem</Filter>
     </ClCompile>
     <ClCompile Include="Utility\BinaryReader.cpp">
       <Filter>Source\Utility</Filter>
@@ -26,7 +26,7 @@
       <Filter>Source\Utility</Filter>
     </ClCompile>
     <ClCompile Include="AssetSystem\FolderAssetSource.cpp">
-      <Filter>Source\AssetManager</Filter>
+      <Filter>Source\AssetSystem</Filter>
     </ClCompile>
     <ClCompile Include="Render\FreeFlyCamera.cpp">
       <Filter>Source\Render\Camera</Filter>
@@ -85,9 +85,6 @@
     <ClCompile Include="Object\World.cpp">
       <Filter>Source\Object</Filter>
     </ClCompile>
-    <ClCompile Include="Object\SolusObject.cpp">
-      <Filter>Source\Object</Filter>
-    </ClCompile>
     <ClCompile Include="Input\InputDevice.cpp">
       <Filter>Source\Input</Filter>
     </ClCompile>
@@ -103,25 +100,7 @@
     <ClCompile Include="Object\Component\MeshComponent.cpp">
       <Filter>Source\Object\Component</Filter>
     </ClCompile>
-    <ClCompile Include="AssetSystem\Asset.cpp">
-      <Filter>Source\AssetManager\Assets</Filter>
-    </ClCompile>
-    <ClCompile Include="AssetSystem\MeshAsset.cpp">
-      <Filter>Source\AssetManager\Assets</Filter>
-    </ClCompile>
-    <ClCompile Include="AssetSystem\TextAsset.cpp">
-      <Filter>Source\AssetManager\Assets</Filter>
-    </ClCompile>
-    <ClCompile Include="AssetSystem\TextureAsset.cpp">
-      <Filter>Source\AssetManager\Assets</Filter>
-    </ClCompile>
-    <ClCompile Include="AssetSystem\PrefabAsset.cpp">
-      <Filter>Source\AssetManager\Assets</Filter>
-    </ClCompile>
     <ClCompile Include="..\intermediates\generated\Entity.generated.cpp">
-      <Filter>Generated</Filter>
-    </ClCompile>
-    <ClCompile Include="..\intermediates\generated\SolusObject.generated.cpp">
       <Filter>Generated</Filter>
     </ClCompile>
     <ClCompile Include="..\intermediates\generated\MeshComponent.generated.cpp">
@@ -145,20 +124,38 @@
     <ClCompile Include="..\intermediates\generated\Asset.generated.cpp">
       <Filter>Generated</Filter>
     </ClCompile>
-    <ClCompile Include="..\intermediates\generated\MeshAsset.generated.cpp">
-      <Filter>Generated</Filter>
-    </ClCompile>
-    <ClCompile Include="..\intermediates\generated\PrefabAsset.generated.cpp">
-      <Filter>Generated</Filter>
-    </ClCompile>
-    <ClCompile Include="..\intermediates\generated\TextureAsset.generated.cpp">
-      <Filter>Generated</Filter>
-    </ClCompile>
-    <ClCompile Include="..\intermediates\generated\TextAsset.generated.cpp">
-      <Filter>Generated</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\ProjectFile.cpp">
       <Filter>Source\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\UUID.cpp">
+      <Filter>Source\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\SObject.cpp">
+      <Filter>Source\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\intermediates\generated\SAsset.generated.cpp">
+      <Filter>Generated</Filter>
+    </ClCompile>
+    <ClCompile Include="..\intermediates\generated\SObject.generated.cpp">
+      <Filter>Generated</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetSystem\Asset.cpp">
+      <Filter>Source\AssetSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetSystem\ReferenceCounted.cpp">
+      <Filter>Source\AssetSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetSystem\SAsset.cpp">
+      <Filter>Source\AssetSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetSystem\ShaderAsset.cpp">
+      <Filter>Source\AssetSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\intermediates\generated\ShaderAsset.generated.cpp">
+      <Filter>Generated</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetSystem\SAssetMetadata.cpp">
+      <Filter>Source\AssetSystem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -254,9 +251,6 @@
     <ClInclude Include="Object\Entity.h">
       <Filter>Source\Object</Filter>
     </ClInclude>
-    <ClInclude Include="Object\SolusObject.h">
-      <Filter>Source\Object</Filter>
-    </ClInclude>
     <ClInclude Include="Input\InputDevice.h">
       <Filter>Source\Input</Filter>
     </ClInclude>
@@ -273,42 +267,24 @@
       <Filter>Source\Engine</Filter>
     </ClInclude>
     <ClInclude Include="AssetSystem\AssetManager.h">
-      <Filter>Source\AssetManager</Filter>
+      <Filter>Source\AssetSystem</Filter>
     </ClInclude>
     <ClInclude Include="AssetSystem\AssetMeta.h">
-      <Filter>Source\AssetManager</Filter>
+      <Filter>Source\AssetSystem</Filter>
     </ClInclude>
     <ClInclude Include="AssetSystem\AssetSource.h">
-      <Filter>Source\AssetManager</Filter>
+      <Filter>Source\AssetSystem</Filter>
     </ClInclude>
     <ClInclude Include="AssetSystem\FolderAssetSource.h">
-      <Filter>Source\AssetManager</Filter>
+      <Filter>Source\AssetSystem</Filter>
     </ClInclude>
     <ClInclude Include="Engine\LogListener.h">
       <Filter>Source\Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="AssetSystem\Asset.h">
-      <Filter>Source\AssetManager\Assets</Filter>
-    </ClInclude>
-    <ClInclude Include="AssetSystem\MeshAsset.h">
-      <Filter>Source\AssetManager\Assets</Filter>
-    </ClInclude>
-    <ClInclude Include="AssetSystem\TextAsset.h">
-      <Filter>Source\AssetManager\Assets</Filter>
-    </ClInclude>
-    <ClInclude Include="AssetSystem\TextureAsset.h">
-      <Filter>Source\AssetManager\Assets</Filter>
-    </ClInclude>
-    <ClInclude Include="AssetSystem\PrefabAsset.h">
-      <Filter>Source\AssetManager\Assets</Filter>
     </ClInclude>
     <ClInclude Include="..\intermediates\generated\SolusEngine.generated.h">
       <Filter>Generated</Filter>
     </ClInclude>
     <ClInclude Include="..\intermediates\generated\Entity.generated.h">
-      <Filter>Generated</Filter>
-    </ClInclude>
-    <ClInclude Include="..\intermediates\generated\SolusObject.generated.h">
       <Filter>Generated</Filter>
     </ClInclude>
     <ClInclude Include="..\intermediates\generated\MeshComponent.generated.h">
@@ -332,20 +308,41 @@
     <ClInclude Include="..\intermediates\generated\Asset.generated.h">
       <Filter>Generated</Filter>
     </ClInclude>
-    <ClInclude Include="..\intermediates\generated\MeshAsset.generated.h">
-      <Filter>Generated</Filter>
-    </ClInclude>
-    <ClInclude Include="..\intermediates\generated\PrefabAsset.generated.h">
-      <Filter>Generated</Filter>
-    </ClInclude>
-    <ClInclude Include="..\intermediates\generated\TextureAsset.generated.h">
-      <Filter>Generated</Filter>
-    </ClInclude>
-    <ClInclude Include="..\intermediates\generated\TextAsset.generated.h">
-      <Filter>Generated</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\ProjectFile.h">
       <Filter>Source\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\UUID.h">
+      <Filter>Source\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\SObject.h">
+      <Filter>Source\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\intermediates\generated\SAsset.generated.h">
+      <Filter>Generated</Filter>
+    </ClInclude>
+    <ClInclude Include="..\intermediates\generated\SObject.generated.h">
+      <Filter>Generated</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetSystem\SAsset.h">
+      <Filter>Source\AssetSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetSystem\Asset.h">
+      <Filter>Source\AssetSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetSystem\ReferenceCounted.h">
+      <Filter>Source\AssetSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetSystem\ShaderAsset.h">
+      <Filter>Source\AssetSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\intermediates\generated\ShaderAsset.generated.h">
+      <Filter>Generated</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetSystem\SAssetMetadata.h">
+      <Filter>Source\AssetSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetSystem\SAssetType.h">
+      <Filter>Source\AssetSystem</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -357,9 +354,6 @@
     </Filter>
     <Filter Include="Source">
       <UniqueIdentifier>{0844be98-774c-4c88-add2-1f579fc88234}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\AssetManager">
-      <UniqueIdentifier>{d3d8ec8e-53c9-442b-a322-14f42533a250}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\Engine">
       <UniqueIdentifier>{389efdef-e270-46f7-bb81-6bc14333c41b}</UniqueIdentifier>
@@ -385,8 +379,8 @@
     <Filter Include="Source\Utility">
       <UniqueIdentifier>{749745a2-b94e-47fa-b67f-680f2653312861}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\AssetManager\Assets">
-      <UniqueIdentifier>{3786050e-702e-47ec-a38d-e952f7cd6fc4}</UniqueIdentifier>
+    <Filter Include="Source\AssetSystem">
+      <UniqueIdentifier>{d3d8ec8e-53c9-442b-a322-14f42533a250}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -1,7 +1,6 @@
 #include "EditorPropertyWindow.h"
 
 #include "Engine/Engine.h"
-#include "AssetSystem/MeshAsset.h"
 #include "Object/Component/MeshComponent.h"
 
 #include "Render/RenderDevice.h"
@@ -125,12 +124,12 @@ namespace Solus
 				Vec3f* ptr = metaDataPtr->GetMemberPtr<Vec3f>(component, propName);
 				ImGui::InputFloat3(propName.c_str(), (float*)ptr);
 			}
-			else if (property.get_type() == rttr::type::get<MeshAsset*>())
+			else if (property.get_type() == rttr::type::get<Asset>())
 			{
-				Solus::MeshAsset* ptr = *metaDataPtr->GetMemberPtr<Solus::MeshAsset*>(component, propName);
+				Asset ptr = *metaDataPtr->GetMemberPtr<Asset>(component, propName);
 				if (ptr)
 				{
-					ImGui::LabelText(propName.c_str(), ptr->GetFilePath(true).string().c_str());
+					ImGui::LabelText(propName.c_str(), ptr->GetSourceFilePath().string().c_str());
 				}
 				else
 				{
@@ -140,11 +139,11 @@ namespace Solus
 				{
 					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("TESTDRAG"))
 					{
-						Solus::Asset** payload_n = (Solus::Asset**)payload->Data;
+						Solus::Asset* payload_n = (Solus::Asset*)payload->Data;
 						if (payload_n)
 						{
 							auto* meshComp = (Solus::MeshComponent*)component;
-							auto* meshAsset = (MeshAsset*)(*payload_n);
+							auto meshAsset = (Asset)(*payload_n);
 							meshComp->SetMesh(meshAsset);
 						}
 					}

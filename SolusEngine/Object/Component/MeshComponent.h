@@ -3,7 +3,7 @@
 #include "MeshComponent.generated.h"
 
 #include "SComponent.h"
-#include "AssetSystem/MeshAsset.h"
+#include "AssetSystem/Asset.h"
 
 namespace Solus
 {
@@ -19,9 +19,11 @@ namespace Solus
 		virtual void Render();
 		virtual void EndPlay() override;
 
-		void SetMesh(MeshAsset* meshAsset);
+		void SetMesh(Asset meshAsset);
 	public:
 		SPROPERTY();
-		MeshAsset* meshAsset = nullptr;
+		Asset meshAsset;
+
+		std::unique_ptr<RenderMesh> renderMesh = nullptr;
 	};
 }

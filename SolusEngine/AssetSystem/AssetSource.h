@@ -4,18 +4,13 @@
 #include "Asset.h"
 
 #include "Utility/Helper.h"
+#include "Utility/FileUtils.h"
 
-#include <string>
 #include <unordered_map>
 #include <algorithm>
-#include <filesystem>
 
 namespace Solus
 {
-
-	typedef std::filesystem::path filepath;
-
-	class Asset;
 
 	class SOLUS_API AssetSource
 	{
@@ -27,20 +22,19 @@ namespace Solus
 
 		virtual void Refresh() = 0;
 
-		virtual Asset* GetAsset(std::string& path) = 0;
-
-		std::unordered_map<std::string, Asset*>::const_iterator BeginIter() const;
-
-		std::unordered_map<std::string, Asset*>::const_iterator EndIter() const;
+		Asset GetAssetFromPath(const std::string& path);
+		Asset GetAsset(const SUUID id);
 
 		std::string GetRootPath() const
 		{
 			return root.string();
 		}
 
-		void InitializeAsset(std::filesystem::path relativePath);
+		void InitializeAsset(const fs::path relativePath);
+
+
 	protected:
-		std::filesystem::path root;
+		fs::path root;
 
 		void CleanPath(std::string& path);
 
@@ -63,9 +57,9 @@ namespace Solus
 			}
 		};
 
-		std::unordered_map<std::string, AssetType> extensionTypeMap;
 	protected:
-		std::unordered_map<std::string, Asset*, case_insensitive_hasher, case_insensitive_comparer> assets;
+		std::unordered_map<std::string, Asset, case_insensitive_hasher, case_insensitive_comparer> pathAssets;
+		std::unordered_map<SUUID, Asset> idAssets;
 	};
 
 }

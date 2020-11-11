@@ -7,7 +7,6 @@
 
 #include "Engine/Engine.h"
 #include "Camera.h"
-#include "AssetSystem/MeshAsset.h"
 
 #include <GL/gl3w.h>
 #include <iostream>
@@ -91,7 +90,7 @@ namespace Solus
 		glDeleteVertexArrays(1, &VAO);
 		for (RenderTexture* texture : textures)
 		{
-			delete texture;
+			gEngine->GetRenderDevice()->DestroyTexture(texture);
 		}
 	}
 
@@ -138,7 +137,7 @@ namespace Solus
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, entries[0].indexBuffer);
 
-		glDrawElements(GL_TRIANGLES, entries[0].indices.size(), GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, (GLsizei)entries[0].indices.size(), GL_UNSIGNED_INT, 0);
 		glDisableVertexAttribArray(0);
 		glDisableVertexAttribArray(1);
 		glDisableVertexAttribArray(2);
@@ -154,7 +153,7 @@ namespace Solus
 		//primDrawer->RenderRectangle(center, extents, Vec4f(1, 0, 0, 1));
 	}
 
-	bool OpenGLMesh::Load(MeshAsset* meshAsset)
+	bool OpenGLMesh::Load(Asset meshAsset)
 	{
 		if (isLoaded)
 		{
@@ -162,7 +161,7 @@ namespace Solus
 		}
 		Assimp::Importer importer;
 		const char* path = "";
-		const aiScene* scene = importer.ReadFile(meshAsset->GetFilePath().string(), aiProcess_FixInfacingNormals
+		const aiScene* scene = importer.ReadFile(meshAsset->GetSourceFilePath().string(), aiProcess_FixInfacingNormals
 												 | aiProcess_JoinIdenticalVertices
 												 | aiProcess_GenSmoothNormals
 												 | aiProcess_FindInvalidData
@@ -194,7 +193,7 @@ namespace Solus
 				{
 					std::string fullPath = ".";
 					fullPath += path.C_Str();
-					auto* texture = (TextureAsset*)gEngine->GetAssetManager()->GetAsset(fullPath.c_str());
+					Asset texture = gEngine->GetAssetManager()->GetAssetFromPath(fullPath.c_str());
 					textures[i] = gEngine->GetRenderDevice()->CreateTexture(texture);
 					bool foundMaterial = textures[i] != nullptr;
 				}

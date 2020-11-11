@@ -9,7 +9,7 @@ namespace Solus
 		OpenGLShader();
 		~OpenGLShader();
 
-		virtual bool Load(TextAsset* vertexShaderFilePath, TextAsset* fragmentShaderFilePath) override;
+		virtual bool Load(const Asset& shaderAsset) override;
 
 
 		void Bind();

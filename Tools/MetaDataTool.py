@@ -28,6 +28,15 @@ class MetaDataClass(object):
         self.parentClasses = []
         self.headerPath = ""
         self.members = []
+        self.constructors = []
+    
+    def HasDefaultConstructor(self):
+        if len(self.constructors) == 0:
+            return True
+        for c in self.constructors:
+            if c == 0:
+                return True
+        return False
 
     def ParseMetaDataClass(self):
         # Only parse beginning comments of header file, all information is there
@@ -95,6 +104,8 @@ class MetaDataClass(object):
                                 parentClasses = parentClasses.replace("public", "").strip()
                                 splitParents = list(map(str.strip, parentClasses.split(",")))
                                 self.parentClasses = splitParents
+                                if "ReferenceCounted" in self.parentClasses: #HACK
+                                    self.parentClasses.remove("ReferenceCounted")
                                 self.parentClasses.sort()
                         else:
                             return False
@@ -118,6 +129,23 @@ class MetaDataClass(object):
                     memberType = declaration[:nameStartIndex].strip()
                     #typeNames.append(TypeNameHeader(memberType, relativeFilePath))
                     self.members.append(MetaDataMember(memberType, memberName))
+                elif len(self.className) > 0:
+                    stripped = line.strip()
+                    if stripped.startswith(self.className):
+                        isConstructor = True
+                        for i in range(len(self.className), len(stripped)):
+                            if not stripped[i] == " " and not stripped[i] == "(":
+                                isConstructor = False
+                            if stripped[i] == "(":
+                                break
+                        if isConstructor:
+                            cParts = stripped.split("(")
+                            if len(cParts) == 2:
+                                parameterString = cParts[1].split(")")[0]
+                                parameters = parameterString.split(",")
+                                if len(parameters) == 1 and len(parameters[0]) == 0:
+                                    parameters.pop(0)
+                                self.constructors.append(len(parameters))
         return len(self.className) > 0
 
     def IsOutdated(self, metaDataClassList: list):
@@ -215,9 +243,9 @@ def WriteMetaHeader(classMeta: MetaDataClass, folder: str, projectName: str):
     headerString += "struct SOLUS_API " + reflectionClassName + " : public " + parentClass + "\n{\n"
     headerString += "\t" + classMeta.className + "_ClassMetaData();\n\n"
 
-    headerString += "\tvirtual void Serialize(ArchiveStream* archive, const SolusObject* object) const override;\n"
-    headerString += "\tvirtual const bool DeserializeMember(ArchiveStream* archive, const SolusObject* object, ArchiveEntry& entry) override;\n"
-    headerString += "\tvirtual void* GetMemberPtrInternal(const SolusObject* object, const std::string& name) override;\n"
+    headerString += "\tvirtual void Serialize(ArchiveStream* archive, const SObject* object) const override;\n"
+    headerString += "\tvirtual const bool DeserializeMember(ArchiveStream* archive, const SObject* object, ArchiveEntry& entry) override;\n"
+    headerString += "\tvirtual void* GetMemberPtrInternal(const SObject* object, const std::string& name) override;\n"
     headerString += "};\n"
     headerString += "}\n"
 
@@ -244,9 +272,9 @@ def WriteMetaSource(classMeta: MetaDataClass, folder: str, projectName: str):
     
     sourceString += "RTTR_REGISTRATION\n{\n"
     sourceString += "\trttr::registration::class_<Solus::" + classMeta.className + ">(\"" + classMeta.className + "\")\n"
-    #sourceString += "\t.constructor([](){return new Solus::" + classMeta.className + ";})\n"
-    sourceString += "\t.constructor()\n"
-    sourceString += "\t(rttr::policy::ctor::as_raw_pointer_get())\n"
+    if classMeta.HasDefaultConstructor():
+        sourceString += "\t.constructor()\n"
+        sourceString += "\t(rttr::policy::ctor::as_raw_pointer_get())\n"
     sourceString += "\t.property_readonly(\"MetaData\", &Solus::" + classMeta.className + "::MetaData)\n"
     for member in classMeta.members:
         sourceString += "\t.property(\"" + member.name + "\", &Solus::" + classMeta.className + "::" + member.name + ")\n"
@@ -256,11 +284,12 @@ def WriteMetaSource(classMeta: MetaDataClass, folder: str, projectName: str):
 
 
     sourceString += "namespace Solus\n{\n"
+    sourceString += "Solus::{0}_ClassMetaData * {0}::MetaData = new Solus::{0}_ClassMetaData;\n\n".format(classMeta.className)
     sourceString += reflectionClassName + "::" + reflectionClassName + "()\n{\n"
     sourceString += "}\n\n"
 
 
-    sourceString += "void " + reflectionClassName + "::Serialize(ArchiveStream* archive, const SolusObject* object) const\n{\n"
+    sourceString += "void " + reflectionClassName + "::Serialize(ArchiveStream* archive, const SObject* object) const\n{\n"
     sourceString += "\t" + classMeta.className + "* cast = (" + classMeta.className + "*)object;\n"
     sourceString += "\tstd::string typeName;\n"
     for member in classMeta.members:
@@ -272,7 +301,7 @@ def WriteMetaSource(classMeta: MetaDataClass, folder: str, projectName: str):
     sourceString += "}\n\n"
 
 
-    sourceString += "\nconst bool " + reflectionClassName + "::DeserializeMember(ArchiveStream* archive, const SolusObject* object, ArchiveEntry& entry)\n{\n"
+    sourceString += "\nconst bool " + reflectionClassName + "::DeserializeMember(ArchiveStream* archive, const SObject* object, ArchiveEntry& entry)\n{\n"
     sourceString += "\t" + classMeta.className + "* cast = (" + classMeta.className +  "*)object;\n"
     for member in classMeta.members:
         sourceString += "\tif (entry.name == \"" + member.name + "\")\n\t{\n"
@@ -285,7 +314,7 @@ def WriteMetaSource(classMeta: MetaDataClass, folder: str, projectName: str):
     sourceString += "}\n\n"
 
 
-    sourceString += "\nvoid* " + reflectionClassName + "::GetMemberPtrInternal(const SolusObject* object, const std::string& name)\n{\n"
+    sourceString += "\nvoid* " + reflectionClassName + "::GetMemberPtrInternal(const SObject* object, const std::string& name)\n{\n"
     sourceString += "\t" + classMeta.className + "* cast = (" + classMeta.className +  "*)object;\n"
     for member in classMeta.members:
         sourceString += "\tif (name == \"" + member.name + "\")\n\t{\n"

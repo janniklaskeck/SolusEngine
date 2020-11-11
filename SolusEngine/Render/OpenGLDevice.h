@@ -30,9 +30,11 @@ namespace Solus
 		virtual void PreRenderScene() override;
 		virtual void PostRenderScene() override;
 
-		virtual RenderShader* CreateShader(TextAsset* vertexShaderFile, TextAsset* fragmentShaderFile) override;
-		virtual RenderMesh* CreateMesh(MeshAsset* meshFileName) override;
-		virtual RenderTexture* CreateTexture(TextureAsset* sourceFile, bool doLoading = true, TextureType type = TextureType::TEX_DDS) override;
+		virtual RenderShader* CreateShader(const Asset& shaderAsset) override;
+		virtual RenderMesh* CreateMesh(const Asset& meshFileName) override;
+
+		virtual RenderTexture* CreateTexture(const Asset& sourceFile, bool doLoading = true, TextureType type = TextureType::TEX_DDS) override;
+		virtual bool DestroyTexture(RenderTexture* texture) override;
 
 		virtual PrimitiveDrawer* GetPrimitiveDrawer() override;
 

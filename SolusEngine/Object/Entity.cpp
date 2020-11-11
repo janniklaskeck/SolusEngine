@@ -12,8 +12,6 @@
 namespace Solus
 {
 
-	SCLASS_IMPL(Entity);
-
 	Entity::Entity()
 	{
 		mTransform = Mat4f(1.f);
@@ -21,7 +19,7 @@ namespace Solus
 		rotation = Vec3f(0.0f);
 		scale = Vec3f(1.0f);
 
-		instanceId = GenerateUUID();
+		instanceId.Create();
 	}
 
 	Entity::Entity(Vec3f initialPosition, Vec3f initialRotation)
@@ -31,7 +29,7 @@ namespace Solus
 		rotation = initialRotation;
 		scale = Vec3f(1.0f);
 
-		instanceId = GenerateUUID();
+		instanceId.Create();
 	}
 
 	Entity::~Entity()

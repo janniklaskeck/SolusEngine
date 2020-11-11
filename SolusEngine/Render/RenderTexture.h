@@ -1,12 +1,11 @@
 #pragma once
 
 #include "Engine/SolusEngine.h"
-
+#include "AssetSystem/Asset.h"
 #include <cstdint>
 
 namespace Solus
 {
-	class TextureAsset;
 
 	class SOLUS_API RenderTexture
 	{
@@ -19,7 +18,7 @@ namespace Solus
 
 		virtual void Bind(unsigned int textureIndex) = 0;
 
-		virtual bool Load(TextureAsset* textureAsset) = 0;
+		virtual bool Load(Asset textureAsset) = 0;
 
 	protected:
 		uint32_t width;

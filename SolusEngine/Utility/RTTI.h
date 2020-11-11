@@ -37,15 +37,5 @@ namespace Solus
 	virtual size_t GetClassId() const; \
 	friend struct Solus::type##_Reflection; \
 	static Solus::type##_Reflection Reflection;
-
-#define SCLASS_IMPL(type) \
-	Solus::type##_ClassMetaData* type::MetaData = new Solus::type##_ClassMetaData;
-	//size_t type::GetClassId() const { \
-	//	static size_t classHash = typeid(type).hash_code(); \
-	//	return classHash; \
-	//} \
-
-//#define ISA(instance) \
-//this->
 }
 

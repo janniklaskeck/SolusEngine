@@ -23,11 +23,11 @@ namespace Solus
 		{
 			if (ImGui::Button("SaveWorld"))
 			{
-				gEngine->GetWorld()->SaveToFile();
+				//gEngine->GetWorld()->SaveWorld();
 			}
 			if (ImGui::Button("LoadWorld"))
 			{
-				gEngine->GetWorld()->ReadFromFile("c:\\Spiele\\test.txt");
+				//gEngine->GetWorld()->LoadWorld("c:\\Spiele\\test.txt");
 			}
 			sceneCamera->SetInputEnabled(ImGui::IsWindowFocused() && ImGui::IsMouseDown(1));
 			ImVec2 pos = ImGui::GetCursorScreenPos();

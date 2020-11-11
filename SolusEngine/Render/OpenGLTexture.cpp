@@ -1,5 +1,4 @@
 #include "OpenGLTexture.h"
-#include "AssetSystem/TextureAsset.h"
 #include "Utility/FileUtils.h"
 #include "Utility/BinaryReader.h"
 
@@ -25,11 +24,11 @@ namespace Solus
 		glActiveTexture(GetGLTextureUnit(textureIndex));
 		glBindTexture(textureType, textureID);
 	}
-	
-	bool OpenGLTexture::Load(TextureAsset* textureAsset)
+
+	bool OpenGLTexture::Load(Asset textureAsset)
 	{
 		textureAsset->Load();
-		BinaryReader reader(textureAsset);
+		BinaryReader reader(nullptr, 0);
 		auto filecode = reader.ReadString(4);
 
 		FILE* fp = nullptr;
@@ -43,11 +42,11 @@ namespace Solus
 		unsigned char header[124];
 		reader.ReadBytes(header, 124);
 
-		unsigned int height = *(unsigned int*) & (header[8]);
-		unsigned int width = *(unsigned int*) & (header[12]);
-		unsigned int linearSize = *(unsigned int*) & (header[16]);
-		unsigned int mipMapCount = *(unsigned int*) & (header[24]);
-		unsigned int fourCC = *(unsigned int*) & (header[80]);
+		unsigned int height = *(unsigned int*)&(header[8]);
+		unsigned int width = *(unsigned int*)&(header[12]);
+		unsigned int linearSize = *(unsigned int*)&(header[16]);
+		unsigned int mipMapCount = *(unsigned int*)&(header[24]);
+		unsigned int fourCC = *(unsigned int*)&(header[80]);
 
 
 		unsigned char* buffer;
@@ -89,16 +88,17 @@ namespace Solus
 		for (unsigned int level = 0; level < mipMapCount && (width || height); ++level)
 		{
 			unsigned int size = ((width + 3) / 4) * ((height + 3) / 4) * blockSize;
-			glCompressedTexImage2D(GL_TEXTURE_2D, level, format, width, height,
-								   0, size, buffer + offset);
+			glCompressedTexImage2D(GL_TEXTURE_2D, level, format, width, height, 0, size, buffer + offset);
 
 			offset += size;
 			width /= 2;
 			height /= 2;
 
 			// Deal with Non-Power-Of-Two textures. This code is not included in the webpage to reduce clutter.
-			if (width < 1) width = 1;
-			if (height < 1) height = 1;
+			if (width < 1) 
+				width = 1;
+			if (height < 1) 
+				height = 1;
 
 		}
 		isLoaded = true;

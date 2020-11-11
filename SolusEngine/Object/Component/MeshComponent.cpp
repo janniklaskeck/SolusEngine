@@ -4,7 +4,6 @@
 
 namespace Solus
 {
-	SCLASS_IMPL(MeshComponent);
 
 	void MeshComponent::BeginPlay()
 	{
@@ -17,17 +16,18 @@ namespace Solus
 
 	void MeshComponent::Render()
 	{
-		if (meshAsset && meshAsset->GetRenderMesh())
-			meshAsset->GetRenderMesh()->Render(parent);
+		if (renderMesh)
+			renderMesh->Render(parent);
 	}
 
 	void MeshComponent::EndPlay()
 	{
 	}
 	
-	void MeshComponent::SetMesh(MeshAsset* meshAsset)
+	void MeshComponent::SetMesh(Asset _meshAsset)
 	{
-		this->meshAsset = meshAsset;
+		this->meshAsset = _meshAsset;
 		meshAsset->Load();
+		renderMesh.reset(gEngine->GetRenderDevice()->CreateMesh(this->meshAsset));
 	}
 }

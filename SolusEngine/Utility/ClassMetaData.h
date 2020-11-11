@@ -10,31 +10,31 @@ namespace Solus
 {
 	class ArchiveStream;
 	struct ArchiveEntry;
-	class SolusObject;
+	class SObject;
 
 	struct SOLUS_API ClassMetaData
 	{
 	public:
-		virtual void Serialize(ArchiveStream* archive, const SolusObject* object) const
+		virtual void Serialize(ArchiveStream* archive, const SObject* object) const
 		{
 		};
 
-		void Deserialize(ArchiveStream* archive, ArchiveEntry& entry, SolusObject* object);
+		void Deserialize(ArchiveStream* archive, ArchiveEntry& entry, SObject* object);
 
-		virtual const bool DeserializeMember(ArchiveStream* archive, const SolusObject* object, ArchiveEntry& nextEntry)
+		virtual const bool DeserializeMember(ArchiveStream* archive, const SObject* object, ArchiveEntry& nextEntry)
 		{
 			return false;
 		}
 
 		template<typename T>
-		T* GetMemberPtr(const SolusObject* object, const std::string& name)
+		T* GetMemberPtr(const SObject* object, const std::string& name)
 		{
 			void* ptr = GetMemberPtrInternal(object, name);
 			return static_cast<T*>(ptr);
 		}
 
 	protected:
-		virtual void* GetMemberPtrInternal(const SolusObject* object, const std::string& name)
+		virtual void* GetMemberPtrInternal(const SObject* object, const std::string& name)
 		{
 			return nullptr;
 		}

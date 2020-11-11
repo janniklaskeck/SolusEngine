@@ -4,13 +4,12 @@
 #include "RenderShader.h"
 #include "RenderTexture.h"
 #include "Object/Entity.h"
+#include "AssetSystem/Asset.h"
 
 #include <vector>
 
 namespace Solus
 {
-	class MeshAsset;
-
 	class SOLUS_API RenderMesh
 	{
 	public:
@@ -19,7 +18,7 @@ namespace Solus
 
 		virtual void Render(const Entity* owner) {};
 
-		virtual bool Load(MeshAsset* meshAsset) = 0;
+		virtual bool Load(Asset meshAsset) = 0;
 
 	protected:
 		RenderShader* shader;

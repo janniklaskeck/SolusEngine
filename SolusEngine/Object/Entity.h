@@ -1,19 +1,20 @@
 #pragma once
-#include "SolusObject.h"
+#include "SObject.h"
 #include "Entity.generated.h"
 
 #include "Component/SComponent.h"
 #include "Utility/Matrix.h"
 #include "Utility/Vector.h"
+#include "Utility/Helper.h"
 
 #include <cstdint>
 
 namespace Solus
 {
 	SOLUS_CLASS();
-	class SOLUS_API Entity : public SolusObject
+	class SOLUS_API Entity : public SObject
 	{
-		META(Entity, SolusObject)
+		META(Entity, SObject)
 	public:
 
 		Entity();
@@ -25,7 +26,7 @@ namespace Solus
 		virtual void Update(float deltaTime);
 		virtual void EndPlay();
 
-		uint64_t GetId() const
+		SUUID GetId() const
 		{
 			return instanceId;
 		}
@@ -66,7 +67,7 @@ namespace Solus
 		bool hasBegunPlay = false;
 
 
-		uint64_t instanceId;
+		SUUID instanceId;
 
 		Mat4f mTransform;
 

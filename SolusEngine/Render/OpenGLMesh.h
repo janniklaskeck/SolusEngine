@@ -34,7 +34,7 @@ namespace Solus
 		~OpenGLMesh();
 		virtual void Render(const Entity* owner) override;
 
-		virtual bool Load(MeshAsset* meshAsset) override;
+		virtual bool Load(Asset meshAsset) override;
 
 	private:
 		void LoadMesh(int index, aiMesh* mesh);

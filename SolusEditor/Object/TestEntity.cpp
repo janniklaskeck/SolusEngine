@@ -13,7 +13,7 @@ namespace Solus
 
 	void TestEntity::BeginPlay()
 	{
-		//Solus::MeshAsset* asset = (Solus::MeshAsset*)Solus::gEngine->GetAssetManager()->GetAsset("Model/suzanne.obj");
+		//Solus::MeshAsset* asset = (Solus::MeshAsset*)Solus::gEngine->GetAssetManager()->GetAssetFromPath("Model/suzanne.obj");
 		//meshComponent->SetMesh(asset);
 	}
 

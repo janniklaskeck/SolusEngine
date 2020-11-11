@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Engine/SolusEngine.h"
-#include "SolusObject.generated.h"
+#include "SObject.generated.h"
 
 #include "Utility/RTTI.h"
 
@@ -9,18 +9,15 @@ namespace Solus
 {
 
 	SOLUS_CLASS();
-	class SOLUS_API SolusObject
+	class SOLUS_API SObject
 	{
-		META_ROOT(SolusObject)
+		META_ROOT(SObject)
 	public:
-		SolusObject();
+		SObject();
 
 		void Serialize(ArchiveStream& archive) const;
 
 		void Deserialize(ArchiveStream& archive);
-
-		virtual void PostSerialize()
-		{}
 
 		ClassMetaData* GetClassMetaData() const;
 	};

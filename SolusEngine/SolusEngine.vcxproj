@@ -51,7 +51,7 @@
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>NotSet</CharacterSet>
     <EnableASAN>false</EnableASAN>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -115,7 +115,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;SOLUSENGINE_EXPORT;GLFW_INCLUDE_NONE;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\Libraries\GLFW\include;..\Libraries\glm;..\gl3w\include;..\Libraries\assimp\include;..\Libraries\json;./;..\intermediates\generated;..\Libraries\RTTR\include;..\Libraries\dirent-1.23.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Libraries\GLFW\include;..\Libraries\glm;..\gl3w\include;..\Libraries\assimp\include;..\Libraries\json;./;..\intermediates\generated;..\Libraries\RTTR\include;..\Libraries\dirent-1.23.2\include;..\Libraries\magic_enum\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DisableSpecificWarnings>4251;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -129,10 +129,12 @@
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <AdditionalLibraryDirectories>..\Libraries\GLFW\lib-vc2017;..\Libraries\assimp\lib;$(OutDir);..\Libraries\RTTR\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>$(OutDir)\$(TargetName).lib</ImportLibrary>
+      <AdditionalOptions>Rpcrt4.lib %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /y $(SolutionDir)Libraries\GLFW\lib-vc2017\glfw3.dll  $(OutDir)
-xcopy /y $(SolutionDir)Libraries\assimp\lib\assimp-vc142-mt.dll  $(OutDir)</Command>
+xcopy /y $(SolutionDir)Libraries\assimp\lib\assimp-vc142-mt.dll  $(OutDir)
+xcopy /y $(SolutionDir)Libraries\RTTR\bin\rttr_core.dll  $(OutDir)</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>py $(SolutionDir)Tools/HeaderTool.py $(SolutionDir) $(ProjectName)</Command>
@@ -166,7 +168,7 @@ xcopy /y $(SolutionDir)Libraries\assimp\lib\assimp-vc142-mt.dll  $(OutDir)</Comm
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;SOLUSENGINE_EXPORT;GLFW_INCLUDE_NONE;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\Libraries\GLFW\include;..\Libraries\glm;..\gl3w\include;..\Libraries\assimp\include;..\Libraries\json;./;..\intermediates\generated;..\Libraries\RTTR\include;..\Libraries\dirent-1.23.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Libraries\GLFW\include;..\Libraries\glm;..\gl3w\include;..\Libraries\assimp\include;..\Libraries\json;./;..\intermediates\generated;..\Libraries\RTTR\include;..\Libraries\dirent-1.23.2\include;..\Libraries\magic_enum\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
@@ -183,6 +185,9 @@ xcopy /y $(SolutionDir)Libraries\assimp\lib\assimp-vc142-mt.dll  $(OutDir)</Comm
 xcopy /y $(SolutionDir)Libraries\assimp\lib\assimp-vc142-mt.dll  $(OutDir)
 xcopy /y $(SolutionDir)Libraries\RTTR\bin\rttr_core.dll  $(OutDir)</Command>
     </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>py $(SolutionDir)Tools/HeaderTool.py $(SolutionDir) $(ProjectName)</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AssetSystem\Asset.h" />
@@ -190,10 +195,11 @@ xcopy /y $(SolutionDir)Libraries\RTTR\bin\rttr_core.dll  $(OutDir)</Command>
     <ClInclude Include="AssetSystem\AssetMeta.h" />
     <ClInclude Include="AssetSystem\AssetSource.h" />
     <ClInclude Include="AssetSystem\FolderAssetSource.h" />
-    <ClInclude Include="AssetSystem\MeshAsset.h" />
-    <ClInclude Include="AssetSystem\PrefabAsset.h" />
-    <ClInclude Include="AssetSystem\TextAsset.h" />
-    <ClInclude Include="AssetSystem\TextureAsset.h" />
+    <ClInclude Include="AssetSystem\ReferenceCounted.h" />
+    <ClInclude Include="AssetSystem\SAsset.h" />
+    <ClInclude Include="AssetSystem\SAssetMetadata.h" />
+    <ClInclude Include="AssetSystem\SAssetType.h" />
+    <ClInclude Include="AssetSystem\ShaderAsset.h" />
     <ClInclude Include="Engine\Engine.h" />
     <ClInclude Include="Engine\LogListener.h" />
     <ClInclude Include="Engine\ProjectFile.h" />
@@ -203,7 +209,7 @@ xcopy /y $(SolutionDir)Libraries\RTTR\bin\rttr_core.dll  $(OutDir)</Command>
     <ClInclude Include="Object\Component\MeshComponent.h" />
     <ClInclude Include="Object\Component\SComponent.h" />
     <ClInclude Include="Object\Entity.h" />
-    <ClInclude Include="Object\SolusObject.h" />
+    <ClInclude Include="Object\SObject.h" />
     <ClInclude Include="Object\World.h" />
     <ClInclude Include="Render\Camera.h" />
     <ClInclude Include="Render\FreeFlyCamera.h" />
@@ -234,20 +240,19 @@ xcopy /y $(SolutionDir)Libraries\RTTR\bin\rttr_core.dll  $(OutDir)</Command>
     <ClInclude Include="Utility\SerializeUtil.h" />
     <ClInclude Include="Utility\Timer.h" />
     <ClInclude Include="Utility\Transform.h" />
+    <ClInclude Include="Utility\UUID.h" />
     <ClInclude Include="Utility\Vector.h" />
     <ClInclude Include="..\intermediates\generated\SolusEngine.generated.h" />
     <ClInclude Include="..\intermediates\generated\Entity.generated.h" />
-    <ClInclude Include="..\intermediates\generated\SolusObject.generated.h" />
     <ClInclude Include="..\intermediates\generated\MeshComponent.generated.h" />
     <ClInclude Include="..\intermediates\generated\SComponent.generated.h" />
     <ClInclude Include="..\intermediates\generated\Camera.generated.h" />
     <ClInclude Include="..\intermediates\generated\FreeFlyCamera.generated.h" />
     <ClInclude Include="..\intermediates\generated\World.generated.h" />
     <ClInclude Include="..\intermediates\generated\Asset.generated.h" />
-    <ClInclude Include="..\intermediates\generated\MeshAsset.generated.h" />
-    <ClInclude Include="..\intermediates\generated\PrefabAsset.generated.h" />
-    <ClInclude Include="..\intermediates\generated\TextureAsset.generated.h" />
-    <ClInclude Include="..\intermediates\generated\TextAsset.generated.h" />
+    <ClInclude Include="..\intermediates\generated\SAsset.generated.h" />
+    <ClInclude Include="..\intermediates\generated\SObject.generated.h" />
+    <ClInclude Include="..\intermediates\generated\ShaderAsset.generated.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssetSystem\Asset.cpp" />
@@ -255,17 +260,17 @@ xcopy /y $(SolutionDir)Libraries\RTTR\bin\rttr_core.dll  $(OutDir)</Command>
     <ClCompile Include="AssetSystem\AssetMeta.cpp" />
     <ClCompile Include="AssetSystem\AssetSource.cpp" />
     <ClCompile Include="AssetSystem\FolderAssetSource.cpp" />
-    <ClCompile Include="AssetSystem\MeshAsset.cpp" />
-    <ClCompile Include="AssetSystem\PrefabAsset.cpp" />
-    <ClCompile Include="AssetSystem\TextAsset.cpp" />
-    <ClCompile Include="AssetSystem\TextureAsset.cpp" />
+    <ClCompile Include="AssetSystem\ReferenceCounted.cpp" />
+    <ClCompile Include="AssetSystem\SAsset.cpp" />
+    <ClCompile Include="AssetSystem\SAssetMetadata.cpp" />
+    <ClCompile Include="AssetSystem\ShaderAsset.cpp" />
     <ClCompile Include="Engine\Engine.cpp" />
     <ClCompile Include="Engine\ProjectFile.cpp" />
     <ClCompile Include="Input\InputDevice.cpp" />
     <ClCompile Include="Object\Component\MeshComponent.cpp" />
     <ClCompile Include="Object\Component\SComponent.cpp" />
     <ClCompile Include="Object\Entity.cpp" />
-    <ClCompile Include="Object\SolusObject.cpp" />
+    <ClCompile Include="Object\SObject.cpp" />
     <ClCompile Include="Object\World.cpp" />
     <ClCompile Include="Render\Camera.cpp" />
     <ClCompile Include="Render\FreeFlyCamera.cpp" />
@@ -292,17 +297,16 @@ xcopy /y $(SolutionDir)Libraries\RTTR\bin\rttr_core.dll  $(OutDir)</Command>
     <ClCompile Include="Utility\SerializeUtil.cpp" />
     <ClCompile Include="Utility\Timer.cpp" />
     <ClCompile Include="..\intermediates\generated\Entity.generated.cpp" />
-    <ClCompile Include="..\intermediates\generated\SolusObject.generated.cpp" />
     <ClCompile Include="..\intermediates\generated\MeshComponent.generated.cpp" />
     <ClCompile Include="..\intermediates\generated\SComponent.generated.cpp" />
     <ClCompile Include="..\intermediates\generated\Camera.generated.cpp" />
     <ClCompile Include="..\intermediates\generated\FreeFlyCamera.generated.cpp" />
     <ClCompile Include="..\intermediates\generated\World.generated.cpp" />
     <ClCompile Include="..\intermediates\generated\Asset.generated.cpp" />
-    <ClCompile Include="..\intermediates\generated\MeshAsset.generated.cpp" />
-    <ClCompile Include="..\intermediates\generated\PrefabAsset.generated.cpp" />
-    <ClCompile Include="..\intermediates\generated\TextureAsset.generated.cpp" />
-    <ClCompile Include="..\intermediates\generated\TextAsset.generated.cpp" />
+    <ClCompile Include="Utility\UUID.cpp" />
+    <ClCompile Include="..\intermediates\generated\SAsset.generated.cpp" />
+    <ClCompile Include="..\intermediates\generated\SObject.generated.cpp" />
+    <ClCompile Include="..\intermediates\generated\ShaderAsset.generated.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\gl3w\gl3w.vcxproj">

@@ -6,10 +6,8 @@
 #include "OpenGLSurface.h"
 #include "OpenGLPrimitiveDrawer.h"
 
-#include "AssetSystem/TextAsset.h"
-#include "AssetSystem/MeshAsset.h"
-#include "AssetSystem/TextureAsset.h"
 #include "AssetSystem/AssetManager.h"
+#include "AssetSystem/ShaderAsset.h"
 
 #include "Engine/Engine.h"
 
@@ -48,10 +46,11 @@ namespace Solus
 		defaultSurface->Initialize(size.x, size.y);
 		SetRenderSurface(defaultSurface);
 
-		TextAsset* screenVertexShader = (TextAsset*)gEngine->GetAssetManager()->GetAsset("Editor/Shader/ScreenVertexShader.glsl");
-		TextAsset* screenFragmentShader = (TextAsset*)gEngine->GetAssetManager()->GetAsset("Editor/Shader/ScreenFragmentShader.glsl");
+		AssetManager* assetManager = gEngine->GetAssetManager();
+		Asset screenShader = assetManager->ImportAsset<ShaderAsset>("Editor/Shader/ScreenShader.glsl");
+		assert(screenShader.IsValid());
 
-		screenFramebufferShader = (OpenGLShader*)CreateShader(screenVertexShader, screenFragmentShader);
+		screenFramebufferShader = (OpenGLShader*)CreateShader(screenShader);
 		screenTextureId = glGetUniformLocation(screenFramebufferShader->GetShaderProgram(), "screenTexture");
 		float quadVertices[] = {
 			-1.0f, -1.0f,
@@ -72,10 +71,10 @@ namespace Solus
 		glBindVertexArray(0);
 		CHECK_OPENGL_ERROR();
 
-		screenVertexShader = (TextAsset*)gEngine->GetAssetManager()->GetAsset("Editor/Shader/DefaultScreenVS.glsl");
-		screenFragmentShader = (TextAsset*)gEngine->GetAssetManager()->GetAsset("Editor/Shader/DefaultScreenFS.glsl");
+		screenShader = assetManager->ImportAsset<ShaderAsset>("Editor/Shader/DefaultScreenShader.glsl");
+		assert(screenShader.IsValid());
 
-		defaultScreenShader = (OpenGLShader*)CreateShader(screenVertexShader, screenFragmentShader);
+		defaultScreenShader = (OpenGLShader*)CreateShader(screenShader);
 	}
 
 	void OpenGLDevice::Update()
@@ -116,21 +115,27 @@ namespace Solus
 		CHECK_OPENGL_ERROR();
 	}
 
-	RenderShader* OpenGLDevice::CreateShader(TextAsset* vertexShaderFile, TextAsset* fragmentShaderFile)
+	RenderShader* OpenGLDevice::CreateShader(const Asset& shaderAsset)
 	{
+		if (!shaderAsset.IsValid())
+			return nullptr;
 		OpenGLShader* shader = new OpenGLShader;
-		shader->Load(vertexShaderFile, fragmentShaderFile);
+		if (!shader->Load(shaderAsset))
+		{
+			delete shader;
+			return nullptr;
+		}
 		return shader;
 	}
 
-	RenderMesh* OpenGLDevice::CreateMesh(MeshAsset* meshFile)
+	RenderMesh* OpenGLDevice::CreateMesh(const Asset& meshFile)
 	{
 		auto* mesh = new OpenGLMesh;
 		mesh->Load(meshFile);
 		return mesh;
 	}
 
-	RenderTexture* OpenGLDevice::CreateTexture(TextureAsset* textureFile, bool doLoading /*= true*/, TextureType type /* = TextureType::TEX_DDS */)
+	RenderTexture* OpenGLDevice::CreateTexture(const Asset& textureFile, bool doLoading /*= true*/, TextureType type /* = TextureType::TEX_DDS */)
 	{
 		RenderTexture* newTexture = new OpenGLTexture(GL_TEXTURE_2D);
 		if (doLoading)
@@ -145,6 +150,16 @@ namespace Solus
 		return newTexture;
 	}
 
+	bool OpenGLDevice::DestroyTexture(RenderTexture* texture)
+	{
+		if (texture != GetDefaultTexture())
+		{
+			delete texture;
+			return true;
+		}
+		return false;
+	}
+
 	PrimitiveDrawer* OpenGLDevice::GetPrimitiveDrawer()
 	{
 		return primitiveDrawer;
@@ -154,7 +169,7 @@ namespace Solus
 	{
 		if (!defaultTexture.get())
 		{
-			auto* defaultTextureAsset = (TextureAsset*)gEngine->GetAssetManager()->GetAsset("Editor/texture/defaultTexture.dds");
+			const Asset& defaultTextureAsset = gEngine->GetAssetManager()->GetAssetFromPath("Editor/texture/defaultTexture.dds");
 			defaultTexture.reset(new OpenGLTexture(GL_TEXTURE_2D));
 			defaultTexture.get()->Load(defaultTextureAsset);
 		}

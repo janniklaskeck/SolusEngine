@@ -17,48 +17,67 @@ namespace Solus
 
 	void EditorMenuBar::Render()
 	{
-		static std::shared_ptr<pfd::open_file> open_project_file;
+		static std::shared_ptr<pfd::open_file> open_file;
+		static std::shared_ptr<pfd::save_file> save_file_as;
+
 		if (ImGui::BeginMainMenuBar())
 		{
 			if (ImGui::BeginMenu("File"))
 			{
 				if (ImGui::MenuItem("Open Project"))
 				{
-					open_project_file = std::make_shared<pfd::open_file>("Choose file", "C:\\");
+					open_file = std::make_shared<pfd::open_file>("Choose file", "C:\\");
 				}
 
 				ImGui::EndMenu();
 			}
 			if (ImGui::BeginMenu("Edit"))
 			{
+				if (ImGui::MenuItem("Save", "CTRL+S"))
+				{
+					/*if (!gEngine->GetWorld()->SaveWorld())
+					{
+						save_file_as = std::make_shared<pfd::save_file>("Choose file", "C:\\");
+					}*/
+				}
+
+				if (ImGui::MenuItem("Save As", "CTRL+Shift+S"))
+				{
+					save_file_as = std::make_shared<pfd::save_file>("Choose file", "C:\\");
+				}
+
+				ImGui::Separator();
+
 				if (ImGui::MenuItem("Undo", "CTRL+Z"))
 				{
 				}
+
+				// Disabled item
 				if (ImGui::MenuItem("Redo", "CTRL+Y", false, false))
-				{
-				}  // Disabled item
-				ImGui::Separator();
-				if (ImGui::MenuItem("Cut", "CTRL+X"))
-				{
-				}
-				if (ImGui::MenuItem("Copy", "CTRL+C"))
-				{
-				}
-				if (ImGui::MenuItem("Paste", "CTRL+V"))
 				{
 				}
 				ImGui::EndMenu();
 			}
 			ImGui::EndMainMenuBar();
 		}
-		if (open_project_file && open_project_file->ready())
+		if (open_file && open_file->ready())
 		{
-			auto result = open_project_file->result();
+			auto result = open_file->result();
 			if (result.size())
 			{
 				gEngine->SetCurrentProject(result[0]);
 			}
-			open_project_file = nullptr;
+			open_file = nullptr;
+		}
+		if (save_file_as && save_file_as->ready())
+		{
+			auto result = save_file_as->result();
+			if (result.size())
+			{
+				//gEngine->GetAssetManager()->GetProjectAssetSource()->CreateAsset(result);
+				//gEngine->GetWorld()->SaveWorld();
+			}
+			save_file_as = nullptr;
 		}
 	}
 

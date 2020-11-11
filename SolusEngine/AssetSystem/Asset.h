@@ -2,9 +2,10 @@
 
 #include "Asset.generated.h"
 #include "Engine/SolusEngine.h"
-#include "Object/SolusObject.h"
+#include "Object/SObject.h"
 #include "Utility/Vector.h"
 #include "Utility/RTTI.h"
+#include "AssetSystem/SAsset.h"
 
 #include <string>
 #include <vector>
@@ -14,54 +15,39 @@
 
 namespace Solus
 {
-	enum class SOLUS_API AssetType : uint8_t
-	{
-		AT_TEXT = 0,
-		AT_TEXTURE,
-		AT_MESH,
-		AT_SOUND,
-		AT_UNKNOWN
-	};
-
-#define ASSET_FILE_EXTENSION ".asset"
-
 	SOLUS_CLASS();
-	class SOLUS_API Asset : public SolusObject
+	class SOLUS_API Asset : public SObject
 	{
-		META(Asset, SolusObject)
+		META(Asset, SObject)
 	public:
 
 		Asset();
-		virtual ~Asset();
-		
-		virtual void Initialize(std::filesystem::path filePath, bool forceLoad = false);
 
-		virtual void Load();
-		virtual void Unload();
+		Asset(const Asset& other);
+		Asset(Asset&& other) noexcept;
 
-		void* GetRawData() const;
-		uintmax_t GetDataSize(bool readFromFile = false) const;
+		~Asset();
 
-		std::filesystem::path GetFilePath(bool relativePath = false) const;
-		std::string GetFileName(bool removeExtension = false) const;
+		void Set(SAsset* _asset);
 
-		std::string GetFileType() const;
+		Asset& operator=(const Asset& other);
+		Asset& operator=(Asset&& other) noexcept;
+		Asset& operator=(SAsset* ptr);
 
-		const uint32_t GetAssetId() const;
+		SUUID GetId() const;
 
-		virtual void PostSerialize() override;
+		bool IsValid() const;
 
-	protected:
-		SPROPERTY();
-		uint32_t assetId = 0;
+		SAsset* operator->() const;
+		SAsset& operator*() const;
 
-		std::filesystem::path path;
-		AssetType type;
+		bool operator==(const Asset& other) const;
+		bool operator!=(const Asset& other) const;
 
-		std::unique_ptr<class AssetMeta> metaData;
+		operator bool() const;
 
-		void* dataPtr;
-		uintmax_t dataLength;
+	private:
+		SAsset* asset = nullptr;
 	};
 
 }

@@ -7,19 +7,18 @@
 
 namespace Solus
 {
-	SCLASS_IMPL(Camera);
 
-	Camera::Camera(float fovY, float windowWidth, float windowHeight, float near, float far)
+	Camera::Camera(float fovY, float windowWidth, float windowHeight, float nearPlane, float farPlane)
 	{
-		projectionMatrix = glm::perspective<float>(glm::radians(fovY / 2.f), windowWidth / windowHeight, near, far);
+		projectionMatrix = glm::perspective<float>(glm::radians(fovY / 2.f), windowWidth / windowHeight, nearPlane, farPlane);
 
 		if (!gEngine->GetMainCamera())
 			gEngine->SetMainCamera(this);
 	}
 
-	void Camera::UpdateProjectionMatrix(float fovY, float windowWidth, float windowHeight, float near, float far)
+	void Camera::UpdateProjectionMatrix(float fovY, float windowWidth, float windowHeight, float nearPlane, float farPlane)
 	{
-		projectionMatrix = glm::perspective<float>(glm::radians(fovY / 2.f), windowWidth / windowHeight, near, far);
+		projectionMatrix = glm::perspective<float>(glm::radians(fovY / 2.f), windowWidth / windowHeight, nearPlane, farPlane);
 	}
 
 }

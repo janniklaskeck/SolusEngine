@@ -1,7 +1,7 @@
 #pragma once
 
 #include "SComponent.generated.h"
-#include "Object/SolusObject.h"
+#include "Object/SObject.h"
 #include "Engine/SolusEngine.h"
 
 #include "Utility/RTTI.h"
@@ -11,9 +11,9 @@ namespace Solus
 	class Entity;
 
 	SOLUS_CLASS();
-	class SOLUS_API SComponent : public SolusObject
+	class SOLUS_API SComponent : public SObject
 	{
-		META(SComponent, SolusObject)
+		META(SComponent, SObject)
 	public:
 
 		virtual void BeginPlay();

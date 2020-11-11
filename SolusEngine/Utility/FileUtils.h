@@ -2,27 +2,24 @@
 
 #include "Engine/SolusEngine.h"
 
-#include <string>
-#include <cstdint>
-#include <filesystem>
-
 namespace Solus
 {
-
 	class SOLUS_API FileUtils
 	{
 	private:
-		FileUtils(){}
+		FileUtils() = default;
 
 	public:
 		
 		static std::string GetCurrentFolder();
 
-		static std::string ReadFile(std::filesystem::path path);
-		static char* ReadFileRaw(std::filesystem::path path, uintmax_t& length);
-		static bool WriteFile(const char* filePath, const char* fileContent);
+		static bool FileExists(fs::path path);
 
+		static std::string ReadFile(fs::path path);
+		static char* ReadFileRaw(fs::path path, uintmax_t& length);
 
+		static bool CreateFile(const fs::path path);
+		static bool WriteToFile(fs::path path, const char* fileContent, bool append = false);
 	};
 }
 

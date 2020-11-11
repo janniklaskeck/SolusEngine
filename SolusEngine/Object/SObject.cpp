@@ -1,5 +1,5 @@
-#include "SolusObject.h"
-#include "SolusObject.generated.h"
+#include "SObject.h"
+#include "SObject.generated.h"
 #include "Object/Entity.h"
 
 #include "Utility/SerializeUtil.h"
@@ -8,26 +8,24 @@
 namespace Solus
 {
 
-	SCLASS_IMPL(SolusObject);
-
-	SolusObject::SolusObject()
+	SObject::SObject()
 	{}
 
-	void SolusObject::Serialize(ArchiveStream& archive) const
+	void SObject::Serialize(ArchiveStream& archive) const
 	{
 		ClassMetaData* metaDataPtr = GetClassMetaData();
 		if (metaDataPtr)
 			metaDataPtr->Serialize(&archive, this);
 	}
 
-	void SolusObject::Deserialize(ArchiveStream& archive)
+	void SObject::Deserialize(ArchiveStream& archive)
 	{
 		ClassMetaData* metaDataPtr = GetClassMetaData();
 		if (metaDataPtr)
 			metaDataPtr->Deserialize(&archive, archive.root, this);
 	}
 
-	ClassMetaData* SolusObject::GetClassMetaData() const
+	ClassMetaData* SObject::GetClassMetaData() const
 	{
 		const auto ptrType = get_type();
 		const auto metaDataProperty = ptrType.get_property("MetaData");
@@ -36,7 +34,7 @@ namespace Solus
 			gEngine->Log(LogLevel::LogError, "Could not get MetaData property for type: %.*s", ptrType.get_name().length(), ptrType.get_name().data());
 			return nullptr;
 		}
-		const SolusObject* ptr = this;
+		const SObject* ptr = this;
 		ClassMetaData* metaDataPtr = metaDataProperty.get_value(ptr).get_value<ClassMetaData*>();
 		if (!metaDataPtr)
 		{

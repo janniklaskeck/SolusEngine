@@ -1,10 +1,7 @@
 #include "AssetSource.h"
-#include "TextAsset.h"
-#include "MeshAsset.h"
-#include "TextureAsset.h"
+#include "AssetSource.h"
 #include "Engine/Engine.h"
 
-#include <filesystem>
 
 namespace Solus
 {
@@ -12,46 +9,35 @@ namespace Solus
 	AssetSource::AssetSource(std::string root)
 	{
 		this->root = std::filesystem::absolute(root);
-		// Text files
-		extensionTypeMap[".txt"] = AssetType::AT_TEXT;
-		extensionTypeMap[".glsl"] = AssetType::AT_TEXT;
-
-		// Texture files
-		extensionTypeMap[".dds"] = AssetType::AT_TEXTURE;
-
-		// Mesh files
-		extensionTypeMap[".obj"] = AssetType::AT_MESH;
 	}
 
-	void AssetSource::InitializeAsset(std::filesystem::path relativePath)
+	Asset AssetSource::GetAssetFromPath(const std::string& path)
 	{
-		Asset* asset;
-		std::string extension = relativePath.extension().generic_string();
-		if (extensionTypeMap.find(extension) != extensionTypeMap.end())
+		auto pathString = fs::path(path).string();
+		if (pathAssets.find(pathString) != pathAssets.end())
 		{
-			switch (extensionTypeMap[extension])
-			{
-			case AssetType::AT_TEXT:
-				asset = new TextAsset();
-				break;
-			case AssetType::AT_TEXTURE:
-				asset = new TextureAsset();
-				break;
-			case AssetType::AT_MESH:
-				asset = new MeshAsset();
-				break;
-			default:
-				asset = new TextAsset();
-				break;
-			}
+			return pathAssets[pathString];
 		}
-		else
-		{
-			asset = new TextAsset();
-		}
-		auto absolutePath = (root / relativePath);
-		asset->Initialize(absolutePath);
-		assets[relativePath.generic_string()] = asset;
+		return Asset();
+	}
+
+	Asset AssetSource::GetAsset(const SUUID id)
+	{
+		if (idAssets.find(id) != idAssets.end())
+			return idAssets[id];
+		return Asset();
+	}
+
+	void AssetSource::InitializeAsset(const fs::path relativePath)
+	{
+		auto absolutePath = root / relativePath;
+		SAsset* importedAsset = SAsset::Import(absolutePath);
+		if (!importedAsset)
+			return;
+		Asset asset;
+		asset.Set(importedAsset);
+		idAssets[asset.GetId()] = asset;
+		pathAssets[absolutePath.string()] = asset;
 	}
 
 	void AssetSource::CleanPath(std::string& path)
@@ -61,16 +47,6 @@ namespace Solus
 			path.erase(0, 2);
 		}
 		std::replace(path.begin(), path.end(), '\\', '/');
-	}
-
-	std::unordered_map<std::string, Asset*>::const_iterator AssetSource::BeginIter() const
-	{
-		return assets.cbegin();
-	}
-
-	std::unordered_map<std::string, Asset*>::const_iterator AssetSource::EndIter() const
-	{
-		return assets.cend();
 	}
 
 }

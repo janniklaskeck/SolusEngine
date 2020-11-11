@@ -5,87 +5,111 @@
 
 namespace Solus
 {
-	SCLASS_IMPL(Asset);
-
 	Asset::Asset()
-		: dataPtr(nullptr), dataLength(0L), path(""), type(AssetType::AT_UNKNOWN)
-	{}
+	{
+	}
+
+	Asset::Asset(const Asset& other)
+	{
+		asset = other.asset;
+		if (asset)
+			asset->Increment();
+	}
+
+	Asset::Asset(Asset&& other) noexcept
+	{
+		asset = other.asset;
+		other.asset = nullptr;
+	}
 
 	Asset::~Asset()
-	{}
-
-	void Asset::Initialize(std::filesystem::path filePath, bool forceLoad/* = false*/)
 	{
-		this->path = filePath;
-		metaData.reset(new AssetMeta);
-		metaData->Initialize(this);
-		assetId = metaData->GetMetaId();
+		if (asset)
+			asset->Decrement();
 	}
 
-	void Asset::Load()
+	void Asset::Set(SAsset* _asset)
 	{
-		if (dataPtr)
+		if (!asset)
 		{
-			return;
+			asset = _asset;
+			if (asset)
+				asset->Increment();
 		}
-		dataPtr = FileUtils::ReadFileRaw(GetFilePath().c_str(), dataLength);
 	}
 
-	void Asset::Unload()
+	Asset& Asset::operator=(const Asset& other)
 	{
-		if (dataPtr)
-			delete dataPtr;
-		dataPtr = nullptr;
-	}
-
-	std::filesystem::path Asset::GetFilePath(bool relativePath /*= false*/) const
-	{
-		//if (relativePath)
-		//{
-		//	const auto& root = gEngine->GetAssetManager()->GetEngineAssetRoot();
-		//	auto relPath = std::filesystem::relative(path, root);
-		//	return relPath;
-		//}
-		return path;
-	}
-
-	void* Asset::GetRawData() const
-	{
-		return dataPtr;
-	}
-
-	uintmax_t Asset::GetDataSize(bool readFromFile /*= false*/) const
-	{
-		if (readFromFile)
-			return std::filesystem::file_size(path);
-		else
-			return dataLength;
-	}
-
-	std::string Asset::GetFileName(bool removeExtension /*= false*/) const
-	{
-		if (removeExtension)
+		if (this != &other)
 		{
-			return path.stem().string();
+			if (asset)
+				asset->Decrement();
+
+			asset = other.asset;
+			if (asset)
+				asset->Increment();
 		}
-		return path.filename().string();
+		return *this;
 	}
 
-	std::string Asset::GetFileType() const
+	Asset& Asset::operator=(Asset&& other) noexcept
 	{
-		std::string fileType = path.filename().extension().string();
-		ToLower(fileType);
-		return fileType;
+		if (this != &other)
+		{
+			if (asset)
+				asset->Decrement();
+
+			asset = other.asset;
+			other.asset = nullptr;
+		}
+		return *this;
 	}
 
-	const uint32_t Asset::GetAssetId() const
+	Asset& Asset::operator=(SAsset* ptr)
 	{
-		return assetId;
+		if (asset)
+			asset->Decrement();
+		asset = ptr;
+		if (asset)
+			asset->Increment();
+		return *this;
 	}
 
-	void Asset::PostSerialize()
+	SUUID Asset::GetId() const
 	{
+		if (asset)
+			asset->GetAssetId();
+		return SUUID::DEFAULT;
+	}
 
+	bool Asset::IsValid() const
+	{
+		return asset;
+	}
+
+	SAsset* Asset::operator->() const
+	{
+		return asset;
+	}
+
+	SAsset& Asset::operator*() const
+	{
+		return *asset;
+	}
+
+	bool Asset::operator==(const Asset& other) const
+	{
+		return asset == other.asset;
+	}
+
+	bool Asset::operator!=(const Asset& other) const
+	{
+		return !(*this == other);
+	}
+
+	Asset::operator bool() const
+	{
+		return IsValid();
 	}
 
 }

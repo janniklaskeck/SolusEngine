@@ -12,10 +12,9 @@ namespace Solus
 {
 	OpenGLPrimitiveDrawer::OpenGLPrimitiveDrawer()
 	{
-		auto* rectangleVS = (TextAsset*)gEngine->GetAssetManager()->GetAsset("Editor/Shader/DefaultScreenVS.glsl");
-		auto* rectangleFS = (TextAsset*)gEngine->GetAssetManager()->GetAsset("Editor/Shader/DefaultScreenFS.glsl");
+		Asset rectangleVS = gEngine->GetAssetManager()->GetAssetFromPath("Editor/Shader/DefaultScreen.glsl");
 
-		rectangleShader = (OpenGLShader*)gEngine->GetRenderDevice()->CreateShader(rectangleVS, rectangleFS);
+		rectangleShader = (OpenGLShader*)gEngine->GetRenderDevice()->CreateShader(rectangleVS);
 		glGenVertexArrays(1, &rectangleVAO);
 	}
 

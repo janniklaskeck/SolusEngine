@@ -3,7 +3,7 @@
 #include "Engine/Engine.h"
 #include "Utility/FileUtils.h"
 #include "AssetSystem/AssetManager.h"
-#include "AssetSystem/TextAsset.h"
+#include "AssetSystem/ShaderAsset.h"
 
 #include <iostream>
 #include <GL/gl3w.h>
@@ -19,13 +19,10 @@ namespace Solus
 	OpenGLShader::~OpenGLShader()
 	{}
 
-	bool OpenGLShader::Load(TextAsset* vertexShaderFile, TextAsset* fragmentShaderFile)
+	bool OpenGLShader::Load(const Asset& shaderAsset)
 	{
-		vertexShaderFile->Load();
-		fragmentShaderFile->Load();
-
-		const char* vertexSource = vertexShaderFile->GetCharContent();
-		const char* fragmentSource = fragmentShaderFile->GetCharContent();
+		const char* vertexSource;
+		const char* fragmentSource;// = fragmentShaderFile->GetCharContent();
 
 		GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
 		glShaderSource(vertexShader, 1, &vertexSource, NULL);

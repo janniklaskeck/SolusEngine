@@ -2,7 +2,6 @@
 
 #include "Object/Entity.h"
 #include "Object/Component/MeshComponent.h"
-#include "AssetSystem/MeshAsset.h"
 
 namespace Solus
 {

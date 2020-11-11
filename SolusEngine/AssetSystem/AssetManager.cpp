@@ -31,11 +31,11 @@ namespace Solus
 		}
 	}
 
-	Asset* Solus::AssetManager::GetAsset(std::string path)
+	Asset Solus::AssetManager::GetAssetFromPath(const std::string path)
 	{
 		if (projectAssetSource)
 		{
-			Asset* foundAsset = projectAssetSource->GetAsset(path);
+			Asset foundAsset = projectAssetSource->GetAssetFromPath(path);
 			if (foundAsset)
 			{
 				return foundAsset;
@@ -43,23 +43,39 @@ namespace Solus
 		}
 		if (engineAssetSource)
 		{
-			Asset* foundAsset = engineAssetSource->GetAsset(path);
+			Asset foundAsset = engineAssetSource->GetAssetFromPath(path);
 			if (foundAsset)
 			{
 				return foundAsset;
 			}
 		}
-		return nullptr;
+		return Asset();
 	}
 
-	Asset* AssetManager::GetAsset(const char* path)
+	Asset AssetManager::GetAssetFromPath(const char* path)
 	{
-		return GetAsset(std::string(path));
+		return GetAssetFromPath(std::string(path));
 	}
 
-	Asset* AssetManager::GetAsset(const uint32_t assetId) const
+	Asset AssetManager::GetAsset(const SUUID assetId) const
 	{
-		return nullptr;
+		if (projectAssetSource)
+		{
+			Asset foundAsset = projectAssetSource->GetAsset(assetId);
+			if (foundAsset)
+			{
+				return foundAsset;
+			}
+		}
+		if (engineAssetSource)
+		{
+			Asset foundAsset = engineAssetSource->GetAsset(assetId);
+			if (foundAsset)
+			{
+				return foundAsset;
+			}
+		}
+		return Asset();
 	}
 
 	AssetSource* AssetManager::GetEngineAssetSource() const

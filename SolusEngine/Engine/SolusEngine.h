@@ -11,6 +11,13 @@
 // GLOBAL INCLUDES
 
 #include "Engine/SubSystem.h"
+#include "Utility/UUID.h"
 
 #include <cstdint>
 #include <string>
+#include <cassert>
+#include <filesystem>
+#include <vector>
+#include <memory>
+
+namespace fs = std::filesystem;

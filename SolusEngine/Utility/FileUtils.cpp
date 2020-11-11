@@ -12,14 +12,20 @@ namespace Solus
 	std::string FileUtils::GetCurrentFolder()
 	{
 		
-		filesystem::path path = filesystem::current_path();
+		fs::path path = fs::current_path();
 		return path.string();
 	}
 
-	std::string FileUtils::ReadFile(std::filesystem::path path)
+	bool FileUtils::FileExists(fs::path path)
 	{
-		filesystem::file_status fileStatus = filesystem::status(path);
-		if (!filesystem::is_regular_file(fileStatus))
+		fs::file_status fileStatus = fs::status(path);
+		return fs::exists(path) && fs::is_regular_file(fileStatus);
+	}
+
+	std::string FileUtils::ReadFile(fs::path path)
+	{
+		fs::file_status fileStatus = fs::status(path);
+		if (!fs::is_regular_file(fileStatus))
 		{
 			gEngine->Log(LogLevel::LogError, "Could not load file at %s!", path.string().c_str());
 			return "";
@@ -33,15 +39,15 @@ namespace Solus
 		return std::string(ss.str());
 	}
 
-	char* FileUtils::ReadFileRaw(std::filesystem::path path, uintmax_t& length)
+	char* FileUtils::ReadFileRaw(fs::path path, uintmax_t& length)
 	{
-		filesystem::file_status fileStatus = filesystem::status(path);
-		if (!filesystem::is_regular_file(fileStatus))
+		fs::file_status fileStatus = fs::status(path);
+		if (!fs::is_regular_file(fileStatus))
 		{
 			gEngine->Log(LogLevel::LogError, "Could not load file at %s!", path.string().c_str());
 			return nullptr;
 		}
-		uintmax_t fileSize = filesystem::file_size(path);
+		uintmax_t fileSize = fs::file_size(path);
 		length = fileSize;
 		char* buffer = new char[fileSize];
 		std::ifstream fileStream(path, std::ios::binary);
@@ -51,20 +57,27 @@ namespace Solus
 		return buffer;
 	}
 
-	bool FileUtils::WriteFile(const char* filePath, const char* fileContent)
+	bool FileUtils::CreateFile(const fs::path path)
 	{
-		filesystem::path _filePath(filePath);
-
-		filesystem::file_status fileStatus = filesystem::status(_filePath);
-		if (filesystem::exists(_filePath) && !filesystem::is_regular_file(fileStatus))
-		{
-			gEngine->Log(LogLevel::LogError, "Could not write file at %s!", _filePath.string().c_str());
+		if (FileExists(path))
 			return false;
-		}
+		std::ofstream fileStream(path);
+		return true;
+	}
 
-		std::ofstream fileStream{ _filePath };
+	bool FileUtils::WriteToFile(fs::path path, const char* fileContent, bool append /*= false*/)
+	{
+		if (!FileExists(path))
+			return false;
+
+		auto mode = std::ios::out | std::ios::binary;
+		if (append)
+			mode |= std::ios::app;
+		else
+			mode |= std::ios::trunc;
+		std::ofstream fileStream;
+		fileStream.open(path, mode);
 		fileStream << fileContent;
-
 
 		return true;
 	}

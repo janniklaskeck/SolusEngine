@@ -2,7 +2,6 @@
 
 #include <chrono>
 #include <ctime>
-#include <time.h>
 
 #include <chrono>
 #include <random>
@@ -17,18 +16,12 @@ namespace Solus
 		return currentTime;
 	}
 
-	uint64_t GenerateUUID()
-	{
-		static uint64_t currentId = 1;
-		return ++currentId;
-	}
-
-	float GetRandom(float min, float max, int64_t seed)
+	float GetRandom(float min, float max, unsigned int seed)
 	{
 		return (float)GetRandom((double)min, (double)max, seed);
 	}
 
-	double GetRandom(double min, double max, int64_t seed)
+	double GetRandom(double min, double max, unsigned int seed)
 	{
 		int64_t _seed = seed;
 		static bool isGlobalSeedSet = false;
@@ -38,7 +31,7 @@ namespace Solus
 		{
 			if (!isGlobalSeedSet)
 			{
-				seed = time(0);
+				seed = (unsigned int)time(0);
 				isGlobalSeedSet = true;
 			}
 		}
@@ -50,10 +43,10 @@ namespace Solus
 		return random(usedGen);
 	}
 
-	int32_t GetRandom(int32_t min, int32_t max, int64_t seed)
+	int32_t GetRandom(int32_t min, int32_t max, unsigned int seed)
 	{
 		if (seed == -1)
-			seed = time(0);
+			seed = (unsigned int)time(0);
 		std::mt19937 randomBase(seed);
 		std::uniform_int_distribution<> random(min, max);
 		return random(randomBase);
@@ -64,5 +57,16 @@ namespace Solus
 		std::transform(string.begin(), string.end(), string.begin(), ::tolower);
 	}
 
+
+	bool StringCompareCase(const std::string& a, const std::string& b)
+	{
+		if (a.size() != b.size())
+			return false;
+		return std::equal(a.begin(), a.end(), b.begin(),
+						  [](char a, char b)
+						  {
+							  return tolower(a) == tolower(b);
+						  });
+	}
 
 }

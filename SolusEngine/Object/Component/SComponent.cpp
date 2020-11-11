@@ -6,7 +6,6 @@
 
 namespace Solus
 {
-	SCLASS_IMPL(SComponent);
 
 	void SComponent::BeginPlay()
 	{

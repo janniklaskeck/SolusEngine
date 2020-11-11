@@ -19,7 +19,7 @@ namespace Solus
 
 		virtual void Bind(unsigned int textureIndex) override;
 
-		virtual bool Load(TextureAsset* textureAsset) override;
+		virtual bool Load(Asset textureAsset) override;
 
 		uint32_t GetImageID()
 		{
@@ -27,7 +27,7 @@ namespace Solus
 		}
 
 	private:
-		TextureAsset* asset;
+		Asset asset;
 		uint32_t textureID = 0;
 		unsigned int textureType = 0;
 

@@ -2,7 +2,7 @@
 
 #include "Engine/Engine.h"
 
-#include "Object/SolusObject.h"
+#include "Object/SObject.h"
 #include "Object/Entity.h"
 #include "Object/Component/SComponent.h"
 #include "AssetSystem/Asset.h"
@@ -100,10 +100,10 @@ namespace Solus
 		std::enable_if_t<std::is_trivial_v<T>> SerializeInternal(const std::string& name, const std::vector<T>& value);
 
 		template<typename T>
-		std::enable_if_t<std::is_base_of_v<SolusObject, T> || std::is_base_of_v<SComponent, T> || std::is_base_of_v<Asset, T>> SerializeInternal(const std::string& name, const std::vector<T*>& value);
+		std::enable_if_t<std::is_base_of_v<SObject, T> || std::is_base_of_v<SComponent, T> || std::is_base_of_v<Asset, T>> SerializeInternal(const std::string& name, const std::vector<T*>& value);
 
 		template<typename T>
-		std::enable_if_t<std::is_base_of_v<SolusObject, T> || std::is_base_of_v<SComponent, T> || std::is_base_of_v<Asset, T>> SerializeInternal(const std::string& name, const T* value);
+		std::enable_if_t<std::is_base_of_v<SObject, T> || std::is_base_of_v<SComponent, T> || std::is_base_of_v<Asset, T>> SerializeInternal(const std::string& name, const T* value);
 
 		// Only allow integral types as keys for now
 		template <typename Key, typename Value>
@@ -115,7 +115,7 @@ namespace Solus
 		std::enable_if_t<!std::is_pointer_v<T>> DeserializeInternal(ArchiveEntry& entry, T& value);
 
 		template<typename T>
-		std::enable_if_t<std::is_base_of_v<SolusObject, T> || std::is_base_of_v<SComponent, T> || std::is_base_of_v<Asset, T>> DeserializeInternal(ArchiveEntry& entry, T* value);
+		std::enable_if_t<std::is_base_of_v<SObject, T> || std::is_base_of_v<SComponent, T> || std::is_base_of_v<Asset, T>> DeserializeInternal(ArchiveEntry& entry, T* value);
 
 		template <typename Key, typename Value>
 		std::enable_if_t<std::is_integral_v<Key>> DeserializeInternal(ArchiveEntry& entry, std::unordered_map<Key, Value>& map);
@@ -124,7 +124,7 @@ namespace Solus
 		std::enable_if_t<std::is_trivial_v<T>> DeserializeInternal(ArchiveEntry& entry, std::vector<T>& value);
 
 		template<typename T>
-		std::enable_if_t<std::is_base_of_v<SolusObject, T> || std::is_base_of_v<SComponent, T> || std::is_base_of_v<Asset, T>> DeserializeInternal(ArchiveEntry& entry, std::vector<T*>& value);
+		std::enable_if_t<std::is_base_of_v<SObject, T> || std::is_base_of_v<SComponent, T> || std::is_base_of_v<Asset, T>> DeserializeInternal(ArchiveEntry& entry, std::vector<T*>& value);
 
 	private:
 
@@ -198,7 +198,7 @@ namespace Solus
 	}
 
 	template<typename T>
-	std::enable_if_t<std::is_base_of_v<SolusObject, T> || std::is_base_of_v<SComponent, T> || std::is_base_of_v<Asset, T>> ArchiveStream::SerializeInternal(const std::string& name, const std::vector<T*>& value)
+	std::enable_if_t<std::is_base_of_v<SObject, T> || std::is_base_of_v<SComponent, T> || std::is_base_of_v<Asset, T>> ArchiveStream::SerializeInternal(const std::string& name, const std::vector<T*>& value)
 	{
 		//WriteUInt8(VECTOR_TYPE_ID);
 		WriteUInt32((uint32_t)value.size());
@@ -211,7 +211,7 @@ namespace Solus
 	}
 
 	template<typename T>
-	inline std::enable_if_t<std::is_base_of_v<SolusObject, T> || std::is_base_of_v<SComponent, T> || std::is_base_of_v<Asset, T>> ArchiveStream::SerializeInternal(const std::string& name, const T* value)
+	inline std::enable_if_t<std::is_base_of_v<SObject, T> || std::is_base_of_v<SComponent, T> || std::is_base_of_v<Asset, T>> ArchiveStream::SerializeInternal(const std::string& name, const T* value)
 	{
 		//WriteUInt8(POINTER_TYPE_ID);
 		if (value)
@@ -246,7 +246,7 @@ namespace Solus
 	}
 
 	template<typename T>
-	inline std::enable_if_t<std::is_base_of_v<SolusObject, T> || std::is_base_of_v<SComponent, T> || std::is_base_of_v<Asset, T>> ArchiveStream::DeserializeInternal(ArchiveEntry& entry, T* value)
+	inline std::enable_if_t<std::is_base_of_v<SObject, T> || std::is_base_of_v<SComponent, T> || std::is_base_of_v<Asset, T>> ArchiveStream::DeserializeInternal(ArchiveEntry& entry, T* value)
 	{
 		value->GetClassMetaData()->Deserialize(this, entry, value);
 	}
@@ -288,7 +288,7 @@ namespace Solus
 	}
 
 	template<typename T>
-	std::enable_if_t<std::is_base_of_v<SolusObject, T> || std::is_base_of_v<SComponent, T> || std::is_base_of_v<Asset, T>> ArchiveStream::DeserializeInternal(ArchiveEntry& entry, std::vector<T*>& value)
+	std::enable_if_t<std::is_base_of_v<SObject, T> || std::is_base_of_v<SComponent, T> || std::is_base_of_v<Asset, T>> ArchiveStream::DeserializeInternal(ArchiveEntry& entry, std::vector<T*>& value)
 	{
 		//entry.ReadUInt8();
 		uint32_t elements = entry.ReadUInt32();
