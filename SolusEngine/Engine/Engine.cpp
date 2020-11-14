@@ -9,6 +9,7 @@
 
 #include "Object/World.h"
 
+#include "AssetSystem/AssetManager.h"
 #include "AssetSystem/FolderAssetSource.h"
 
 #include "Utility/Timer.h"

@@ -22,6 +22,12 @@ namespace Solus
 		return fs::exists(path) && fs::is_regular_file(fileStatus);
 	}
 
+	bool FileUtils::FolderExists(fs::path path)
+	{
+		fs::file_status fileStatus = fs::status(path);
+		return fs::exists(path) && fs::is_directory(fileStatus);
+	}
+
 	std::string FileUtils::ReadFile(fs::path path)
 	{
 		fs::file_status fileStatus = fs::status(path);
@@ -62,7 +68,7 @@ namespace Solus
 		if (FileExists(path))
 			return false;
 		std::ofstream fileStream(path);
-		return true;
+		return fileStream.good();
 	}
 
 	bool FileUtils::WriteToFile(fs::path path, const char* fileContent, bool append /*= false*/)

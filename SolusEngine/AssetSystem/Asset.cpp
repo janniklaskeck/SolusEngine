@@ -2,6 +2,7 @@
 #include "AssetMeta.h"
 #include "Engine/Engine.h"
 #include "Utility/FileUtils.h"
+#include "AssetSystem/SAsset.h"
 
 namespace Solus
 {

@@ -2,6 +2,7 @@
 #include "AssetSource.h"
 #include "Engine/Engine.h"
 
+#include "AssetSystem/SAsset.h"
 
 namespace Solus
 {
@@ -26,6 +27,11 @@ namespace Solus
 		if (idAssets.find(id) != idAssets.end())
 			return idAssets[id];
 		return Asset();
+	}
+
+	const fs::path& AssetSource::GetRootPath() const
+	{
+		return root;
 	}
 
 	void AssetSource::InitializeAsset(const fs::path relativePath)

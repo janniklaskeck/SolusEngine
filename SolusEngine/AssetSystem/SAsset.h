@@ -28,7 +28,6 @@ namespace Solus
 		META(SAsset, SObject)
 	public:
 
-		SAsset(const fs::path filePath);
 		SAsset(const fs::path filePath, const SAssetType assetType);
 		virtual ~SAsset() = default;
 

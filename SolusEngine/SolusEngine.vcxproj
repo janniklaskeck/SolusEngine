@@ -127,14 +127,14 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>glfw3dll.lib;opengl32.lib;gl3w.lib;assimp-vc142-mt.lib;rttr_core_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
-      <AdditionalLibraryDirectories>..\Libraries\GLFW\lib-vc2017;..\Libraries\assimp\lib;$(OutDir);..\Libraries\RTTR\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\Libraries\GLFW\lib-vc2019;..\Libraries\assimp\lib;$(OutDir);..\Libraries\RTTR\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>$(OutDir)\$(TargetName).lib</ImportLibrary>
       <AdditionalOptions>Rpcrt4.lib %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y $(SolutionDir)Libraries\GLFW\lib-vc2017\glfw3.dll  $(OutDir)
+      <Command>xcopy /y $(SolutionDir)Libraries\GLFW\lib-vc2019\glfw3.dll  $(OutDir)
 xcopy /y $(SolutionDir)Libraries\assimp\lib\assimp-vc142-mt.dll  $(OutDir)
-xcopy /y $(SolutionDir)Libraries\RTTR\bin\rttr_core.dll  $(OutDir)</Command>
+xcopy /y $(SolutionDir)Libraries\RTTR\bin\rttr_core_d.dll  $(OutDir)</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>py $(SolutionDir)Tools/HeaderTool.py $(SolutionDir) $(ProjectName)</Command>
@@ -177,11 +177,11 @@ xcopy /y $(SolutionDir)Libraries\RTTR\bin\rttr_core.dll  $(OutDir)</Command>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\Libraries\GLFW\lib-vc2017;..\Libraries\assimp\lib;$(OutDir);..\Libraries\RTTR\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\Libraries\GLFW\lib-vc2019;..\Libraries\assimp\lib;$(OutDir);..\Libraries\RTTR\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>glfw3dll.lib;opengl32.lib;assimp-vc142-mt.lib;rttr_core.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y $(SolutionDir)Libraries\GLFW\lib-vc2017\glfw3.dll  $(OutDir)
+      <Command>xcopy /y $(SolutionDir)Libraries\GLFW\lib-vc2019\glfw3.dll  $(OutDir)
 xcopy /y $(SolutionDir)Libraries\assimp\lib\assimp-vc142-mt.dll  $(OutDir)
 xcopy /y $(SolutionDir)Libraries\RTTR\bin\rttr_core.dll  $(OutDir)</Command>
     </PostBuildEvent>

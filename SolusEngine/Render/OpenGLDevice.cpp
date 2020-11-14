@@ -47,7 +47,8 @@ namespace Solus
 		SetRenderSurface(defaultSurface);
 
 		AssetManager* assetManager = gEngine->GetAssetManager();
-		Asset screenShader = assetManager->ImportAsset<ShaderAsset>("Editor/Shader/ScreenShader.glsl");
+		const fs::path screenShaderPath = assetManager->GetEngineAssetSource()->GetRootPath() / "Editor/Shader/ScreenShader.glsl";
+		Asset screenShader = assetManager->ImportAsset<ShaderAsset>(screenShaderPath);
 		assert(screenShader.IsValid());
 
 		screenFramebufferShader = (OpenGLShader*)CreateShader(screenShader);
@@ -71,7 +72,8 @@ namespace Solus
 		glBindVertexArray(0);
 		CHECK_OPENGL_ERROR();
 
-		screenShader = assetManager->ImportAsset<ShaderAsset>("Editor/Shader/DefaultScreenShader.glsl");
+		const fs::path defaultScreenShaderPath = assetManager->GetEngineAssetSource()->GetRootPath() / "Editor/Shader/DefaultScreenShader.glsl";
+		screenShader = assetManager->ImportAsset<ShaderAsset>(defaultScreenShaderPath);
 		assert(screenShader.IsValid());
 
 		defaultScreenShader = (OpenGLShader*)CreateShader(screenShader);

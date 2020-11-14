@@ -1,5 +1,7 @@
 #include "OpenGLPrimitiveDrawer.h"
 
+#include "AssetSystem/AssetManager.h"
+
 #include "Engine/Engine.h"
 #include "OpenGLDevice.h"
 #include "OpenGLShader.h"

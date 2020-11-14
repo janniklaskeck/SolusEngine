@@ -15,6 +15,8 @@ namespace Solus
 
 		static bool FileExists(fs::path path);
 
+		static bool FolderExists(fs::path path);
+
 		static std::string ReadFile(fs::path path);
 		static char* ReadFileRaw(fs::path path, uintmax_t& length);
 

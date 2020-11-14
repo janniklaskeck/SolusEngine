@@ -5,6 +5,8 @@
 
 #include "Render/RenderDevice.h"
 
+#include "AssetSystem/SAsset.h"
+
 #include "IMGUI/imgui.h"
 
 #include <algorithm>

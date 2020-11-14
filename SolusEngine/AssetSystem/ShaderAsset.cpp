@@ -6,7 +6,7 @@ namespace Solus
 {
 
 	ShaderAsset::ShaderAsset(const fs::path shaderPath)
-		: SAsset(shaderPath)
+		: SAsset(shaderPath, SAssetType::SHADER)
 	{
 		
 	}

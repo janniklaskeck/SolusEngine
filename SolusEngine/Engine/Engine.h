@@ -3,8 +3,6 @@
 #include "SolusEngine.h"
 #include "ProjectFile.h"
 
-#include "AssetSystem/AssetManager.h"
-
 #include "Object/Entity.h"
 
 #include "Render/Window.h"
@@ -32,6 +30,7 @@ namespace Solus
 	class Timer;
 	class World;
 	class LogListener;
+	class AssetManager;
 
 	void SOLUS_API InitializeEngine(Window* window, const std::string& projectFilePath);
 

@@ -1,6 +1,7 @@
 #include "FolderAssetSource.h"
 #include "Asset.h"
 #include "AssetSystem/AssetManager.h"
+#include "AssetSystem/SAsset.h"
 
 #include "Utility/Helper.h"
 
@@ -25,6 +26,8 @@ namespace Solus
 
 	void FolderAssetSource::FindAssetInFolder(const fs::path folder)
 	{
+		if (!FileUtils::FolderExists(folder))
+			return;
 		for (auto& path : fs::recursive_directory_iterator(folder))
 		{
 			const fs::path& entryPath = path.path();

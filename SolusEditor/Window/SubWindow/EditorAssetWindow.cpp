@@ -4,6 +4,7 @@
 #include "Object/World.h"
 #include "AssetSystem/AssetManager.h"
 #include "AssetSystem/FolderAssetSource.h"
+#include "AssetSystem/SAsset.h"
 #include "Utils/UIUtils.h"
 
 #include "IMGUI/imgui.h"

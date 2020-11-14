@@ -25,13 +25,9 @@ namespace Solus
 		Asset GetAssetFromPath(const std::string& path);
 		Asset GetAsset(const SUUID id);
 
-		std::string GetRootPath() const
-		{
-			return root.string();
-		}
+		const fs::path& GetRootPath() const;
 
 		void InitializeAsset(const fs::path relativePath);
-
 
 	protected:
 		fs::path root;

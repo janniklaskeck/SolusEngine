@@ -150,6 +150,9 @@
       <AdditionalDependencies>glfw3dll.lib;opengl32.lib;SolusEngine.lib;rttr_core.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
     </Link>
+    <PreBuildEvent>
+      <Command>py $(SolutionDir)Tools/HeaderTool.py $(SolutionDir) $(ProjectName)</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ProjectReference Include="..\SolusEngine\SolusEngine.vcxproj">

@@ -16,15 +16,15 @@ namespace Solus
 
 		static SUUID DEFAULT;
 
-		static SUUID FromBytes(const char* bytes);
+		static SUUID FromString(const std::string& valueString);
 
 		const std::string ToString() const;
 
 	private:
-		unsigned long Data1;
-		unsigned short Data2;
-		unsigned short Data3;
-		unsigned char Data4[8];
+		unsigned long Data1 = 0;
+		unsigned short Data2 = 0;
+		unsigned short Data3 = 0;
+		uint8_t Data4[8] = {};
 	};
 
 	inline bool operator==(const SUUID& first, const SUUID& other)

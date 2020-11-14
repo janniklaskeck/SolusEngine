@@ -1,6 +1,7 @@
 #include "MeshComponent.h"
 #include "Render/RenderMesh.h"
 #include "Engine/Engine.h"
+#include "AssetSystem/SAsset.h"
 
 namespace Solus
 {

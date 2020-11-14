@@ -6,6 +6,8 @@
 
 #include "Utility/SerializeUtil.h"
 
+#include "AssetSystem/SAsset.h"
+
 namespace Solus
 {
 	World::World()

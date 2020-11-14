@@ -15,44 +15,21 @@ namespace Solus
 	class SOLUS_API SAssetMetadata
 	{
 	public:
-		SAssetMetadata(const fs::path _filePath)
-			: filePath(_filePath)
-		{
-			jsonData = nlohmann::json::parse(FileUtils::ReadFile(filePath));
-		}
+		SAssetMetadata(const fs::path _filePath);
 
 		static bool Create(const fs::path filePath, const SAssetType assetType);
 	
-		const SUUID GetAssetID() const
-		{
-			auto idString = jsonData["id"].get<std::string>();
-			return SUUID::FromBytes(idString.c_str());
-		}
+		const SUUID GetAssetID() const;
 
-		SAssetType GetAssetType() const
-		{
-			return (SAssetType)jsonData["type"].get<int>();
-		}
+		SAssetType GetAssetType() const;
 
-		void SetSourceFilePath(const fs::path sourceFilePath)
-		{
-			jsonData["sourceFilePath"] = sourceFilePath;
-		}
+		void SetSourceFilePath(const fs::path sourceFilePath);
 
-		const fs::path GetSourceFilePath() const
-		{
-			return jsonData["sourceFilePath"].get<std::string>();
-		}
+		const fs::path GetSourceFilePath() const;
 
-		void SetDataField(const std::string& name, const std::string& value)
-		{
-			jsonData["data"][name] = value;
-		}
+		void SetDataField(const std::string& name, const std::string& value);
 
-		const std::string GetDataField(const std::string& name) const
-		{
-			return jsonData["data"][name].get<std::string>();
-		}
+		const std::string GetDataField(const std::string& name) const;
 
 	private:
 		json jsonData;

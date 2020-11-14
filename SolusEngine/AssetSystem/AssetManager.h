@@ -40,9 +40,10 @@ namespace Solus
 	std::enable_if_t<std::is_base_of_v<SAsset, T>, Asset>
 		AssetManager::ImportAsset(const fs::path filePath)
 	{
+		if (!FileUtils::FileExists(filePath))
+			return Asset();
 		if (SAsset::IsAssetFile(filePath))
 			return GetAssetFromPath(filePath.string());
-
 		SAsset* asset = SAsset::Import<T>(filePath);
 		return Asset();
 	}

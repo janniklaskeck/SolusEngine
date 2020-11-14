@@ -5,6 +5,8 @@
 #include "RenderDevice.h"
 #include "Engine/Engine.h"
 
+#include "AssetSystem/AssetManager.h"
+
 namespace Solus
 {
 

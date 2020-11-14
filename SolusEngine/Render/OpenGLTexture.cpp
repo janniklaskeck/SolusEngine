@@ -2,6 +2,8 @@
 #include "Utility/FileUtils.h"
 #include "Utility/BinaryReader.h"
 
+#include "AssetSystem/SAsset.h"
+
 #include <GL/gl3w.h>
 #include <assert.h>
 

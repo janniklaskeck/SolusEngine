@@ -8,28 +8,16 @@ namespace Solus
 {
 	const std::string SAsset::ASSET_EXT = ".asset";
 
-	SAsset::SAsset(const fs::path filePath)
+	SAsset::SAsset(const fs::path filePath, const SAssetType assetType)
 	{
-		assetFilePath = filePath;
-		if (FileUtils::FileExists(assetFilePath))
+		if (IsAssetFile(filePath))
 		{
+			assetFilePath = filePath;
 			LoadMetadata();
 		}
 		else
 		{
-			assert(false);
-		}
-	}
-
-	SAsset::SAsset(const fs::path filePath, const SAssetType assetType)
-	{
-		assetFilePath = filePath.string() + ASSET_EXT;
-		if (FileUtils::FileExists(assetFilePath))
-		{
-			assert(false);
-		}
-		else
-		{
+			assetFilePath = filePath.string() + ASSET_EXT;
 			SAssetMetadata::Create(assetFilePath, assetType);
 			LoadMetadata();
 			metaData->SetSourceFilePath(filePath);

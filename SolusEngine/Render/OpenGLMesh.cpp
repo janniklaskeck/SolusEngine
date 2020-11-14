@@ -4,6 +4,8 @@
 #include "OpenGLDevice.h"
 #include "OpenGLPrimitiveDrawer.h"
 
+#include "AssetSystem/AssetManager.h"
+#include "AssetSystem/SAsset.h"
 
 #include "Engine/Engine.h"
 #include "Camera.h"

@@ -5,7 +5,6 @@
 #include "Object/SObject.h"
 #include "Utility/Vector.h"
 #include "Utility/RTTI.h"
-#include "AssetSystem/SAsset.h"
 
 #include <string>
 #include <vector>
@@ -15,6 +14,8 @@
 
 namespace Solus
 {
+	class SAsset;
+
 	SOLUS_CLASS();
 	class SOLUS_API Asset : public SObject
 	{

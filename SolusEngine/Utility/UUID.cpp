@@ -22,28 +22,43 @@ namespace Solus
 		return true;
 	}
 
-	SUUID SUUID::FromBytes(const char* bytes)
+	SUUID SUUID::FromString(const std::string& valueString)
 	{
 		SUUID suuid;
+		std::stringstream ss1;
+		ss1 << std::hex << valueString.substr(0, 8);
+		ss1 >> suuid.Data1;
 
-		suuid.Create();
-		const std::string str = suuid.ToString();
+		std::stringstream ss2;
+		ss2 << std::hex << valueString.substr(8, 4);
+		ss2 >> suuid.Data2;
+		
+		std::stringstream ss3;
+		ss3 << std::hex << valueString.substr(12, 4);
+		ss3 >> suuid.Data3;
 
-		BinaryReader reader((void*)str.c_str(), sizeof(SUUID));
-		suuid.Data1 = (long)reader.ReadInt32();
-		suuid.Data2 = (short)reader.ReadInt16();
-		suuid.Data3 = (short)reader.ReadInt16();
-		reader.ReadBytes(suuid.Data4, 8);
+		for (int i = 0; i < 8; i++)
+		{
+			std::stringstream ss;
+			ss << valueString.substr(16 + i * 2, 2);
+			ss >> suuid.Data4[i];
+		}
 		return suuid;
 	}
 
 	const std::string SUUID::ToString() const
 	{
 		std::stringstream ss;
-		ss.write((const char*)&Data1, sizeof(long));
-		ss.write((const char*)&Data2, sizeof(short));
-		ss.write((const char*)&Data3, sizeof(short));
-		ss.write((const char*)&Data4, sizeof(char) * 8);
+		ss << std::hex << Data1;
+		ss << std::hex << Data2;
+		ss << std::hex << Data3;
+		uint16_t bytePair;
+		for (int i = 0; i < 8; i += 2)
+		{
+			unsigned char data[2] = { Data4[i + 1], Data4[i] };
+			memcpy(&bytePair, data, 2);
+			ss << std::hex << bytePair;
+		}
 		return ss.str();
 	}
 
