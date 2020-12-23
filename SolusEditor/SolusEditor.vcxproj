@@ -110,7 +110,7 @@
     <Link>
       <AdditionalDependencies>glfw3dll.lib;opengl32.lib;SolusEngine.lib;gl3w.lib;rttr_core_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\Libraries\GLFW\lib-vc2017;$(OutDir);..\Libraries\RTTR\lib</AdditionalLibraryDirectories>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
     </Link>
     <PreBuildEvent>

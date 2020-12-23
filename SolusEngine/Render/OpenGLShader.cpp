@@ -7,7 +7,7 @@
 
 #include <iostream>
 #include <GL/gl3w.h>
-
+#include <sstream>
 
 namespace Solus
 {
@@ -21,33 +21,47 @@ namespace Solus
 
 	bool OpenGLShader::Load(const Asset& shaderAsset)
 	{
-		const char* vertexSource;
-		const char* fragmentSource;// = fragmentShaderFile->GetCharContent();
+		ShaderAsset& asset = (ShaderAsset&)(*shaderAsset);
+		asset.Load();
+		const char* shaderSource = (const char*)asset.GetShaderContent();
+		GLint shaderSize = asset.GetShaderSize();
+		std::stringstream ss1;
+		ss1 << "#version 460 core\n";
+		ss1 << "#define VERTEX_SHADER\n";
+		ss1 << shaderSource;
+		const std::string vertexString = ss1.str();
+		std::stringstream ss2;
+		ss2 << "#version 460 core\n";
+		ss2 << "#define FRAGMENT_SHADER\n";
+		ss2 << shaderSource;
+		const std::string fragmentString = ss2.str();
+		const char* vertexSource = vertexString.c_str();
+		const char* fragmentSource = fragmentString.c_str();
 
 		GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-		glShaderSource(vertexShader, 1, &vertexSource, NULL);
+		glShaderSource(vertexShader, 1, &vertexSource, nullptr);
 		glCompileShader(vertexShader);
 		// check for shader compile errors
 		int success;
-		char infoLog[512];
 		glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
 		if (!success)
 		{
 			GLchar InfoLog[1024];
-			glGetShaderInfoLog(vertexShader, sizeof(InfoLog), NULL, InfoLog);
+			glGetShaderInfoLog(vertexShader, sizeof(InfoLog), nullptr, InfoLog);
 			fprintf(stderr, "Error compiling shader type %d: '%s'\n", GL_VERTEX_SHADER, InfoLog);
 			return false;
 		}
 		// fragment shader
 		GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-		glShaderSource(fragmentShader, 1, &fragmentSource, NULL);
+		glShaderSource(fragmentShader, 1, &fragmentSource, nullptr);
 		glCompileShader(fragmentShader);
 		// check for shader compile errors
 		glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
 		if (!success)
 		{
-			glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-			std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
+			GLchar InfoLog[1024];
+			glGetShaderInfoLog(fragmentShader, sizeof(InfoLog), nullptr, InfoLog);
+			fprintf(stderr, "Error compiling shader type %d: '%s'\n", GL_FRAGMENT_SHADER, InfoLog);
 			return false;
 		}
 		// link shaders
@@ -78,8 +92,7 @@ namespace Solus
 		glDeleteShader(vertexShader);
 		glDeleteShader(fragmentShader);
 
-
-		return false;
+		return true;
 	}
 
 	void OpenGLShader::Bind()

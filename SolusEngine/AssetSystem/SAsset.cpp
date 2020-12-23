@@ -21,6 +21,7 @@ namespace Solus
 			SAssetMetadata::Create(assetFilePath, assetType);
 			LoadMetadata();
 			metaData->SetSourceFilePath(filePath);
+			metaData->SaveMetaData();
 		}
 	}
 

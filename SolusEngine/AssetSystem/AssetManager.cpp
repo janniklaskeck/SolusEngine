@@ -1,6 +1,7 @@
 #include "AssetManager.h"
 
 #include "AssetSystem/FolderAssetSource.h"
+#include "AssetSystem/SAsset.h"
 
 namespace Solus
 {
@@ -31,11 +32,18 @@ namespace Solus
 		}
 	}
 
-	Asset Solus::AssetManager::GetAssetFromPath(const std::string path)
+	Asset Solus::AssetManager::GetAssetFromPath(const std::string& path)
 	{
+		std::string actualPath = path;
+		if (!SAsset::IsAssetFile(actualPath))
+			actualPath.append(SAsset::ASSET_EXT);
+
 		if (projectAssetSource)
 		{
-			Asset foundAsset = projectAssetSource->GetAssetFromPath(path);
+			const std::string projectSourceRootPath = projectAssetSource->GetRootPath().string();
+			if (actualPath.rfind(projectSourceRootPath, 0) == 0)
+				actualPath = actualPath.substr(projectSourceRootPath.size());
+			Asset foundAsset = projectAssetSource->GetAssetFromPath(actualPath);
 			if (foundAsset)
 			{
 				return foundAsset;
@@ -43,18 +51,16 @@ namespace Solus
 		}
 		if (engineAssetSource)
 		{
-			Asset foundAsset = engineAssetSource->GetAssetFromPath(path);
+			const std::string engineSourceRootPath = engineAssetSource->GetRootPath().string();
+			if (actualPath.rfind(engineSourceRootPath, 0) == 0)
+				actualPath = actualPath.substr(engineSourceRootPath.size() + 1);
+			Asset foundAsset = engineAssetSource->GetAssetFromPath(actualPath);
 			if (foundAsset)
 			{
 				return foundAsset;
 			}
 		}
 		return Asset();
-	}
-
-	Asset AssetManager::GetAssetFromPath(const char* path)
-	{
-		return GetAssetFromPath(std::string(path));
 	}
 
 	Asset AssetManager::GetAsset(const SUUID assetId) const

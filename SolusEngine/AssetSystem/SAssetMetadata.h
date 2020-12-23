@@ -31,6 +31,7 @@ namespace Solus
 
 		const std::string GetDataField(const std::string& name) const;
 
+		bool SaveMetaData() const;
 	private:
 		json jsonData;
 		fs::path filePath;

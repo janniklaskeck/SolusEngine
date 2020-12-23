@@ -57,7 +57,6 @@ namespace Solus
 		std::transform(string.begin(), string.end(), string.begin(), ::tolower);
 	}
 
-
 	bool StringCompareCase(const std::string& a, const std::string& b)
 	{
 		if (a.size() != b.size())
@@ -67,6 +66,11 @@ namespace Solus
 						  {
 							  return tolower(a) == tolower(b);
 						  });
+	}
+
+	void ReplaceChar(std::string& string, const char toReplace, const char replacement)
+	{
+		std::replace(string.begin(), string.end(), toReplace, replacement);
 	}
 
 }

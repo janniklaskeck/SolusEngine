@@ -19,7 +19,6 @@ namespace Solus
 		}
 		json newData;
 		SUUID assetId;
-		assetId.Create();
 		const std::string assetIdString = assetId.ToString();
 		newData["id"] = assetIdString;
 		newData["type"] = (int)assetType;
@@ -32,7 +31,7 @@ namespace Solus
 	const Solus::SUUID SAssetMetadata::GetAssetID() const
 	{
 		auto idString = jsonData["id"].get<std::string>();
-		return SUUID::FromString(idString.c_str());
+		return SUUID::FromString(idString);
 	}
 
 	Solus::SAssetType SAssetMetadata::GetAssetType() const
@@ -58,6 +57,11 @@ namespace Solus
 	const std::string SAssetMetadata::GetDataField(const std::string& name) const
 	{
 		return jsonData["data"][name].get<std::string>();
+	}
+
+	bool SAssetMetadata::SaveMetaData() const
+	{
+		return FileUtils::WriteToFile(filePath, jsonData.dump().c_str());
 	}
 
 }

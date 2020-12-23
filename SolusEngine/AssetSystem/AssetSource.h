@@ -29,6 +29,8 @@ namespace Solus
 
 		void InitializeAsset(const fs::path relativePath);
 
+		void InitializeAsset(SAsset* importedAsset, const fs::path relativePath);
+
 	protected:
 		fs::path root;
 

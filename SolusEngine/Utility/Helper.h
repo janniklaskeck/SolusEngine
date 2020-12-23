@@ -21,6 +21,8 @@ namespace Solus
 
 	bool StringCompareCase(const std::string& a, const std::string& b);
 
+	void ReplaceChar(std::string& string, const char toReplace, const char replacement);
+
 	class SOLUS_API Rect
 	{
 	public:

@@ -10,8 +10,6 @@ namespace Solus
 	public:
 		SUUID();
 
-		bool Create();
-
 		bool Equals(const SUUID& other) const;
 
 		static SUUID DEFAULT;
@@ -21,10 +19,7 @@ namespace Solus
 		const std::string ToString() const;
 
 	private:
-		unsigned long Data1 = 0;
-		unsigned short Data2 = 0;
-		unsigned short Data3 = 0;
-		uint8_t Data4[8] = {};
+		uint32_t data = 0;
 	};
 
 	inline bool operator==(const SUUID& first, const SUUID& other)

@@ -18,8 +18,6 @@ namespace Solus
 		position = Vec3f(0.0f);
 		rotation = Vec3f(0.0f);
 		scale = Vec3f(1.0f);
-
-		instanceId.Create();
 	}
 
 	Entity::Entity(Vec3f initialPosition, Vec3f initialRotation)
@@ -28,8 +26,6 @@ namespace Solus
 		position = initialPosition;
 		rotation = initialRotation;
 		scale = Vec3f(1.0f);
-
-		instanceId.Create();
 	}
 
 	Entity::~Entity()

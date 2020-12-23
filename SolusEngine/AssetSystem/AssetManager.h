@@ -19,8 +19,7 @@ namespace Solus
 		void SetEngineAssetRoot(const std::string& engineAssetRoot);
 		void SetProjectAssetRoot(const std::string& projectAssetRoot);
 
-		Asset GetAssetFromPath(const std::string path);
-		Asset GetAssetFromPath(const char* path);
+		Asset GetAssetFromPath(const std::string& path);
 		Asset GetAsset(const SUUID assetId) const;
 		AssetSource* GetEngineAssetSource() const;
 		AssetSource* GetProjectAssetSource() const;
@@ -40,11 +39,15 @@ namespace Solus
 	std::enable_if_t<std::is_base_of_v<SAsset, T>, Asset>
 		AssetManager::ImportAsset(const fs::path filePath)
 	{
-		if (!FileUtils::FileExists(filePath))
-			return Asset();
-		if (SAsset::IsAssetFile(filePath))
+		const Asset asset = GetAssetFromPath(filePath.string());
+		if (asset.IsValid())
+			return asset;
+		T* importedAsset = SAsset::Import<T>(filePath);
+		if (importedAsset)
+		{
+			engineAssetSource->InitializeAsset(importedAsset, filePath);
 			return GetAssetFromPath(filePath.string());
-		SAsset* asset = SAsset::Import<T>(filePath);
+		}
 		return Asset();
 	}
 

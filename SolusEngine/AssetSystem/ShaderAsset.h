@@ -27,9 +27,13 @@ namespace Solus
 			return SAssetType::SHADER;
 		}
 
+		const unsigned char* GetShaderContent() const;
+
+		uint32_t GetShaderSize() const;
+
 	protected:
 
-		unsigned char* shaderContent = nullptr;
+		std::vector<unsigned char> rawBytes;
 
 		RenderShader* renderShader = nullptr;
 	};

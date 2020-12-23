@@ -14,7 +14,8 @@ namespace Solus
 
 	Asset AssetSource::GetAssetFromPath(const std::string& path)
 	{
-		auto pathString = fs::path(path).string();
+		std::string pathString = fs::path(path).string();
+		ReplaceChar(pathString, '/', '\\');
 		if (pathAssets.find(pathString) != pathAssets.end())
 		{
 			return pathAssets[pathString];
@@ -40,6 +41,17 @@ namespace Solus
 		SAsset* importedAsset = SAsset::Import(absolutePath);
 		if (!importedAsset)
 			return;
+		Asset asset;
+		asset.Set(importedAsset);
+		idAssets[asset.GetId()] = asset;
+		pathAssets[relativePath.string()] = asset;
+	}
+
+	void AssetSource::InitializeAsset(SAsset* importedAsset, const fs::path relativePath)
+	{
+		if (!importedAsset)
+			return;
+		auto absolutePath = root / relativePath;
 		Asset asset;
 		asset.Set(importedAsset);
 		idAssets[asset.GetId()] = asset;

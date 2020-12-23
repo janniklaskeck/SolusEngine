@@ -4,6 +4,7 @@
 #include <filesystem>
 #include <sstream>
 #include <fstream>
+#include <iostream>
 
 namespace Solus
 {
@@ -11,7 +12,7 @@ namespace Solus
 
 	std::string FileUtils::GetCurrentFolder()
 	{
-		
+
 		fs::path path = fs::current_path();
 		return path.string();
 	}
@@ -45,22 +46,34 @@ namespace Solus
 		return std::string(ss.str());
 	}
 
-	char* FileUtils::ReadFileRaw(fs::path path, uintmax_t& length)
+	bool FileUtils::ReadFileRaw(fs::path path, std::vector<unsigned char>& bytes)
 	{
 		fs::file_status fileStatus = fs::status(path);
 		if (!fs::is_regular_file(fileStatus))
 		{
 			gEngine->Log(LogLevel::LogError, "Could not load file at %s!", path.string().c_str());
-			return nullptr;
+			return false;
 		}
-		uintmax_t fileSize = fs::file_size(path);
-		length = fileSize;
-		char* buffer = new char[fileSize];
-		std::ifstream fileStream(path, std::ios::binary);
-		fileStream.seekg(std::ios::beg);
-		fileStream.read(buffer, fileSize);
-		fileStream.close();
-		return buffer;
+
+		std::streampos fileSize;
+		std::ifstream file(path, std::ios::binary);
+
+		// get its size:
+		file.seekg(0, std::ios::end);
+		fileSize = file.tellg();
+		file.seekg(0, std::ios::beg);
+
+		// read the data:
+		bytes.resize(fileSize);
+		file.read((char*)&bytes[0], fileSize);
+		std::stringstream ss;
+		for (int i = 0; i < fileSize; i++)
+		{
+			unsigned int byte = bytes.data()[i];
+			ss << std::hex << std::setfill('0') << std::setw(2) << byte << std::endl;
+		}
+		printf("%s", ss.str().c_str());
+		return true;
 	}
 
 	bool FileUtils::CreateFile(const fs::path path)
