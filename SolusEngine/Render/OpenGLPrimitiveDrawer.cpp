@@ -1,6 +1,7 @@
 #include "OpenGLPrimitiveDrawer.h"
 
 #include "AssetSystem/AssetManager.h"
+#include "AssetSystem/ShaderAsset.h"
 
 #include "Engine/Engine.h"
 #include "OpenGLDevice.h"
@@ -14,7 +15,9 @@ namespace Solus
 {
 	OpenGLPrimitiveDrawer::OpenGLPrimitiveDrawer()
 	{
-		Asset rectangleVS = gEngine->GetAssetManager()->GetAssetFromPath("Editor/Shader/DefaultScreen.glsl");
+		AssetManager* assetManager = gEngine->GetAssetManager();
+		const fs::path defaultScreenShaderPath = assetManager->GetEngineAssetSource()->GetRootPath() / "Editor/Shader/DefaultScreenShader.glsl";
+		Asset rectangleVS = assetManager->ImportAsset<ShaderAsset>(defaultScreenShaderPath);
 
 		rectangleShader = (OpenGLShader*)gEngine->GetRenderDevice()->CreateShader(rectangleVS);
 		glGenVertexArrays(1, &rectangleVAO);

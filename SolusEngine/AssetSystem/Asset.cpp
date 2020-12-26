@@ -79,7 +79,7 @@ namespace Solus
 	SUUID Asset::GetId() const
 	{
 		if (asset)
-			asset->GetAssetId();
+			return asset->GetAssetId();
 		return SUUID::DEFAULT;
 	}
 

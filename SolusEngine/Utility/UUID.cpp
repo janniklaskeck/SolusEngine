@@ -38,6 +38,16 @@ namespace Solus
 		return ss.str();
 	}
 
+	const uint32_t SUUID::GetRaw() const
+	{
+		return data;
+	}
+
+	bool SUUID::operator==(const SUUID& other)
+	{
+		return data == other.data;
+	}
+
 	bool SUUID::Equals(const SUUID& other) const
 	{
 		return data == other.data;

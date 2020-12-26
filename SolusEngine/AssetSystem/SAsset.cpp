@@ -43,7 +43,7 @@ namespace Solus
 
 	const std::string SAsset::GetFileName() const
 	{
-		return metaData->GetSourceFilePath().string();
+		return metaData->GetSourceFilePath().filename().string();
 	}
 
 	const SAssetType SAsset::GetAssetType() const

@@ -18,6 +18,9 @@ namespace Solus
 
 		const std::string ToString() const;
 
+		const uint32_t GetRaw() const;
+
+		bool operator==(const SUUID& other);
 	private:
 		uint32_t data = 0;
 	};

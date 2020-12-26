@@ -11,9 +11,12 @@
 
 namespace Solus
 {
+	class EditorAssetWindow;
 
 	class SOLUS_API AssetSource
 	{
+		friend EditorAssetWindow;
+
 	public:
 
 		AssetSource(std::string root);
@@ -37,6 +40,15 @@ namespace Solus
 		void CleanPath(std::string& path);
 
 	private:
+
+		struct IDHash
+		{
+			size_t operator()(const SUUID& key) const
+			{
+				return std::hash<uint32_t>()(key.GetRaw());
+			}
+		};
+
 		struct case_insensitive_hasher
 		{
 			size_t operator()(const std::string& key) const
@@ -57,7 +69,7 @@ namespace Solus
 
 	protected:
 		std::unordered_map<std::string, Asset, case_insensitive_hasher, case_insensitive_comparer> pathAssets;
-		std::unordered_map<SUUID, Asset> idAssets;
+		std::unordered_map<SUUID, Asset, IDHash> idAssets;
 	};
 
 }
