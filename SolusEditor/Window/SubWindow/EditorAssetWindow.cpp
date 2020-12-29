@@ -1,14 +1,18 @@
 #include "EditorAssetWindow.h"
 
 #include "Engine/Engine.h"
+
 #include "Object/World.h"
+
 #include "AssetSystem/AssetManager.h"
 #include "AssetSystem/FolderAssetSource.h"
 #include "AssetSystem/SAsset.h"
+
 #include "Utils/UIUtils.h"
 
 #include "IMGUI/imgui.h"
 
+#include <portable-file-dialogs.h>
 #include <magic_enum.hpp>
 #include <algorithm>
 
@@ -17,6 +21,39 @@ namespace Solus
 	void EditorAssetWindow::Initialize()
 	{
 		windowFlags = ImGuiWindowFlags_NoCollapse;
+	}
+
+	void EditorAssetWindow::Update(float deltaTime)
+	{
+		assetUpdateCounter += deltaTime;
+		if (assetUpdateCounter > 1.f)
+		{
+			assetUpdateCounter = 0.f;
+			projectRootFolder.Clear();
+			engineRootFolder.Clear();
+
+			const AssetSource* projectSource = gEngine->GetAssetManager()->GetProjectAssetSource();
+			if (projectSource)
+			{
+				for (const auto& entry : projectSource->pathAssets)
+				{
+					const std::string& relativePath = entry.first;
+					const auto id = entry.second->GetAssetId();
+					projectRootFolder.AddAssetEntry(relativePath, id);
+				}
+			}
+
+			const AssetSource* engineSource = gEngine->GetAssetManager()->GetEngineAssetSource();
+			if (engineSource)
+			{
+				for (const auto& entry : engineSource->pathAssets)
+				{
+					const std::string& relativePath = entry.first;
+					const auto id = entry.second->GetAssetId();
+					engineRootFolder.AddAssetEntry(relativePath, id);
+				}
+			}
+		}
 	}
 
 	void EditorAssetWindow::Render()
@@ -28,18 +65,8 @@ namespace Solus
 				folderTreeWidth = 200;
 			ImGui::BeginChild("FolderChild", ImVec2((float)folderTreeWidth, ImGui::GetWindowHeight() - 35.f), true);
 
-			AssetSource* projectSource = gEngine->GetAssetManager()->GetProjectAssetSource();
-			if (projectSource)
-			{
-				ImGui::SetNextItemOpen(true, ImGuiCond_Once);
-				RenderAssetSource((Solus::FolderAssetSource*)projectSource, "Project");
-			}
-
-			AssetSource* engineSource = gEngine->GetAssetManager()->GetEngineAssetSource();
-			if (engineSource)
-			{
-				RenderAssetSource((Solus::FolderAssetSource*)engineSource, "Engine");
-			}
+			ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+			RenderAssets();
 
 			ImGui::EndChild();
 
@@ -63,22 +90,16 @@ namespace Solus
 	void EditorAssetWindow::OnMaximized()
 	{}
 
-	void EditorAssetWindow::RenderAssetSource(FolderAssetSource* source, const char* title)
+	void EditorAssetWindow::RenderAssets()
 	{
-		rootFolder.Clear();
-		for (const auto& entry : source->pathAssets)
-		{
-			const std::string& relativePath = entry.first;
-			const auto id = entry.second->GetAssetId();
-			rootFolder.AddAssetEntry(relativePath, id);
-		}
-		RenderAssetFolder(rootFolder, title);
+		RenderAssetFolder(projectRootFolder, "Project");
+		RenderAssetFolder(engineRootFolder, "Engine");
 	}
 
 	void EditorAssetWindow::RenderAssetFolder(const AssetFolder& folder, const char* overrideName /*= nullptr*/)
 	{
 		std::string folderName = folder.name;
-		if (folderName.empty())
+		if (folderName.empty() && overrideName)
 			folderName = overrideName;
 
 		ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanAvailWidth;
@@ -163,15 +184,36 @@ namespace Solus
 
 	void EditorAssetWindow::RenderFiles()
 	{
+		static std::shared_ptr<pfd::open_file> open_file;
+
 		if (clickedFolderPath.empty())
 			return;
-
 		ImGui::Text("Files");
+		ImGui::SameLine(100);
+		if (ImGui::Button("Import"))
+		{
+			open_file = std::make_shared<pfd::open_file>("Choose file", "C:\\");
+		}
+
+		if (open_file && open_file->ready())
+		{
+			auto result = open_file->result();
+			if (result.size())
+			{
+				gEngine->GetAssetManager()->TryImportAsset(fs::path(result[0]));
+			}
+			open_file = nullptr;
+		}
+
 		auto* manager = gEngine->GetAssetManager();
 		ImVec2 buttonSize(80, 80);
-		AssetFolder* folder = rootFolder.GetFolderByPath(clickedFolderPath);
+		AssetFolder* folder = projectRootFolder.GetFolderByPath(clickedFolderPath);
 		if (!folder)
-			return;
+		{
+			folder = engineRootFolder.GetFolderByPath(clickedFolderPath);
+			if (!folder)
+				return;
+		}
 		for (const AssetEntry& entry : folder->files)
 		{
 			const Asset& asset = manager->GetAsset(entry.id);
@@ -201,15 +243,7 @@ namespace Solus
 		ImGui::Text(sizeString.c_str());
 		if (ImGui::IsItemHovered())
 			ImGui::SetTooltip(asset->GetFileName().c_str());
-		ImGui::SameLine(420);
-		ImGui::Text(asset->GetAssetId().ToString().c_str());
-		ImGui::SameLine(435);
-		ImGui::Text(std::to_string(asset->GetRefCount()).c_str());
 	}
-
-	//void EditorAssetWindow::SetClickedFolder(Solus::AssetFolder* folder)
-	//{
-	//}
 
 	void EditorAssetWindow::SetClickedAsset(const Asset& asset)
 	{

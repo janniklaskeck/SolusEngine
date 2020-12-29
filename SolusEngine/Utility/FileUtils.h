@@ -17,6 +17,8 @@ namespace Solus
 
 		static bool FolderExists(fs::path path);
 
+		static fs::path GetRootParentFolder(const fs::path& path);
+
 		static std::string ReadFile(fs::path path);
 		static bool ReadFileRaw(fs::path path, std::vector<unsigned char>& bytes);
 

@@ -2,6 +2,7 @@
 
 #include "AssetSystem/FolderAssetSource.h"
 #include "AssetSystem/SAsset.h"
+#include "AssetSystem/ShaderAsset.h"
 
 namespace Solus
 {
@@ -19,7 +20,7 @@ namespace Solus
 
 	void AssetManager::SetEngineAssetRoot(const std::string& engineAssetRoot)
 	{
-		engineAssetSource.reset(new FolderAssetSource(engineAssetRoot));
+		engineAssetSource = std::make_unique<FolderAssetSource>(engineAssetRoot);
 		engineAssetSource->Initialize();
 	}
 
@@ -27,7 +28,7 @@ namespace Solus
 	{
 		if (!projectAssetRoot.empty())
 		{
-			projectAssetSource.reset(new FolderAssetSource(projectAssetRoot));
+			projectAssetSource = std::make_unique<FolderAssetSource>(projectAssetRoot);
 			projectAssetSource->Initialize();
 		}
 	}
@@ -92,6 +93,17 @@ namespace Solus
 	AssetSource* AssetManager::GetProjectAssetSource() const
 	{
 		return projectAssetSource.get();
+	}
+
+	Asset AssetManager::TryImportAsset(const fs::path filePath)
+	{
+		const std::string fileExtension = filePath.extension().string();
+		if (fileExtension == ".glsl")
+		{
+			return ImportAsset<ShaderAsset>(filePath);
+		}
+
+		return Asset();
 	}
 
 }

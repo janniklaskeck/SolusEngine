@@ -9,12 +9,12 @@ namespace Solus
 	{
 	public:
 		// Inherited via SubWindow -->
-		virtual void Initialize() override;
-		virtual void Render() override;
-		virtual void OnFocusReceived() override;
-		virtual void OnFocusLost() override;
-		virtual void OnMinimized() override;
-		virtual void OnMaximized() override;
+		void Initialize() override;
+		void Render() override;
+		void OnFocusReceived() override;
+		void OnFocusLost() override;
+		void OnMinimized() override;
+		void OnMaximized() override;
 		// <--
 
 	private:

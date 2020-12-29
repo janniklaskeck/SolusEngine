@@ -8,10 +8,12 @@ namespace Solus
 	{
 	public:
 		Timer();
+		~Timer()
+		{}
 
-		virtual void Initialize() override;
-		virtual void Update() override;
-		virtual void Destroy() override;
+		void Initialize() override;
+		void Update() override;
+		void Destroy() override;
 
 		bool TickDone() const;
 		void Reset();

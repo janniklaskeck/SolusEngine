@@ -5,6 +5,8 @@
 #include "AssetSystem/Asset.h"
 #include "AssetSystem/AssetSource.h"
 
+#include "Utility/FileUtils.h"
+
 namespace Solus
 {
 	class SOLUS_API AssetManager : public SubSystem
@@ -28,6 +30,8 @@ namespace Solus
 		template<typename T>
 		std::enable_if_t<std::is_base_of_v<SAsset, T>, Asset> ImportAsset(const fs::path filePath);
 
+		Asset TryImportAsset(const fs::path filePath);
+
 	private:
 		std::string engineAssetRoot;
 
@@ -36,17 +40,34 @@ namespace Solus
 	};
 
 	template<typename T>
-	std::enable_if_t<std::is_base_of_v<SAsset, T>, Asset>
-		AssetManager::ImportAsset(const fs::path filePath)
+	std::enable_if_t<std::is_base_of_v<SAsset, T>, Asset> AssetManager::ImportAsset(const fs::path filePath)
 	{
 		const Asset asset = GetAssetFromPath(filePath.string());
 		if (asset.IsValid())
 			return asset;
-		T* importedAsset = SAsset::Import<T>(filePath);
-		if (importedAsset)
+
+		const fs::path projectRelativePath = fs::relative(filePath, projectAssetSource->GetRootPath());
+		if (projectRelativePath.root_name().string() == "Project")
 		{
-			engineAssetSource->InitializeAsset(importedAsset, filePath);
-			return GetAssetFromPath(filePath.string());
+			T* importedAsset = SAsset::Import<T>(filePath);
+			if (importedAsset)
+			{
+				projectAssetSource->InitializeAsset(importedAsset, projectRelativePath);
+				return GetAssetFromPath(projectRelativePath.string());
+			}
+			return Asset();
+		}
+
+		const fs::path engineRelativePath = fs::relative(filePath, engineAssetSource->GetRootPath());
+		if (FileUtils::GetRootParentFolder(engineRelativePath) == "Editor")
+		{
+			T* importedAsset = SAsset::Import<T>(filePath);
+			if (importedAsset)
+			{
+				engineAssetSource->InitializeAsset(importedAsset, engineRelativePath);
+				return GetAssetFromPath(engineRelativePath.string());
+			}
+			return Asset();
 		}
 		return Asset();
 	}

@@ -29,6 +29,16 @@ namespace Solus
 		return fs::exists(path) && fs::is_directory(fileStatus);
 	}
 
+	fs::path FileUtils::GetRootParentFolder(const fs::path& path)
+	{
+		if (!path.has_parent_path())
+			return fs::path();
+		fs::path parentPath = path.parent_path();
+		while (parentPath.has_parent_path())
+			parentPath = parentPath.parent_path();
+		return parentPath;
+	}
+
 	std::string FileUtils::ReadFile(fs::path path)
 	{
 		fs::file_status fileStatus = fs::status(path);
@@ -66,13 +76,6 @@ namespace Solus
 		// read the data:
 		bytes.resize(fileSize);
 		file.read((char*)&bytes[0], fileSize);
-		std::stringstream ss;
-		for (int i = 0; i < fileSize; i++)
-		{
-			unsigned int byte = bytes.data()[i];
-			ss << std::hex << std::setfill('0') << std::setw(2) << byte << std::endl;
-		}
-		printf("%s", ss.str().c_str());
 		return true;
 	}
 

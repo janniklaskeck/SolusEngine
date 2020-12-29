@@ -14,11 +14,11 @@ namespace Solus
 	{
 	public:
 
-		virtual void Initialize() override;
-		virtual void Update(float deltaTime) override;
-		virtual void Render() override;
+		void Initialize() override;
+		void Update(float deltaTime) override;
+		void Render() override;
 
-		virtual void OnLogReceived(Solus::LogLevel level, const char* message) override;
+		void OnLogReceived(Solus::LogLevel level, const char* message) override;
 
 		void Clear();
 		void AddLog(const char* fmt, ...);

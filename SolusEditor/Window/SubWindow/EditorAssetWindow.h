@@ -16,6 +16,7 @@ namespace Solus
 	public:
 		// Inherited via SubWindow -->
 		void Initialize() override;
+		void Update(float deltaTime) override;
 		void Render() override;
 		void OnFocusReceived() override;
 		void OnFocusLost() override;
@@ -24,12 +25,11 @@ namespace Solus
 		// <--
 
 	private:
-		void RenderAssetSource(FolderAssetSource* source, const char* title);
+		void RenderAssets();
 
 		void RenderFiles();
 		void RenderFile(const Asset& asset);
 
-		//void SetClickedFolder(AssetFolder* folder);
 		void SetClickedAsset(const Asset& asset);
 
 		fs::path clickedFolderPath;
@@ -121,7 +121,9 @@ namespace Solus
 			}
 		};
 
-		AssetFolder rootFolder;
+		AssetFolder engineRootFolder;
+		AssetFolder projectRootFolder;
+		float assetUpdateCounter = 0.0;
 
 		void RenderAssetFolder(const AssetFolder& folder, const char* overrideName = nullptr);
 	};

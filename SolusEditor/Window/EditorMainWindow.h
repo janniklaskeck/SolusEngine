@@ -1,12 +1,6 @@
 #pragma once
 #include "Render/GLFWWindow.h"
 #include "SubWindow/SubWindow.h"
-#include "SubWindow/EditorSceneWindow.h"
-#include "SubWindow/EditorSceneGraph.h"
-#include "SubWindow/EditorPropertyWindow.h"
-#include "SubWindow/EditorAssetWindow.h"
-#include "SubWindow/EditorLogWindow.h"
-#include "SubWindow/EditorMenuBar.h"
 
 #include <vector>
 #include <memory>
@@ -19,15 +13,22 @@ namespace Solus
 	class EditorAssetWindow;
 	class EditorLogWindow;
 	class EditorMenuBar;
+	class Timer;
 
 	class EditorMainWindow : public Solus::GLFWWindow
 	{
 	public:
+		EditorMainWindow();
+		~EditorMainWindow();
 
-		virtual void Initialize() override;
-		virtual void Update() override;
-		virtual void Render() override;
-		virtual void Destroy() override;
+		static EditorMainWindow* Instance();
+
+		void Initialize() override;
+		void Update() override;
+		void Render() override;
+		void Destroy() override;
+
+		double DeltaTime() const;
 
 	private:
 		void RenderDockspace();
@@ -41,6 +42,9 @@ namespace Solus
 		std::unique_ptr<EditorMenuBar> menuBar;
 
 		std::vector<SubWindow*> subWindows;
+
+		const Timer* GetEditorTimer() const;
+		std::unique_ptr<Timer> editorTimer;
 
 	};
 }

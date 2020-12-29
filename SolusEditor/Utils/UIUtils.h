@@ -6,7 +6,7 @@
 
 namespace Solus
 {
-	
+
 	namespace UIUtils
 	{
 		const uint64_t KB_SIZE = 1024;

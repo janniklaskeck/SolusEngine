@@ -55,7 +55,7 @@ namespace Solus
 		Asset asset;
 		asset.Set(importedAsset);
 		idAssets[asset.GetId()] = asset;
-		pathAssets[absolutePath.string()] = asset;
+		pathAssets[relativePath.string()] = asset;
 	}
 
 	void AssetSource::CleanPath(std::string& path)

@@ -1,6 +1,13 @@
 #include "EditorMainWindow.h"
 #include "EditorInputDevice.h"
 
+#include "SubWindow/EditorSceneWindow.h"
+#include "SubWindow/EditorSceneGraph.h"
+#include "SubWindow/EditorPropertyWindow.h"
+#include "SubWindow/EditorAssetWindow.h"
+#include "SubWindow/EditorLogWindow.h"
+#include "SubWindow/EditorMenuBar.h"
+
 #include "Input/InputDevice.h"
 
 #include "Engine/Engine.h"
@@ -16,12 +23,26 @@
 #include "AssetSystem/FolderAssetSource.h"
 #include "AssetSystem/Asset.h"
 
+#include "Utility/Timer.h"
+
 #include "IMGUI/imgui.h"
 #include "IMGUI/imgui_impl_glfw.h"
 #include "IMGUI/imgui_impl_opengl3.h"
 
 namespace Solus
 {
+
+	EditorMainWindow::EditorMainWindow()
+	{}
+
+	EditorMainWindow::~EditorMainWindow()
+	{}
+
+	EditorMainWindow* EditorMainWindow::Instance()
+	{
+		return static_cast<EditorMainWindow*>(gEngine->GetWindow());
+	}
+
 	void EditorMainWindow::Initialize()
 	{
 		width = 1600;
@@ -54,12 +75,15 @@ namespace Solus
 		ImGui_ImplGlfw_InitForOpenGL(window, true);
 		ImGui_ImplOpenGL3_Init("#version 460 core");
 
-		menuBar.reset(new EditorMenuBar);
-		sceneWindow.reset(new EditorSceneWindow);
-		sceneGraph.reset(new EditorSceneGraph);
-		propertyWindow.reset(new EditorPropertyWindow);
-		assetWindow.reset(new EditorAssetWindow);
-		logWindow.reset(new EditorLogWindow);
+		editorTimer = std::make_unique<Timer>();
+		editorTimer->Initialize();
+
+		menuBar = std::make_unique<EditorMenuBar>();
+		sceneWindow = std::make_unique<EditorSceneWindow>();
+		sceneGraph = std::make_unique<EditorSceneGraph>();
+		propertyWindow = std::make_unique<EditorPropertyWindow>();
+		assetWindow = std::make_unique<EditorAssetWindow>();
+		logWindow = std::make_unique<EditorLogWindow>();
 
 		subWindows.push_back(menuBar.get());
 		subWindows.push_back(sceneWindow.get());
@@ -84,7 +108,8 @@ namespace Solus
 	{
 		gEngine->GetRenderDevice()->SetShouldRenderScene(false);
 
-		const float deltaTime = (float)gEngine->DeltaTime();
+		editorTimer->Update();
+		const float deltaTime = (float)editorTimer->GetDeltaTime();
 		for (auto* subWindow : subWindows)
 		{
 			subWindow->Update(deltaTime);
@@ -132,6 +157,11 @@ namespace Solus
 		GLFWWindow::Destroy();
 	}
 
+	double EditorMainWindow::DeltaTime() const
+	{
+		return editorTimer->GetDeltaTime();
+	}
+
 	void EditorMainWindow::RenderDockspace()
 	{
 		ImGuiViewport* viewport = ImGui::GetMainViewport();
@@ -147,5 +177,10 @@ namespace Solus
 		static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
 		ImGuiID mainDockspaceId = ImGui::GetID("MainWindowDock");
 		ImGui::DockSpace(mainDockspaceId, ImVec2(0.f, 0.f));
+	}
+
+	const Timer* EditorMainWindow::GetEditorTimer() const
+	{
+		return editorTimer.get();
 	}
 }
