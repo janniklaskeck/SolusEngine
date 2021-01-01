@@ -82,6 +82,9 @@
     <ClCompile Include="IMGUI\misc\cpp\imgui_stdlib.cpp">
       <Filter>IMGUI</Filter>
     </ClCompile>
+    <ClCompile Include="IMGUI\imgui_tables.cpp">
+      <Filter>IMGUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IMGUI\imconfig.h">

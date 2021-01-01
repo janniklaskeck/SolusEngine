@@ -166,6 +166,7 @@
     <ClCompile Include="IMGUI\imgui_draw.cpp" />
     <ClCompile Include="IMGUI\imgui_impl_glfw.cpp" />
     <ClCompile Include="IMGUI\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="IMGUI\imgui_tables.cpp" />
     <ClCompile Include="IMGUI\imgui_widgets.cpp" />
     <ClCompile Include="IMGUI\misc\cpp\imgui_stdlib.cpp" />
     <ClCompile Include="Main.cpp" />

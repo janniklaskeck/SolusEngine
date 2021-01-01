@@ -52,6 +52,7 @@ namespace Solus
 				textures.push_back(gEngine->GetRenderDevice()->GetDefaultTexture());
 			}*/
 		}
+		meshData.textureCount = std::max<int>(1, meshData.textureCount);
 	}
 
 	void MeshAsset::LoadMesh(aiMesh* mesh)

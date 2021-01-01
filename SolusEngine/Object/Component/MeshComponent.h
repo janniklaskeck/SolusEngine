@@ -20,6 +20,8 @@ namespace Solus
 		void EndPlay() override;
 
 		void SetMesh(Asset meshAsset);
+
+		void SetTexture(uint8_t index, Asset textureAsset);
 	public:
 		SPROPERTY();
 		Asset meshAsset;

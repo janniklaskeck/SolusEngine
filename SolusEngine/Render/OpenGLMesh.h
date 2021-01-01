@@ -11,22 +11,25 @@ namespace Solus
 
 		void GenerateBuffers(const MeshAsset& asset);
 
-		unsigned int vertexBuffer = 0;
-		unsigned int indexBuffer = 0;
-		unsigned int normalBuffer = 0;
-		unsigned int texCoordBuffer = 0;
+		uint32_t vertexBuffer = 0;
+		uint32_t indexBuffer = 0;
+		uint32_t normalBuffer = 0;
+		uint32_t texCoordBuffer = 0;
 
-		unsigned int indicesCount = 0;
+		uint32_t indicesCount = 0;
+		uint32_t textureCount = 0;
 	};
 
 	class OpenGLMesh : public RenderMesh
 	{
 	public:
 		OpenGLMesh();
-		~OpenGLMesh();
+		~OpenGLMesh() override;
 		void Render(const Entity* owner) override;
 
 		bool Load(MeshAsset& meshAsset) override;
+
+		void SetTexture(uint8_t index, TextureAsset& textureAsset) override;
 
 	private:
 		class OpenGLShader* GetOpenGLShader() const;

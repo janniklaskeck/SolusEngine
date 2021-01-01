@@ -20,5 +20,5 @@ namespace Solus
 
 	RenderMesh::~RenderMesh()
 	{}
-	
+
 }

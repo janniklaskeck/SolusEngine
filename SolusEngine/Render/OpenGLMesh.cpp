@@ -6,6 +6,7 @@
 
 #include "AssetSystem/AssetManager.h"
 #include "AssetSystem/MeshAsset.h"
+#include "AssetSystem/TextureAsset.h"
 
 #include "Engine/Engine.h"
 #include "Camera.h"
@@ -42,6 +43,8 @@ namespace Solus
 		const MeshData& meshData = asset.GetMesh();
 
 		indicesCount = (unsigned int)meshData.indices.size();
+
+		textureCount = meshData.textureCount;
 
 		glGenBuffers(1, &vertexBuffer);
 		glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
@@ -156,9 +159,14 @@ namespace Solus
 	{
 		meshAsset.Load();
 		meshData.GenerateBuffers(meshAsset);
-
-
+		textures.resize(meshData.textureCount);
 		return true;
+	}
+
+	void OpenGLMesh::SetTexture(uint8_t index, TextureAsset& textureAsset)
+	{
+		textureAsset.Load();
+		textures[index] = textureAsset.GetRenderTexture();
 	}
 
 	OpenGLShader* OpenGLMesh::GetOpenGLShader() const

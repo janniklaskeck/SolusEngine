@@ -131,7 +131,7 @@ namespace Solus
 				Asset ptr = *metaDataPtr->GetMemberPtr<Asset>(component, propName);
 				if (ptr)
 				{
-					ImGui::LabelText(propName.c_str(), ptr->GetSourceFilePath().string().c_str());
+					ImGui::LabelText(propName.c_str(), ptr->GetFileName().c_str());
 				}
 				else
 				{
@@ -152,31 +152,50 @@ namespace Solus
 					ImGui::EndDragDropTarget();
 				}
 			}
-			else if (property.get_type() == rttr::type::get<Asset>())
+			else if (property.get_type() == rttr::type::get<std::reference_wrapper<std::vector<Asset>>>())
 			{
-				Asset ptr = *metaDataPtr->GetMemberPtr<Asset>(component, propName);
+				std::vector<Asset>* ptr = metaDataPtr->GetMemberPtr<std::vector<Asset>>(component, propName);
 				if (ptr)
 				{
-					ImGui::LabelText(propName.c_str(), ptr->GetSourceFilePath().string().c_str());
+					if (ptr->empty())
+					{
+						ImGui::LabelText(propName.c_str(), "No Asset...");
+					}
+					else
+					{
+						for (int i = 0; i < ptr->size(); i++)
+						{
+							ImGui::PushID(i);
+							const Asset& asset = ptr->at(i);
+							if (asset.IsValid())
+								ImGui::LabelText(propName.c_str(), asset->GetFileName().c_str());
+							else
+								ImGui::LabelText(propName.c_str(), "No Asset...");
+
+							if (ImGui::BeginDragDropTarget())
+							{
+								if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("TESTDRAG"))
+								{
+									Solus::Asset* payload_n = (Solus::Asset*)payload->Data;
+									if (payload_n)
+									{
+										auto* meshComp = (Solus::MeshComponent*)component;
+										auto meshAsset = (Asset)(*payload_n);
+										meshComp->SetTexture(i, meshAsset);
+									}
+								}
+								ImGui::EndDragDropTarget();
+							}
+
+							ImGui::PopID();
+						}
+					}
 				}
 				else
 				{
 					ImGui::LabelText(propName.c_str(), "No Asset...");
 				}
-				if (ImGui::BeginDragDropTarget())
-				{
-					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("TESTDRAG"))
-					{
-						Solus::Asset* payload_n = (Solus::Asset*)payload->Data;
-						if (payload_n)
-						{
-							auto* meshComp = (Solus::MeshComponent*)component;
-							auto meshAsset = (Asset)(*payload_n);
-							meshComp->SetMesh(meshAsset);
-						}
-					}
-					ImGui::EndDragDropTarget();
-				}
+				
 			}
 		}
 	}
