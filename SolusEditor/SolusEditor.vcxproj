@@ -110,7 +110,7 @@
     <Link>
       <AdditionalDependencies>glfw3dll.lib;opengl32.lib;SolusEngine.lib;gl3w.lib;rttr_core_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\Libraries\GLFW\lib-vc2017;$(OutDir);..\Libraries\RTTR\lib</AdditionalLibraryDirectories>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
     </Link>
     <PreBuildEvent>
@@ -148,7 +148,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>..\Libraries\GLFW\lib-vc2017;$(OutDir);..\Libraries\RTTR\lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>glfw3dll.lib;opengl32.lib;SolusEngine.lib;rttr_core.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
     </Link>
     <PreBuildEvent>
       <Command>py $(SolutionDir)Tools/HeaderTool.py $(SolutionDir) $(ProjectName)</Command>

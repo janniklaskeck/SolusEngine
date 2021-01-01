@@ -9,8 +9,11 @@
 
 namespace Solus
 {
+	class SAsset;
+
 	class SOLUS_API AssetManager : public SubSystem
 	{
+		friend SAsset;
 	public:
 		~AssetManager();
 
@@ -26,6 +29,7 @@ namespace Solus
 		AssetSource* GetEngineAssetSource() const;
 		AssetSource* GetProjectAssetSource() const;
 
+		const std::vector<std::string>& GetAssetFileTypeFilter() const;
 
 		template<typename T>
 		std::enable_if_t<std::is_base_of_v<SAsset, T>, Asset> ImportAsset(const fs::path filePath);
@@ -37,6 +41,8 @@ namespace Solus
 
 		std::unique_ptr<AssetSource> engineAssetSource;
 		std::unique_ptr<AssetSource> projectAssetSource;
+
+		std::vector<std::string> assetFileTypeFilters;
 	};
 
 	template<typename T>

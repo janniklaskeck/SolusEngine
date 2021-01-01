@@ -9,13 +9,13 @@ namespace Solus
 		OpenGLShader();
 		~OpenGLShader();
 
-		virtual bool Load(const Asset& shaderAsset) override;
+		bool Load(ShaderAsset& shaderAsset) override;
 
 
 		void Bind();
 		unsigned int GetUniformLocation(const char* name);
 
-		virtual unsigned int GetShaderProgram() const override;
+		unsigned int GetShaderProgram() const override;
 	private:
 
 		unsigned int shaderProgram = 0;

@@ -10,6 +10,8 @@
 
 namespace Solus
 {
+	class MeshAsset;
+
 	class SOLUS_API RenderMesh
 	{
 	public:
@@ -18,12 +20,12 @@ namespace Solus
 
 		virtual void Render(const Entity* owner) {};
 
-		virtual bool Load(Asset meshAsset) = 0;
+		virtual bool Load(MeshAsset& meshAsset) = 0;
 
 	protected:
-		RenderShader* shader;
+		RenderShader* shader = nullptr;
 	public:
-		Entity* owner;
+		Entity* owner = nullptr;
 	};
 
 }

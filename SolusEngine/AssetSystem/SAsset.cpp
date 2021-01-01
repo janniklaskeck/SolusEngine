@@ -3,6 +3,8 @@
 #include "Utility/FileUtils.h"
 
 #include "ShaderAsset.h"
+#include "MeshAsset.h"
+#include "TextureAsset.h"
 
 namespace Solus
 {
@@ -44,6 +46,11 @@ namespace Solus
 	const std::string SAsset::GetFileName() const
 	{
 		return metaData->GetSourceFilePath().filename().string();
+	}
+
+	const std::pair<std::string, std::string> SAsset::GetAssetFileTypeFilter()
+	{
+		return { "All Files", "*" };
 	}
 
 	const SAssetType SAsset::GetAssetType() const
@@ -88,9 +95,9 @@ namespace Solus
 		case SAssetType::NONE:
 			return nullptr;
 		case SAssetType::TEXTURE:
-			break;
+			return new TextureAsset(filePath);
 		case SAssetType::MESH:
-			break;
+			return new MeshAsset(filePath);
 		case SAssetType::SHADER:
 			return new ShaderAsset(filePath);
 		case SAssetType::MATERIAL:

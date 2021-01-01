@@ -192,7 +192,7 @@ namespace Solus
 		ImGui::SameLine(100);
 		if (ImGui::Button("Import"))
 		{
-			open_file = std::make_shared<pfd::open_file>("Choose file", "C:\\");
+			open_file = std::make_shared<pfd::open_file>("Choose file", "C:\\", gEngine->GetAssetManager()->GetAssetFileTypeFilter());
 		}
 
 		if (open_file && open_file->ready())

@@ -157,7 +157,16 @@
     <ClCompile Include="AssetSystem\SAssetMetadata.cpp">
       <Filter>Source\AssetSystem</Filter>
     </ClCompile>
-  </ItemGroup>
+    <ClCompile Include="AssetSystem\MeshAsset.cpp">
+      <Filter>Source\AssetSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\intermediates\generated\MeshAsset.generated.cpp">
+      <Filter>Generated</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetSystem\TextureAsset.cpp">
+      <Filter>Source\AssetSystem</Filter>
+    </ClCompile>
+  <ClCompile Include="..\intermediates\generated\TextureAsset.generated.cpp"><Filter>Generated</Filter></ClCompile></ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
     <ClInclude Include="targetver.h" />
@@ -344,7 +353,16 @@
     <ClInclude Include="AssetSystem\SAssetType.h">
       <Filter>Source\AssetSystem</Filter>
     </ClInclude>
-  </ItemGroup>
+    <ClInclude Include="AssetSystem\MeshAsset.h">
+      <Filter>Source\AssetSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\intermediates\generated\MeshAsset.generated.h">
+      <Filter>Generated</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetSystem\TextureAsset.h">
+      <Filter>Source\AssetSystem</Filter>
+    </ClInclude>
+  <ClInclude Include="..\intermediates\generated\TextureAsset.generated.h"><Filter>Generated</Filter></ClInclude></ItemGroup>
   <ItemGroup>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{30caf233-bccc-4bd1-aa21-a3af5a62987d}</UniqueIdentifier>

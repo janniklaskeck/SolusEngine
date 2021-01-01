@@ -1,8 +1,9 @@
 #include "AssetManager.h"
 
 #include "AssetSystem/FolderAssetSource.h"
-#include "AssetSystem/SAsset.h"
 #include "AssetSystem/ShaderAsset.h"
+#include "AssetSystem/MeshAsset.h"
+#include "AssetSystem/TextureAsset.h"
 
 namespace Solus
 {
@@ -10,7 +11,19 @@ namespace Solus
 	{}
 
 	void AssetManager::Initialize()
-	{}
+	{
+		assetFileTypeFilters.push_back(MeshAsset::GetAssetFileTypeFilter().first);
+		assetFileTypeFilters.push_back(MeshAsset::GetAssetFileTypeFilter().second);
+
+		assetFileTypeFilters.push_back(TextureAsset::GetAssetFileTypeFilter().first);
+		assetFileTypeFilters.push_back(TextureAsset::GetAssetFileTypeFilter().second);
+
+		assetFileTypeFilters.push_back(ShaderAsset::GetAssetFileTypeFilter().first);
+		assetFileTypeFilters.push_back(ShaderAsset::GetAssetFileTypeFilter().second);
+
+		assetFileTypeFilters.push_back(SAsset::GetAssetFileTypeFilter().first);
+		assetFileTypeFilters.push_back(SAsset::GetAssetFileTypeFilter().second);
+	}
 
 	void AssetManager::Update()
 	{}
@@ -95,12 +108,21 @@ namespace Solus
 		return projectAssetSource.get();
 	}
 
+	const std::vector<std::string>& AssetManager::GetAssetFileTypeFilter() const
+	{
+		return assetFileTypeFilters;
+	}
+
 	Asset AssetManager::TryImportAsset(const fs::path filePath)
 	{
 		const std::string fileExtension = filePath.extension().string();
 		if (fileExtension == ".glsl")
 		{
 			return ImportAsset<ShaderAsset>(filePath);
+		}
+		if (fileExtension == ".obj")
+		{
+			return ImportAsset<MeshAsset>(filePath);
 		}
 
 		return Asset();

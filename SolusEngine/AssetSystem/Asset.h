@@ -30,6 +30,10 @@ namespace Solus
 		~Asset();
 
 		void Set(SAsset* _asset);
+		SAsset* Get() const;
+
+		template<typename T>
+		T* GetAs() const;
 
 		Asset& operator=(const Asset& other);
 		Asset& operator=(Asset&& other) noexcept;
@@ -50,5 +54,13 @@ namespace Solus
 	private:
 		SAsset* asset = nullptr;
 	};
+
+	template<typename T>
+	T* Solus::Asset::GetAs() const
+	{
+		if (asset)
+			return dynamic_cast<T*>(asset);
+		return nullptr;
+	}
 
 }

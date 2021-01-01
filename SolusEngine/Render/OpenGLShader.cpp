@@ -19,12 +19,10 @@ namespace Solus
 	OpenGLShader::~OpenGLShader()
 	{}
 
-	bool OpenGLShader::Load(const Asset& shaderAsset)
+	bool OpenGLShader::Load(ShaderAsset& asset)
 	{
-		ShaderAsset& asset = (ShaderAsset&)(*shaderAsset);
 		asset.Load();
 		const char* shaderSource = (const char*)asset.GetShaderContent();
-		GLint shaderSize = asset.GetShaderSize();
 		std::stringstream ss1;
 		ss1 << "#version 460 core\n";
 		ss1 << "#define VERTEX_SHADER\n";

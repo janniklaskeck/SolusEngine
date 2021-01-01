@@ -2,10 +2,10 @@
 #include "Utility/FileUtils.h"
 #include "Utility/BinaryReader.h"
 
-#include "AssetSystem/SAsset.h"
+#include "AssetSystem/TextureAsset.h"
 
 #include <GL/gl3w.h>
-#include <assert.h>
+#include <cassert>
 
 namespace Solus
 {
@@ -27,10 +27,11 @@ namespace Solus
 		glBindTexture(textureType, textureID);
 	}
 
-	bool OpenGLTexture::Load(Asset textureAsset)
+	bool OpenGLTexture::Load(TextureAsset& textureAsset)
 	{
-		textureAsset->Load();
-		BinaryReader reader(nullptr, 0);
+		std::vector<unsigned char> data;
+		FileUtils::ReadFileRaw(textureAsset.GetSourceFilePath(), data);
+		BinaryReader reader(data.data(), data.size());
 		auto filecode = reader.ReadString(4);
 
 		FILE* fp = nullptr;
@@ -73,7 +74,7 @@ namespace Solus
 			break;
 		default:
 			free(buffer);
-			return 0;
+			return false;
 		}
 
 		// Create one OpenGL texture

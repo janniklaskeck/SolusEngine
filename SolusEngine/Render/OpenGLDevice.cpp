@@ -8,6 +8,8 @@
 
 #include "AssetSystem/AssetManager.h"
 #include "AssetSystem/ShaderAsset.h"
+#include "AssetSystem/MeshAsset.h"
+#include "AssetSystem/TextureAsset.h"
 
 #include "Engine/Engine.h"
 
@@ -51,7 +53,7 @@ namespace Solus
 		Asset screenShader = assetManager->ImportAsset<ShaderAsset>(screenShaderPath);
 		assert(screenShader.IsValid());
 
-		screenFramebufferShader = (OpenGLShader*)CreateShader(screenShader);
+		screenFramebufferShader = (OpenGLShader*)CreateShader(*screenShader.GetAs<ShaderAsset>());
 		screenTextureId = glGetUniformLocation(screenFramebufferShader->GetShaderProgram(), "screenTexture");
 		float quadVertices[] = {
 			-1.0f, -1.0f,
@@ -76,7 +78,7 @@ namespace Solus
 		screenShader = assetManager->ImportAsset<ShaderAsset>(defaultScreenShaderPath);
 		assert(screenShader.IsValid());
 
-		defaultScreenShader = (OpenGLShader*)CreateShader(screenShader);
+		defaultScreenShader = (OpenGLShader*)CreateShader(*screenShader.GetAs<ShaderAsset>());
 	}
 
 	void OpenGLDevice::Update()
@@ -117,10 +119,8 @@ namespace Solus
 		CHECK_OPENGL_ERROR();
 	}
 
-	RenderShader* OpenGLDevice::CreateShader(const Asset& shaderAsset)
+	RenderShader* OpenGLDevice::CreateShader(ShaderAsset& shaderAsset)
 	{
-		if (!shaderAsset.IsValid())
-			return nullptr;
 		OpenGLShader* shader = new OpenGLShader;
 		if (!shader->Load(shaderAsset))
 		{
@@ -130,14 +130,14 @@ namespace Solus
 		return shader;
 	}
 
-	RenderMesh* OpenGLDevice::CreateMesh(const Asset& meshFile)
+	RenderMesh* OpenGLDevice::CreateMesh(MeshAsset& meshFile)
 	{
 		auto* mesh = new OpenGLMesh;
 		mesh->Load(meshFile);
 		return mesh;
 	}
 
-	RenderTexture* OpenGLDevice::CreateTexture(const Asset& textureFile, bool doLoading /*= true*/, TextureType type /* = TextureType::TEX_DDS */)
+	RenderTexture* OpenGLDevice::CreateTexture(TextureAsset& textureFile, bool doLoading /*= true*/, TextureType type /* = TextureType::TEX_DDS */)
 	{
 		RenderTexture* newTexture = new OpenGLTexture(GL_TEXTURE_2D);
 		if (doLoading)
@@ -169,14 +169,14 @@ namespace Solus
 
 	RenderTexture* OpenGLDevice::GetDefaultTexture()
 	{
-		if (!defaultTexture.get())
+		if (!defaultTextureAsset.IsValid())
 		{
-			const Asset& defaultTextureAsset = gEngine->GetAssetManager()->GetAssetFromPath("Editor/texture/defaultTexture.dds");
-			defaultTexture.reset(new OpenGLTexture(GL_TEXTURE_2D));
-			defaultTexture.get()->Load(defaultTextureAsset);
+			const fs::path defaultTexturePath = gEngine->GetAssetManager()->GetEngineAssetSource()->GetRootPath() / "Editor/Texture/DefaultTexture.dds";
+			defaultTextureAsset = gEngine->GetAssetManager()->ImportAsset<TextureAsset>(defaultTexturePath);
+			defaultTextureAsset->Load();
 		}
 
-		return defaultTexture.get();
+		return defaultTextureAsset.GetAs<TextureAsset>()->GetRenderTexture();
 	}
 
 	void OpenGLDevice::SetRenderSurface(RenderSurface* surface /*= nullptr*/)

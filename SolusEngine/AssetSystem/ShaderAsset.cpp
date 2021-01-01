@@ -19,6 +19,8 @@ namespace Solus
 			FileUtils::ReadFileRaw(sourcePath, rawBytes);
 			if (rawBytes[rawBytes.size() - 1] != '\0')
 				rawBytes.push_back('\0');
+
+			renderShader = gEngine->GetRenderDevice()->CreateShader(*this);
 		}
 	}
 
@@ -34,6 +36,11 @@ namespace Solus
 		return true;
 	}
 
+	const std::pair<std::string, std::string> ShaderAsset::GetAssetFileTypeFilter()
+	{
+		return { "OpenGL Shader (.glsl)", "*.glsl" };
+	}
+
 	const unsigned char* ShaderAsset::GetShaderContent() const
 	{
 		return rawBytes.data();
@@ -42,6 +49,11 @@ namespace Solus
 	uint32_t ShaderAsset::GetShaderSize() const
 	{
 		return rawBytes.size();
+	}
+
+	RenderShader* ShaderAsset::GetRenderShader() const
+	{
+		return renderShader;
 	}
 
 }

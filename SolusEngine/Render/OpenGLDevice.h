@@ -23,24 +23,24 @@ namespace Solus
 	class OpenGLDevice : public RenderDevice
 	{
 	public:
-		virtual void Initialize() override;
-		virtual void Update() override;
-		virtual void Destroy() override;
+		void Initialize() override;
+		void Update() override;
+		void Destroy() override;
 
-		virtual void PreRenderScene() override;
-		virtual void PostRenderScene() override;
+		void PreRenderScene() override;
+		void PostRenderScene() override;
 
-		virtual RenderShader* CreateShader(const Asset& shaderAsset) override;
-		virtual RenderMesh* CreateMesh(const Asset& meshFileName) override;
+		RenderShader* CreateShader(ShaderAsset& shaderAsset) override;
+		RenderMesh* CreateMesh(MeshAsset& meshFileName) override;
 
-		virtual RenderTexture* CreateTexture(const Asset& sourceFile, bool doLoading = true, TextureType type = TextureType::TEX_DDS) override;
-		virtual bool DestroyTexture(RenderTexture* texture) override;
+		RenderTexture* CreateTexture(TextureAsset& sourceFile, bool doLoading = true, TextureType type = TextureType::TEX_DDS) override;
+		bool DestroyTexture(RenderTexture* texture) override;
 
-		virtual PrimitiveDrawer* GetPrimitiveDrawer() override;
+		PrimitiveDrawer* GetPrimitiveDrawer() override;
 
-		virtual RenderTexture* GetDefaultTexture();
-		virtual void SetRenderSurface(RenderSurface* surface = nullptr) override;
-		virtual RenderSurface* GetCurrentRenderSurface() const override;
+		RenderTexture* GetDefaultTexture() override;
+		void SetRenderSurface(RenderSurface* surface = nullptr) override;
+		RenderSurface* GetCurrentRenderSurface() const override;
 
 	private:
 		OpenGLPrimitiveDrawer* primitiveDrawer;
@@ -55,7 +55,7 @@ namespace Solus
 
 		OpenGLShader* defaultScreenShader;
 
-		std::unique_ptr<RenderTexture> defaultTexture;
+		Asset defaultTextureAsset;
 	};
 
 }

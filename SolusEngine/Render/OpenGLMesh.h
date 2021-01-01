@@ -1,30 +1,22 @@
 #pragma once
 #include "RenderMesh.h"
 
-#include <assimp/Importer.hpp>
-#include <assimp/scene.h>
-#include <assimp/postprocess.h>
-
 namespace Solus
 {
-	struct OpenGLMeshEntry
+	class MeshAsset;
+
+	struct OpenGLMeshData
 	{
-		OpenGLMeshEntry();
-		~OpenGLMeshEntry();
+		~OpenGLMeshData();
 
-		void GenerateBuffers();
+		void GenerateBuffers(const MeshAsset& asset);
 
-		std::vector<Vec3f> vertices;
-		std::vector<Vec2f> texCoords;
-		std::vector<Vec3f> normals;
-		std::vector<unsigned int> indices;
+		unsigned int vertexBuffer = 0;
+		unsigned int indexBuffer = 0;
+		unsigned int normalBuffer = 0;
+		unsigned int texCoordBuffer = 0;
 
-		unsigned int vertexBuffer;
-		unsigned int indexBuffer;
-		unsigned int normalBuffer;
-		unsigned int uvBuffer;
-
-		unsigned int MaterialIndex;
+		unsigned int indicesCount = 0;
 	};
 
 	class OpenGLMesh : public RenderMesh
@@ -32,15 +24,15 @@ namespace Solus
 	public:
 		OpenGLMesh();
 		~OpenGLMesh();
-		virtual void Render(const Entity* owner) override;
+		void Render(const Entity* owner) override;
 
-		virtual bool Load(Asset meshAsset) override;
+		bool Load(MeshAsset& meshAsset) override;
 
 	private:
-		void LoadMesh(int index, aiMesh* mesh);
 		class OpenGLShader* GetOpenGLShader() const;
 
-		std::vector<OpenGLMeshEntry> entries;
+		OpenGLMeshData meshData;
+
 		std::vector<class RenderTexture*> textures;
 
 		unsigned int VAO = 0;
@@ -51,8 +43,5 @@ namespace Solus
 
 		unsigned int modelViewMatrixUniformLoc = 0;
 		unsigned int textureSamplerLoc = 0;
-
-		bool isLoaded = false;
-
 	};
 }

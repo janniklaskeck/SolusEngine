@@ -22,14 +22,13 @@ namespace Solus
 
 		bool Import() override;
 
-		static SAssetType GetAssetType()
-		{
-			return SAssetType::SHADER;
-		}
+		static const std::pair<std::string, std::string> GetAssetFileTypeFilter();
 
 		const unsigned char* GetShaderContent() const;
 
 		uint32_t GetShaderSize() const;
+
+		RenderShader* GetRenderShader() const;
 
 	protected:
 

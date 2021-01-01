@@ -42,6 +42,8 @@ namespace Solus
 
 		const std::string GetFileName() const;
 
+		static const std::pair<std::string, std::string> GetAssetFileTypeFilter();
+
 		const SAssetType GetAssetType() const;
 
 		const SUUID GetAssetId() const;

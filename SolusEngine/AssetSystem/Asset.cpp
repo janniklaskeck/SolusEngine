@@ -39,6 +39,13 @@ namespace Solus
 		}
 	}
 
+	SAsset* Asset::Get() const
+	{
+		if (asset)
+			return asset;
+		return nullptr;
+	}
+
 	Asset& Asset::operator=(const Asset& other)
 	{
 		if (this != &other)

@@ -6,15 +6,16 @@
 #include "Engine/Engine.h"
 
 #include "AssetSystem/AssetManager.h"
+#include "AssetSystem/ShaderAsset.h"
 
 namespace Solus
 {
 
 	Solus::RenderMesh::RenderMesh()
 	{
-		const Asset& shader = gEngine->GetAssetManager()->GetAssetFromPath("Editor/Shader/DefaultShader.glsl");
-		gEngine->GetRenderDevice()->CreateShader(shader);
-		owner = nullptr;
+		const Asset& shaderAsset = gEngine->GetAssetManager()->GetAssetFromPath("Editor/Shader/DefaultShader.glsl");
+		shaderAsset->Load();
+		shader = shaderAsset.GetAs<ShaderAsset>()->GetRenderShader();
 	}
 
 	RenderMesh::~RenderMesh()

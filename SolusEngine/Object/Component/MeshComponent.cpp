@@ -1,7 +1,10 @@
 #include "MeshComponent.h"
+
 #include "Render/RenderMesh.h"
+
 #include "Engine/Engine.h"
-#include "AssetSystem/SAsset.h"
+
+#include "AssetSystem/MeshAsset.h"
 
 namespace Solus
 {
@@ -29,6 +32,6 @@ namespace Solus
 	{
 		this->meshAsset = _meshAsset;
 		meshAsset->Load();
-		renderMesh.reset(gEngine->GetRenderDevice()->CreateMesh(this->meshAsset));
+		renderMesh.reset(gEngine->GetRenderDevice()->CreateMesh(*meshAsset.GetAs<MeshAsset>()));
 	}
 }

@@ -5,7 +5,7 @@
 #include "OpenGLPrimitiveDrawer.h"
 
 #include "AssetSystem/AssetManager.h"
-#include "AssetSystem/SAsset.h"
+#include "AssetSystem/MeshAsset.h"
 
 #include "Engine/Engine.h"
 #include "Camera.h"
@@ -17,16 +17,7 @@
 namespace Solus
 {
 
-	OpenGLMeshEntry::OpenGLMeshEntry()
-	{
-		MaterialIndex = -1;
-		normalBuffer = -1;
-		uvBuffer = -1;
-		vertexBuffer = -1;
-		indexBuffer = -1;
-	}
-
-	OpenGLMeshEntry::~OpenGLMeshEntry()
+	OpenGLMeshData::~OpenGLMeshData()
 	{
 		if (vertexBuffer >= 0)
 		{
@@ -40,29 +31,33 @@ namespace Solus
 		{
 			glDeleteBuffers(1, &normalBuffer);
 		}
-		if (uvBuffer >= 0)
+		if (texCoordBuffer >= 0)
 		{
-			glDeleteBuffers(1, &uvBuffer);
+			glDeleteBuffers(1, &texCoordBuffer);
 		}
 	}
 
-	void OpenGLMeshEntry::GenerateBuffers()
+	void OpenGLMeshData::GenerateBuffers(const MeshAsset& asset)
 	{
+		const MeshData& meshData = asset.GetFirstMesh();
+
+		indicesCount = meshData.indices.size();
+
 		glGenBuffers(1, &vertexBuffer);
 		glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(Vec3f) * vertices.size(), &vertices[0], GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(Vec3f) * meshData.vertices.size(), &meshData.vertices[0], GL_STATIC_DRAW);
 
 		glGenBuffers(1, &normalBuffer);
 		glBindBuffer(GL_ARRAY_BUFFER, normalBuffer);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(Vec3f) * normals.size(), &normals[0], GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(Vec3f) * meshData.normals.size(), &meshData.normals[0], GL_STATIC_DRAW);
 
-		glGenBuffers(1, &uvBuffer);
-		glBindBuffer(GL_ARRAY_BUFFER, uvBuffer);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(Vec2f) * texCoords.size(), &texCoords[0], GL_STATIC_DRAW);
+		glGenBuffers(1, &texCoordBuffer);
+		glBindBuffer(GL_ARRAY_BUFFER, texCoordBuffer);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(Vec2f) * meshData.texCoords.size(), &meshData.texCoords[0], GL_STATIC_DRAW);
 
 		glGenBuffers(1, &indexBuffer);
 		glBindBuffer(GL_ARRAY_BUFFER, indexBuffer);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(unsigned int) * indices.size(), &indices[0], GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(unsigned int) * meshData.indices.size(), &meshData.indices[0], GL_STATIC_DRAW);
 
 	}
 
@@ -85,6 +80,8 @@ namespace Solus
 		glGenVertexArrays(1, &VAO);
 
 		CHECK_OPENGL_ERROR();
+
+		textures.push_back(gEngine->GetRenderDevice()->GetDefaultTexture());
 	}
 
 	OpenGLMesh::~OpenGLMesh()
@@ -125,21 +122,21 @@ namespace Solus
 
 		glBindVertexArray(VAO);
 
-		glBindBuffer(GL_ARRAY_BUFFER, entries[0].vertexBuffer);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+		glBindBuffer(GL_ARRAY_BUFFER, meshData.vertexBuffer);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 		glEnableVertexAttribArray(0);
 
-		glBindBuffer(GL_ARRAY_BUFFER, entries[0].normalBuffer);
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
+		glBindBuffer(GL_ARRAY_BUFFER, meshData.normalBuffer);
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 		glEnableVertexAttribArray(1);
 
-		glBindBuffer(GL_ARRAY_BUFFER, entries[0].uvBuffer);
-		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, 0);
+		glBindBuffer(GL_ARRAY_BUFFER, meshData.texCoordBuffer);
+		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
 		glEnableVertexAttribArray(2);
 
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, entries[0].indexBuffer);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, meshData.indexBuffer);
 
-		glDrawElements(GL_TRIANGLES, (GLsizei)entries[0].indices.size(), GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, (GLsizei)meshData.indicesCount, GL_UNSIGNED_INT, nullptr);
 		glDisableVertexAttribArray(0);
 		glDisableVertexAttribArray(1);
 		glDisableVertexAttribArray(2);
@@ -155,84 +152,13 @@ namespace Solus
 		//primDrawer->RenderRectangle(center, extents, Vec4f(1, 0, 0, 1));
 	}
 
-	bool OpenGLMesh::Load(Asset meshAsset)
+	bool OpenGLMesh::Load(MeshAsset& meshAsset)
 	{
-		if (isLoaded)
-		{
-			return false;
-		}
-		Assimp::Importer importer;
-		const char* path = "";
-		const aiScene* scene = importer.ReadFile(meshAsset->GetSourceFilePath().string(), aiProcess_FixInfacingNormals
-												 | aiProcess_JoinIdenticalVertices
-												 | aiProcess_GenSmoothNormals
-												 | aiProcess_FindInvalidData
-												 | aiProcess_GenUVCoords
-												 | aiProcess_Triangulate);
-		if (!scene)
-		{
-			gEngine->Log(LogLevel::LogError, "Could not load OBJ model file: %s", importer.GetErrorString());
-			return false;
-		}
-		isLoaded = true;
+		meshAsset.Load();
+		meshData.GenerateBuffers(meshAsset);
 
-		entries.resize(scene->mNumMeshes);
-		textures.resize(scene->mNumTextures);
 
-		for (unsigned int i = 0; i < scene->mNumMeshes; i++)
-		{
-			LoadMesh(i, scene->mMeshes[i]);
-		}
-
-		for (unsigned int i = 0; i < scene->mNumMaterials; i++)
-		{
-			aiMaterial* material = scene->mMaterials[i];
-			bool foundMaterial = false;
-			if (material->GetTextureCount(aiTextureType_DIFFUSE) > 0)
-			{
-				aiString path;
-				if (material->GetTexture(aiTextureType_DIFFUSE, 0, &path, nullptr, nullptr, nullptr, nullptr, nullptr) == AI_SUCCESS)
-				{
-					std::string fullPath = ".";
-					fullPath += path.C_Str();
-					Asset texture = gEngine->GetAssetManager()->GetAssetFromPath(fullPath.c_str());
-					textures[i] = gEngine->GetRenderDevice()->CreateTexture(texture);
-					bool foundMaterial = textures[i] != nullptr;
-				}
-			}
-			if (!foundMaterial)
-			{
-				textures.push_back(gEngine->GetRenderDevice()->GetDefaultTexture());
-			}
-		}
 		return true;
-	}
-
-	void OpenGLMesh::LoadMesh(int index, aiMesh* mesh)
-	{
-		entries[index].MaterialIndex = mesh->mMaterialIndex;
-
-		for (unsigned int i = 0; i < mesh->mNumVertices; i++)
-		{
-			aiVector3D& vertex = mesh->mVertices[i];
-			aiVector3D& normal = mesh->mNormals[i];
-			aiVector3D texCoord = mesh->HasTextureCoords(0) ? mesh->mTextureCoords[0][i] : aiVector3D{ 0.0f, 0.0f, 0.0f };
-
-			entries[index].vertices.push_back(Vec3f(vertex.x, vertex.y, vertex.z));
-			entries[index].normals.push_back(Vec3f(normal.x, normal.y, normal.z));
-			entries[index].texCoords.push_back(Vec2f(texCoord.x, 1.0f - texCoord.y));
-		}
-
-		for (unsigned int i = 0; i < mesh->mNumFaces; i++)
-		{
-			aiFace& face = mesh->mFaces[i];
-			assert(face.mNumIndices == 3);
-			for (unsigned int f = 0; f < face.mNumIndices; f++)
-			{
-				entries[index].indices.push_back(face.mIndices[f]);
-			}
-		}
-		entries[index].GenerateBuffers();
 	}
 
 	OpenGLShader* OpenGLMesh::GetOpenGLShader() const

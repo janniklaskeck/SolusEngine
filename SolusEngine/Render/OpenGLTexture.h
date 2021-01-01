@@ -17,9 +17,9 @@ namespace Solus
 
 		~OpenGLTexture();
 
-		virtual void Bind(unsigned int textureIndex) override;
+		void Bind(unsigned int textureIndex) override;
 
-		virtual bool Load(Asset textureAsset) override;
+		bool Load(TextureAsset& textureAsset) override;
 
 		uint32_t GetImageID()
 		{
