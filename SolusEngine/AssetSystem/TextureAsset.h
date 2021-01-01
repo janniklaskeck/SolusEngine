@@ -27,9 +27,12 @@ namespace Solus
 
 		RenderTexture* GetRenderTexture() const;
 
+		const std::vector<unsigned char>& GetTextureData() const;
+
 	protected:
 
 		RenderTexture* renderTexture = nullptr;
+		std::vector<unsigned char> data;
 
 	};
 

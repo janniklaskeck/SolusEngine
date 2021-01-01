@@ -152,6 +152,32 @@ namespace Solus
 					ImGui::EndDragDropTarget();
 				}
 			}
+			else if (property.get_type() == rttr::type::get<Asset>())
+			{
+				Asset ptr = *metaDataPtr->GetMemberPtr<Asset>(component, propName);
+				if (ptr)
+				{
+					ImGui::LabelText(propName.c_str(), ptr->GetSourceFilePath().string().c_str());
+				}
+				else
+				{
+					ImGui::LabelText(propName.c_str(), "No Asset...");
+				}
+				if (ImGui::BeginDragDropTarget())
+				{
+					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("TESTDRAG"))
+					{
+						Solus::Asset* payload_n = (Solus::Asset*)payload->Data;
+						if (payload_n)
+						{
+							auto* meshComp = (Solus::MeshComponent*)component;
+							auto meshAsset = (Asset)(*payload_n);
+							meshComp->SetMesh(meshAsset);
+						}
+					}
+					ImGui::EndDragDropTarget();
+				}
+			}
 		}
 	}
 

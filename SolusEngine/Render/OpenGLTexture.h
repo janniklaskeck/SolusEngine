@@ -27,7 +27,6 @@ namespace Solus
 		}
 
 	private:
-		Asset asset;
 		uint32_t textureID = 0;
 		unsigned int textureType = 0;
 

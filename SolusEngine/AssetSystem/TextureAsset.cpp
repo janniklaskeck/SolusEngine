@@ -15,6 +15,7 @@ namespace Solus
 
 	void TextureAsset::Load()
 	{
+		FileUtils::ReadFileRaw(GetSourceFilePath(), data);
 		if (!renderTexture)
 			renderTexture = gEngine->GetRenderDevice()->CreateTexture(*this);
 	}
@@ -23,6 +24,7 @@ namespace Solus
 	{
 		if (renderTexture)
 		{
+			data.clear();
 			gEngine->GetRenderDevice()->DestroyTexture(renderTexture);
 			renderTexture = nullptr;
 		}
@@ -42,6 +44,11 @@ namespace Solus
 	RenderTexture* TextureAsset::GetRenderTexture() const
 	{
 		return renderTexture;
+	}
+
+	const std::vector<unsigned char>& TextureAsset::GetTextureData() const
+	{
+		return data;
 	}
 
 }

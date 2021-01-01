@@ -185,11 +185,6 @@ namespace Solus
 	void EditorAssetWindow::RenderFiles()
 	{
 		static std::shared_ptr<pfd::open_file> open_file;
-
-		if (clickedFolderPath.empty())
-			return;
-		ImGui::Text("Files");
-		ImGui::SameLine(100);
 		if (ImGui::Button("Import"))
 		{
 			open_file = std::make_shared<pfd::open_file>("Choose file", "C:\\", gEngine->GetAssetManager()->GetAssetFileTypeFilter());
@@ -204,6 +199,10 @@ namespace Solus
 			}
 			open_file = nullptr;
 		}
+
+		if (clickedFolderPath.empty())
+			return;
+		ImGui::Text("Files");
 
 		auto* manager = gEngine->GetAssetManager();
 		ImVec2 buttonSize(80, 80);

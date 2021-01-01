@@ -39,9 +39,9 @@ namespace Solus
 
 	void OpenGLMeshData::GenerateBuffers(const MeshAsset& asset)
 	{
-		const MeshData& meshData = asset.GetFirstMesh();
+		const MeshData& meshData = asset.GetMesh();
 
-		indicesCount = meshData.indices.size();
+		indicesCount = (unsigned int)meshData.indices.size();
 
 		glGenBuffers(1, &vertexBuffer);
 		glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);

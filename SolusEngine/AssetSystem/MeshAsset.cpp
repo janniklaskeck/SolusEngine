@@ -11,9 +11,7 @@ namespace Solus
 
 	MeshAsset::MeshAsset(const fs::path meshPath)
 		: SAsset(meshPath, SAssetType::MESH)
-	{
-
-	}
+	{}
 
 	void MeshAsset::Load()
 	{
@@ -31,17 +29,12 @@ namespace Solus
 			return;
 		}
 
-		meshes.resize(scene->mNumMeshes);
-
-		for (unsigned int i = 0; i < scene->mNumMeshes; i++)
-		{
-			LoadMesh(i, scene->mMeshes[i]);
-		}
-
-		/*for (unsigned int i = 0; i < scene->mNumMaterials; i++)
+		LoadMesh(scene->mMeshes[0]);
+		for (unsigned int i = 0; i < scene->mNumMaterials; i++)
 		{
 			aiMaterial* material = scene->mMaterials[i];
-			bool foundMaterial = false;
+			meshData.textureCount += material->GetTextureCount(aiTextureType_DIFFUSE);
+			/*bool foundMaterial = false;
 			if (material->GetTextureCount(aiTextureType_DIFFUSE) > 0)
 			{
 				aiString path;
@@ -57,13 +50,13 @@ namespace Solus
 			if (!foundMaterial)
 			{
 				textures.push_back(gEngine->GetRenderDevice()->GetDefaultTexture());
-			}
-		}*/
+			}*/
+		}
 	}
 
-	void MeshAsset::LoadMesh(int index, aiMesh* mesh)
+	void MeshAsset::LoadMesh(aiMesh* mesh)
 	{
-		meshes[index].MaterialIndex = mesh->mMaterialIndex;
+		meshData.materialIndex = mesh->mMaterialIndex;
 
 		for (unsigned int i = 0; i < mesh->mNumVertices; i++)
 		{
@@ -71,9 +64,9 @@ namespace Solus
 			aiVector3D& normal = mesh->mNormals[i];
 			aiVector3D texCoord = mesh->HasTextureCoords(0) ? mesh->mTextureCoords[0][i] : aiVector3D{ 0.0f, 0.0f, 0.0f };
 
-			meshes[index].vertices.emplace_back(vertex.x, vertex.y, vertex.z);
-			meshes[index].normals.emplace_back(normal.x, normal.y, normal.z);
-			meshes[index].texCoords.emplace_back(texCoord.x, 1.0f - texCoord.y);
+			meshData.vertices.emplace_back(vertex.x, vertex.y, vertex.z);
+			meshData.normals.emplace_back(normal.x, normal.y, normal.z);
+			meshData.texCoords.emplace_back(texCoord.x, 1.0f - texCoord.y);
 		}
 
 		for (unsigned int i = 0; i < mesh->mNumFaces; i++)
@@ -82,14 +75,14 @@ namespace Solus
 			assert(face.mNumIndices == 3);
 			for (unsigned int f = 0; f < face.mNumIndices; f++)
 			{
-				meshes[index].indices.push_back(face.mIndices[f]);
+				meshData.indices.push_back(face.mIndices[f]);
 			}
 		}
 	}
 
 	void MeshAsset::Unload()
 	{
-		meshes.clear();
+		meshData.Clear();
 	}
 
 	bool MeshAsset::Import()
@@ -102,14 +95,9 @@ namespace Solus
 		return { "Mesh file (.obj)", "*.obj" };
 	}
 
-	const std::vector<Solus::MeshData>& MeshAsset::GetMeshes() const
+	const MeshData& MeshAsset::GetMesh() const
 	{
-		return meshes;
-	}
-
-	const Solus::MeshData& MeshAsset::GetFirstMesh() const
-	{
-		return meshes[0];
+		return meshData;
 	}
 
 }

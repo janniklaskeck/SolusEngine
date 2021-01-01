@@ -10,7 +10,7 @@ namespace Solus
 	class SOLUS_API BinaryReader
 	{
 	public:
-		BinaryReader(void* data, uint32_t length);
+		BinaryReader(const void* data, uint32_t length);
 
 		void ReadBytes(unsigned char* dst, uint32_t amount);
 
@@ -29,7 +29,7 @@ namespace Solus
 		void IncreaseOffset(uint32_t amount);
 
 		fs::path path;
-		unsigned char* data;
+		const unsigned char* data;
 		uint64_t currentOffset = 0;
 		uint64_t dataLength = 0;
 	};

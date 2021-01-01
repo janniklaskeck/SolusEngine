@@ -4,7 +4,7 @@
 namespace Solus
 {
 
-	BinaryReader::BinaryReader(void* data, uint32_t length)
+	BinaryReader::BinaryReader(const void* data, uint32_t length)
 	{
 		this->data = (unsigned char*)data;
 		this->dataLength = length;
@@ -18,7 +18,7 @@ namespace Solus
 
 	int16_t BinaryReader::ReadInt16()
 	{
-		unsigned char* intData = data + currentOffset;
+		const unsigned char* intData = data + currentOffset;
 		unsigned char intBytes[sizeof(int16_t)] = { intData[0], intData[1] };
 		int16_t value;
 		memcpy(&value, &intBytes, sizeof(int16_t));
@@ -28,7 +28,7 @@ namespace Solus
 
 	int32_t BinaryReader::ReadInt32()
 	{
-		unsigned char* intData = data + currentOffset;
+		const unsigned char* intData = data + currentOffset;
 		unsigned char intBytes[sizeof(int32_t)] = { intData[0], intData[1], intData[2], intData[3] };
 		int32_t value;
 		memcpy(&value, &intBytes, sizeof(int32_t));
@@ -38,7 +38,7 @@ namespace Solus
 
 	float BinaryReader::ReadFloat()
 	{
-		unsigned char* intData = data + currentOffset;
+		const unsigned char* intData = data + currentOffset;
 		unsigned char intBytes[sizeof(int32_t)] = { intData[0], intData[1], intData[2], intData[3] };
 		float value;
 		memcpy(&value, &intBytes, sizeof(float));
@@ -48,7 +48,7 @@ namespace Solus
 
 	double BinaryReader::ReadDouble()
 	{
-		unsigned char* doubleData = data + currentOffset;
+		const unsigned char* doubleData = data + currentOffset;
 		unsigned char doubleBytes[sizeof(double)] = { doubleData[0], doubleData[1], doubleData[2], doubleData[3], doubleData[4], doubleData[5], doubleData[6], doubleData[7] };
 		double value;
 		memcpy(&value, &doubleBytes, sizeof(double));
@@ -71,7 +71,7 @@ namespace Solus
 
 	std::string BinaryReader::ReadString(uint32_t length)
 	{
-		unsigned char* charData = data + currentOffset;
+		const unsigned char* charData = data + currentOffset;
 		std::string string;
 		string.resize(length);
 		for (uint32_t i = 0; i < length; i++)

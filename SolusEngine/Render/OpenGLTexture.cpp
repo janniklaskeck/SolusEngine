@@ -15,7 +15,7 @@ namespace Solus
 
 	OpenGLTexture::~OpenGLTexture()
 	{
-		if (isLoaded)
+		if (textureID > 0)
 		{
 			glDeleteTextures(1, &textureID);
 		}
@@ -29,9 +29,7 @@ namespace Solus
 
 	bool OpenGLTexture::Load(TextureAsset& textureAsset)
 	{
-		std::vector<unsigned char> data;
-		FileUtils::ReadFileRaw(textureAsset.GetSourceFilePath(), data);
-		BinaryReader reader(data.data(), data.size());
+		BinaryReader reader(textureAsset.GetTextureData().data(), textureAsset.GetTextureData().size());
 		auto filecode = reader.ReadString(4);
 
 		FILE* fp = nullptr;
@@ -104,7 +102,6 @@ namespace Solus
 				height = 1;
 
 		}
-		isLoaded = true;
 		free(buffer);
 		return true;
 	}

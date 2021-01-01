@@ -14,15 +14,18 @@ namespace Solus
 	{
 		META(MeshComponent, SComponent)
 	public:
-		virtual void BeginPlay() override;
-		virtual void Update(float deltaTime) override;
-		virtual void Render();
-		virtual void EndPlay() override;
+		void BeginPlay() override;
+		void Update(float deltaTime) override;
+		void Render();
+		void EndPlay() override;
 
 		void SetMesh(Asset meshAsset);
 	public:
 		SPROPERTY();
 		Asset meshAsset;
+
+		SPROPERTY();
+		std::vector<Asset> textureAssets;
 
 		std::unique_ptr<RenderMesh> renderMesh = nullptr;
 	};

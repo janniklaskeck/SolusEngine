@@ -11,22 +11,23 @@ namespace Solus
 
 	struct MeshData
 	{
-		//MeshData();
-		//~MeshData();
-
-		//void GenerateBuffers();
-
 		std::vector<Vec3f> vertices;
 		std::vector<Vec2f> texCoords;
 		std::vector<Vec3f> normals;
-		std::vector<unsigned int> indices;
+		std::vector<uint32_t> indices;
 
-		//unsigned int vertexBuffer;
-		//unsigned int indexBuffer;
-		//unsigned int normalBuffer;
-		//unsigned int uvBuffer;
+		uint32_t materialIndex = 0;
 
-		unsigned int MaterialIndex;
+		uint32_t textureCount = 0;
+
+		void Clear()
+		{
+			vertices.clear();
+			texCoords.clear();
+			normals.clear();
+			indices.clear();
+			materialIndex = 0;
+		}
 	};
 
 	SOLUS_CLASS();
@@ -43,16 +44,15 @@ namespace Solus
 
 		bool Import() override;
 
-		void LoadMesh(int index, aiMesh* mesh);
+		void LoadMesh(aiMesh* mesh);
 
 		static const std::pair<std::string, std::string> GetAssetFileTypeFilter();
 
-		const std::vector<MeshData>& GetMeshes() const;
-		const MeshData& GetFirstMesh() const;
+		const MeshData& GetMesh() const;
 
 	protected:
 
-		std::vector<MeshData> meshes;
+		MeshData meshData;
 	};
 
 }

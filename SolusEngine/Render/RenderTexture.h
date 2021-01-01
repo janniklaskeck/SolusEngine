@@ -26,7 +26,6 @@ namespace Solus
 		uint32_t height;
 		uint32_t depth;
 		uint32_t bpp;
-		bool isLoaded = false;
 	};
 
 }

@@ -48,7 +48,7 @@ namespace Solus
 
 	uint32_t ShaderAsset::GetShaderSize() const
 	{
-		return rawBytes.size();
+		return (uint32_t)rawBytes.size();
 	}
 
 	RenderShader* ShaderAsset::GetRenderShader() const

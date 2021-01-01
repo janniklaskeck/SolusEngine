@@ -115,7 +115,8 @@ namespace Solus
 
 	Asset AssetManager::TryImportAsset(const fs::path filePath)
 	{
-		const std::string fileExtension = filePath.extension().string();
+		std::string fileExtension = filePath.extension().string();
+		ToLower(fileExtension);
 		if (fileExtension == ".glsl")
 		{
 			return ImportAsset<ShaderAsset>(filePath);
@@ -123,6 +124,10 @@ namespace Solus
 		if (fileExtension == ".obj")
 		{
 			return ImportAsset<MeshAsset>(filePath);
+		}
+		if (fileExtension == ".dds")
+		{
+			return ImportAsset<TextureAsset>(filePath);
 		}
 
 		return Asset();
