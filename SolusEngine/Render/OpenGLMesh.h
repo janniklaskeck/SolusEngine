@@ -29,7 +29,7 @@ namespace Solus
 
 		bool Load(MeshAsset& meshAsset) override;
 
-		void SetTexture(uint8_t index, TextureAsset& textureAsset) override;
+		void SetTexture(uint8_t index, TextureAsset* textureAsset) override;
 
 	private:
 		class OpenGLShader* GetOpenGLShader() const;

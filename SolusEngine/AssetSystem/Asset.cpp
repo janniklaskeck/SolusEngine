@@ -31,8 +31,10 @@ namespace Solus
 
 	void Asset::Set(SAsset* _asset)
 	{
-		if (!asset)
+		if (asset != _asset)
 		{
+			if (asset)
+				asset->Decrement();
 			asset = _asset;
 			if (asset)
 				asset->Increment();

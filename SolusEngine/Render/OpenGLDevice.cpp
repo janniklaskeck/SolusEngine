@@ -137,6 +137,12 @@ namespace Solus
 		return mesh;
 	}
 
+	void OpenGLDevice::DestroyMesh(const RenderMesh* renderMesh)
+	{
+		if (renderMesh)
+			delete renderMesh;
+	}
+
 	RenderTexture* OpenGLDevice::CreateTexture(TextureAsset& textureFile, bool doLoading /*= true*/, TextureType type /* = TextureType::TEX_DDS */)
 	{
 		RenderTexture* newTexture = new OpenGLTexture(GL_TEXTURE_2D);

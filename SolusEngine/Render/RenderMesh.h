@@ -22,7 +22,7 @@ namespace Solus
 
 		virtual bool Load(MeshAsset& meshAsset) = 0;
 
-		virtual void SetTexture(uint8_t index, TextureAsset& textureAsset) = 0;
+		virtual void SetTexture(uint8_t index, TextureAsset* textureAsset) = 0;
 
 	protected:
 		RenderShader* shader = nullptr;

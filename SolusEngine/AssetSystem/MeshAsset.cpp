@@ -15,6 +15,9 @@ namespace Solus
 
 	void MeshAsset::Load()
 	{
+		if (!meshData.vertices.empty())
+			return;
+
 		Assimp::Importer importer;
 		const char* path = "";
 		const aiScene* scene = importer.ReadFile(metaData->GetSourceFilePath().string(), aiProcess_FixInfacingNormals
@@ -53,6 +56,8 @@ namespace Solus
 			}*/
 		}
 		meshData.textureCount = std::max<int>(1, meshData.textureCount);
+
+		renderMesh = gEngine->GetRenderDevice()->CreateMesh(*this);
 	}
 
 	void MeshAsset::LoadMesh(aiMesh* mesh)
@@ -84,6 +89,8 @@ namespace Solus
 	void MeshAsset::Unload()
 	{
 		meshData.Clear();
+		gEngine->GetRenderDevice()->DestroyMesh(renderMesh);
+		renderMesh = nullptr;
 	}
 
 	bool MeshAsset::Import()
@@ -99,6 +106,11 @@ namespace Solus
 	const MeshData& MeshAsset::GetMesh() const
 	{
 		return meshData;
+	}
+
+	RenderMesh* MeshAsset::GetRenderMesh() const
+	{
+		return renderMesh;
 	}
 
 }

@@ -11,6 +11,7 @@ namespace Solus
 	class ArchiveStream;
 	struct ArchiveEntry;
 	class SObject;
+	class Asset;
 
 	struct SOLUS_API ClassMetaData
 	{
@@ -32,6 +33,10 @@ namespace Solus
 			void* ptr = GetMemberPtrInternal(object, name);
 			return static_cast<T*>(ptr);
 		}
+
+		void SetMemberAsset(const SObject* object, const std::string& name, Asset* value);
+
+		void SetMemberAssetVector(const SObject* object, const std::string& name, const uint32_t index, Asset* value);
 
 	protected:
 		virtual void* GetMemberPtrInternal(const SObject* object, const std::string& name)

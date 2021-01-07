@@ -1,7 +1,7 @@
 #include "EditorPropertyWindow.h"
 
 #include "Engine/Engine.h"
-#include "Object/Component/MeshComponent.h"
+#include "Object/Component/SComponent.h"
 
 #include "Render/RenderDevice.h"
 
@@ -141,12 +141,11 @@ namespace Solus
 				{
 					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("TESTDRAG"))
 					{
-						Solus::Asset* payload_n = (Solus::Asset*)payload->Data;
+						Asset* payload_n = (Asset*)payload->Data;
 						if (payload_n)
 						{
-							auto* meshComp = (Solus::MeshComponent*)component;
-							auto meshAsset = (Asset)(*payload_n);
-							meshComp->SetMesh(meshAsset);
+							auto* asset = (Asset*)(payload_n);
+							metaDataPtr->SetMemberAsset(component, propName, asset);
 						}
 					}
 					ImGui::EndDragDropTarget();
@@ -154,7 +153,7 @@ namespace Solus
 			}
 			else if (property.get_type() == rttr::type::get<std::reference_wrapper<std::vector<Asset>>>())
 			{
-				std::vector<Asset>* ptr = metaDataPtr->GetMemberPtr<std::vector<Asset>>(component, propName);
+				auto* ptr = metaDataPtr->GetMemberPtr<std::vector<Asset>>(component, propName);
 				if (ptr)
 				{
 					if (ptr->empty())
@@ -176,12 +175,11 @@ namespace Solus
 							{
 								if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("TESTDRAG"))
 								{
-									Solus::Asset* payload_n = (Solus::Asset*)payload->Data;
+									auto* payload_n = (Asset*)payload->Data;
 									if (payload_n)
 									{
-										auto* meshComp = (Solus::MeshComponent*)component;
-										auto meshAsset = (Asset)(*payload_n);
-										meshComp->SetTexture(i, meshAsset);
+										auto* asset = (Asset*)(payload_n);
+										metaDataPtr->SetMemberAssetVector(component, propName, i, asset);
 									}
 								}
 								ImGui::EndDragDropTarget();

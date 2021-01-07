@@ -19,16 +19,16 @@ namespace Solus
 		void Render();
 		void EndPlay() override;
 
-		void SetMesh(Asset meshAsset);
-
-		void SetTexture(uint8_t index, Asset textureAsset);
 	public:
 		SPROPERTY();
 		Asset meshAsset;
 
+		// Used to detect mesh asset changes
+		Asset oldMeshAsset;
+
 		SPROPERTY();
 		std::vector<Asset> textureAssets;
 
-		std::unique_ptr<RenderMesh> renderMesh = nullptr;
+		RenderMesh* renderMesh = nullptr;
 	};
 }

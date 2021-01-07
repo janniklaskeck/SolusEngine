@@ -36,7 +36,9 @@ namespace Solus
 		virtual void PostRenderScene() = 0;
 
 		virtual RenderShader* CreateShader(ShaderAsset& shaderAsset) = 0;
+
 		virtual RenderMesh* CreateMesh(MeshAsset& meshFileName) = 0;
+		virtual void DestroyMesh(const RenderMesh* renderMesh) = 0;
 		
 		virtual RenderTexture* CreateTexture(TextureAsset& sourceFile, bool doLoading = true, TextureType = TextureType::TEX_DDS) = 0;
 		virtual bool DestroyTexture(RenderTexture* texture) = 0;

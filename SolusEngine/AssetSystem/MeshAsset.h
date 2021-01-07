@@ -9,6 +9,8 @@ struct aiMesh;
 namespace Solus
 {
 
+	class RenderMesh;
+
 	struct MeshData
 	{
 		std::vector<Vec3f> vertices;
@@ -50,9 +52,11 @@ namespace Solus
 
 		const MeshData& GetMesh() const;
 
-	protected:
+		RenderMesh* GetRenderMesh() const;
 
+	protected:
 		MeshData meshData;
+		RenderMesh* renderMesh = nullptr;
 	};
 
 }

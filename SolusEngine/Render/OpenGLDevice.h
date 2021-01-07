@@ -31,7 +31,9 @@ namespace Solus
 		void PostRenderScene() override;
 
 		RenderShader* CreateShader(ShaderAsset& shaderAsset) override;
+
 		RenderMesh* CreateMesh(MeshAsset& meshFileName) override;
+		void DestroyMesh(const RenderMesh* renderMesh) override;
 
 		RenderTexture* CreateTexture(TextureAsset& sourceFile, bool doLoading = true, TextureType type = TextureType::TEX_DDS) override;
 		bool DestroyTexture(RenderTexture* texture) override;

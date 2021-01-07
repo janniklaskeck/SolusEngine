@@ -11,12 +11,38 @@ namespace Solus
 {
 
 	void MeshComponent::BeginPlay()
-	{
-	}
+	{}
 
 	void MeshComponent::Update(float deltaTime)
 	{
-		
+		if (meshAsset)
+		{
+			if (oldMeshAsset != meshAsset)
+			{
+				if (oldMeshAsset)
+				{
+					oldMeshAsset->Unload();
+				}
+				oldMeshAsset = meshAsset;
+				renderMesh = nullptr;
+				if (meshAsset)
+				{
+					meshAsset->Load();
+					const MeshAsset* meshAssetPtr = meshAsset.GetAs<MeshAsset>();
+					renderMesh = meshAssetPtr->GetRenderMesh();
+					textureAssets.clear();
+					textureAssets.resize(meshAssetPtr->GetMesh().textureCount);
+				}
+			}
+			if (renderMesh)
+			{
+				for (int i = 0; i < textureAssets.size(); i++)
+				{
+					if (textureAssets[i])
+						renderMesh->SetTexture(i, textureAssets[i].GetAs<TextureAsset>());
+				}
+			}
+		}
 	}
 
 	void MeshComponent::Render()
@@ -26,23 +52,5 @@ namespace Solus
 	}
 
 	void MeshComponent::EndPlay()
-	{
-	}
-	
-	void MeshComponent::SetMesh(Asset _meshAsset)
-	{
-		this->meshAsset = _meshAsset;
-		meshAsset->Load();
-		renderMesh.reset(gEngine->GetRenderDevice()->CreateMesh(*meshAsset.GetAs<MeshAsset>()));
-		textureAssets.resize(meshAsset.GetAs<MeshAsset>()->GetMesh().textureCount);
-	}
-
-	void MeshComponent::SetTexture(uint8_t index, Asset textureAsset)
-	{
-		if (index < 0 || index >= textureAssets.size())
-			return;
-		textureAssets[index] = textureAsset;
-		renderMesh->SetTexture(index, *textureAsset.GetAs<TextureAsset>());
-	}
-
+	{}
 }

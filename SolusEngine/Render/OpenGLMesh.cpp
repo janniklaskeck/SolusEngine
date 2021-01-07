@@ -163,10 +163,17 @@ namespace Solus
 		return true;
 	}
 
-	void OpenGLMesh::SetTexture(uint8_t index, TextureAsset& textureAsset)
+	void OpenGLMesh::SetTexture(uint8_t index, TextureAsset* textureAsset)
 	{
-		textureAsset.Load();
-		textures[index] = textureAsset.GetRenderTexture();
+		if (textureAsset)
+		{
+			textureAsset->Load();
+			textures[index] = textureAsset->GetRenderTexture();
+		}
+		else
+		{
+			textures[index] = gEngine->GetRenderDevice()->GetDefaultTexture();
+		}
 	}
 
 	OpenGLShader* OpenGLMesh::GetOpenGLShader() const
