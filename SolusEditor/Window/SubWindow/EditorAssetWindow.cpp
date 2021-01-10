@@ -215,18 +215,19 @@ namespace Solus
 		}
 		for (const AssetEntry& entry : folder->files)
 		{
-			const Asset& asset = manager->GetAsset(entry.id);
+			const SAsset* asset = manager->GetAsset(entry.id);
 			RenderFile(asset);
 		}
 	}
 
-	void EditorAssetWindow::RenderFile(const Asset& asset)
+	void EditorAssetWindow::RenderFile(const SAsset* asset)
 	{
 		const std::string filename = asset->GetFileName();
 		ImGui::Selectable(filename.c_str(), asset == clickedAsset);
 		if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
 		{
-			ImGui::SetDragDropPayload("TESTDRAG", &asset, sizeof(Asset));
+			SUUID assetID = asset->GetAssetId();
+			ImGui::SetDragDropPayload("TESTDRAG", &assetID, sizeof(SUUID));
 			ImGui::EndDragDropSource();
 		}
 		if (ImGui::IsItemClicked())
@@ -244,7 +245,7 @@ namespace Solus
 			ImGui::SetTooltip(asset->GetFileName().c_str());
 	}
 
-	void EditorAssetWindow::SetClickedAsset(const Asset& asset)
+	void EditorAssetWindow::SetClickedAsset(const SAsset* asset)
 	{
 		clickedAsset = asset;
 	}

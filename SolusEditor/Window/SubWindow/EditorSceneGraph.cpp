@@ -3,6 +3,8 @@
 #include "Engine/Engine.h"
 #include "Object/World.h"
 
+#include "Utility/SerializeUtil.h"
+
 #include "Render/RenderDevice.h"
 
 #include "Object/TestEntity.h"
@@ -38,7 +40,7 @@ namespace Solus
 			for (int i = 0; i < entities.size(); i++)
 			{
 				auto entity = entities[i];
-				
+
 				std::string name(entity->get_type().get_name());
 				ImGui::PushID(entity->GetId().ToString().c_str());
 				if (ImGui::Selectable(name.c_str(), selected == i))
@@ -48,7 +50,11 @@ namespace Solus
 				}
 				if (ImGui::BeginPopupContextItem("entityContext"))
 				{
-					if (ImGui::Selectable("asd")) gEngine->Log(LogLevel::LogDebug, "asd");
+					if (ImGui::Selectable("Save As Asset"))
+					{
+						ArchiveStream stream("c:\\Spiele\\test.dat", ArchiveMode::WRITE);
+						selectedEntity->Serialize(stream);
+					}
 					if (ImGui::Selectable("qwe")) gEngine->Log(LogLevel::LogDebug, "qwe");
 					ImGui::EndPopup();
 				}

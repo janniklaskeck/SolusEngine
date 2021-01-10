@@ -50,10 +50,10 @@ namespace Solus
 
 		AssetManager* assetManager = gEngine->GetAssetManager();
 		const fs::path screenShaderPath = assetManager->GetEngineAssetSource()->GetRootPath() / "Editor/Shader/ScreenShader.glsl";
-		Asset screenShader = assetManager->ImportAsset<ShaderAsset>(screenShaderPath);
-		assert(screenShader.IsValid());
+		ShaderAsset* screenShader = assetManager->ImportAsset<ShaderAsset>(screenShaderPath);
+		assert(screenShader);
 
-		screenFramebufferShader = (OpenGLShader*)CreateShader(*screenShader.GetAs<ShaderAsset>());
+		screenFramebufferShader = (OpenGLShader*)CreateShader(*screenShader);
 		screenTextureId = glGetUniformLocation(screenFramebufferShader->GetShaderProgram(), "screenTexture");
 		float quadVertices[] = {
 			-1.0f, -1.0f,
@@ -76,9 +76,9 @@ namespace Solus
 
 		const fs::path defaultScreenShaderPath = assetManager->GetEngineAssetSource()->GetRootPath() / "Editor/Shader/DefaultScreenShader.glsl";
 		screenShader = assetManager->ImportAsset<ShaderAsset>(defaultScreenShaderPath);
-		assert(screenShader.IsValid());
+		assert(screenShader);
 
-		defaultScreenShader = (OpenGLShader*)CreateShader(*screenShader.GetAs<ShaderAsset>());
+		defaultScreenShader = (OpenGLShader*)CreateShader(*screenShader);
 	}
 
 	void OpenGLDevice::Update()

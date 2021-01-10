@@ -17,9 +17,9 @@ namespace Solus
 	{
 		AssetManager* assetManager = gEngine->GetAssetManager();
 		const fs::path defaultScreenShaderPath = assetManager->GetEngineAssetSource()->GetRootPath() / "Editor/Shader/DefaultScreenShader.glsl";
-		Asset rectangleVS = assetManager->ImportAsset<ShaderAsset>(defaultScreenShaderPath);
+		ShaderAsset* rectangleVS = assetManager->ImportAsset<ShaderAsset>(defaultScreenShaderPath);
 
-		rectangleShader = (OpenGLShader*)gEngine->GetRenderDevice()->CreateShader(*rectangleVS.GetAs<ShaderAsset>());
+		rectangleShader = (OpenGLShader*)gEngine->GetRenderDevice()->CreateShader(*rectangleVS);
 		glGenVertexArrays(1, &rectangleVAO);
 	}
 

@@ -1,5 +1,4 @@
 #include "AssetSource.h"
-#include "AssetSource.h"
 #include "Engine/Engine.h"
 
 #include "AssetSystem/SAsset.h"
@@ -12,7 +11,7 @@ namespace Solus
 		this->root = std::filesystem::absolute(root);
 	}
 
-	Asset AssetSource::GetAssetFromPath(const std::string& path)
+	SAsset* AssetSource::GetAssetFromPath(const std::string& path)
 	{
 		std::string pathString = fs::path(path).string();
 		ReplaceChar(pathString, '/', '\\');
@@ -20,14 +19,14 @@ namespace Solus
 		{
 			return pathAssets[pathString];
 		}
-		return Asset();
+		return nullptr;
 	}
 
-	Asset AssetSource::GetAsset(const SUUID id)
+	SAsset* AssetSource::GetAsset(const SUUID id)
 	{
 		if (idAssets.find(id) != idAssets.end())
 			return idAssets[id];
-		return Asset();
+		return nullptr;
 	}
 
 	const fs::path& AssetSource::GetRootPath() const
@@ -41,21 +40,16 @@ namespace Solus
 		SAsset* importedAsset = SAsset::Import(absolutePath);
 		if (!importedAsset)
 			return;
-		Asset asset;
-		asset.Set(importedAsset);
-		idAssets[asset.GetId()] = asset;
-		pathAssets[relativePath.string()] = asset;
+		idAssets[importedAsset->GetAssetId()] = importedAsset;
+		pathAssets[relativePath.string()] = importedAsset;
 	}
 
 	void AssetSource::InitializeAsset(SAsset* importedAsset, const fs::path relativePath)
 	{
 		if (!importedAsset)
 			return;
-		auto absolutePath = root / relativePath;
-		Asset asset;
-		asset.Set(importedAsset);
-		idAssets[asset.GetId()] = asset;
-		pathAssets[relativePath.string()] = asset;
+		idAssets[importedAsset->GetAssetId()] = importedAsset;
+		pathAssets[relativePath.string()] = importedAsset;
 	}
 
 	void AssetSource::CleanPath(std::string& path)

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Engine/SolusEngine.h"
-#include "Asset.h"
+#include "SAsset.h"
 
 #include "Utility/Helper.h"
 #include "Utility/FileUtils.h"
@@ -25,8 +25,8 @@ namespace Solus
 
 		virtual void Refresh() = 0;
 
-		Asset GetAssetFromPath(const std::string& path);
-		Asset GetAsset(const SUUID id);
+		SAsset* GetAssetFromPath(const std::string& path);
+		SAsset* GetAsset(const SUUID id);
 
 		const fs::path& GetRootPath() const;
 
@@ -68,8 +68,8 @@ namespace Solus
 		};
 
 	protected:
-		std::unordered_map<std::string, Asset, case_insensitive_hasher, case_insensitive_comparer> pathAssets;
-		std::unordered_map<SUUID, Asset, IDHash> idAssets;
+		std::unordered_map<std::string, SAsset*, case_insensitive_hasher, case_insensitive_comparer> pathAssets;
+		std::unordered_map<SUUID, SAsset*, IDHash> idAssets;
 	};
 
 }

@@ -13,9 +13,9 @@ namespace Solus
 
 	Solus::RenderMesh::RenderMesh()
 	{
-		const Asset& shaderAsset = gEngine->GetAssetManager()->GetAssetFromPath("Editor/Shader/DefaultShader.glsl");
+		ShaderAsset* shaderAsset = (ShaderAsset*)gEngine->GetAssetManager()->GetAssetFromPath("Editor/Shader/DefaultShader.glsl");
 		shaderAsset->Load();
-		shader = shaderAsset.GetAs<ShaderAsset>()->GetRenderShader();
+		shader = shaderAsset->GetRenderShader();
 	}
 
 	RenderMesh::~RenderMesh()

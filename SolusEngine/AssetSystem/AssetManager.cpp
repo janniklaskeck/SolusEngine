@@ -46,7 +46,7 @@ namespace Solus
 		}
 	}
 
-	Asset Solus::AssetManager::GetAssetFromPath(const std::string& path)
+	SAsset* AssetManager::GetAssetFromPath(const std::string& path)
 	{
 		std::string actualPath = path;
 		if (!SAsset::IsAssetFile(actualPath))
@@ -57,7 +57,7 @@ namespace Solus
 			const std::string projectSourceRootPath = projectAssetSource->GetRootPath().string();
 			if (actualPath.rfind(projectSourceRootPath, 0) == 0)
 				actualPath = actualPath.substr(projectSourceRootPath.size());
-			Asset foundAsset = projectAssetSource->GetAssetFromPath(actualPath);
+			SAsset* foundAsset = projectAssetSource->GetAssetFromPath(actualPath);
 			if (foundAsset)
 			{
 				return foundAsset;
@@ -68,20 +68,20 @@ namespace Solus
 			const std::string engineSourceRootPath = engineAssetSource->GetRootPath().string();
 			if (actualPath.rfind(engineSourceRootPath, 0) == 0)
 				actualPath = actualPath.substr(engineSourceRootPath.size() + 1);
-			Asset foundAsset = engineAssetSource->GetAssetFromPath(actualPath);
+			SAsset* foundAsset = engineAssetSource->GetAssetFromPath(actualPath);
 			if (foundAsset)
 			{
 				return foundAsset;
 			}
 		}
-		return Asset();
+		return nullptr;
 	}
 
-	Asset AssetManager::GetAsset(const SUUID assetId) const
+	SAsset* AssetManager::GetAsset(const SUUID assetId) const
 	{
 		if (projectAssetSource)
 		{
-			Asset foundAsset = projectAssetSource->GetAsset(assetId);
+			SAsset* foundAsset = projectAssetSource->GetAsset(assetId);
 			if (foundAsset)
 			{
 				return foundAsset;
@@ -89,13 +89,13 @@ namespace Solus
 		}
 		if (engineAssetSource)
 		{
-			Asset foundAsset = engineAssetSource->GetAsset(assetId);
+			SAsset* foundAsset = engineAssetSource->GetAsset(assetId);
 			if (foundAsset)
 			{
 				return foundAsset;
 			}
 		}
-		return Asset();
+		return nullptr;
 	}
 
 	AssetSource* AssetManager::GetEngineAssetSource() const
@@ -113,7 +113,7 @@ namespace Solus
 		return assetFileTypeFilters;
 	}
 
-	Asset AssetManager::TryImportAsset(const fs::path filePath)
+	SAsset* AssetManager::TryImportAsset(const fs::path filePath)
 	{
 		std::string fileExtension = filePath.extension().string();
 		ToLower(fileExtension);
@@ -130,7 +130,7 @@ namespace Solus
 			return ImportAsset<TextureAsset>(filePath);
 		}
 
-		return Asset();
+		return nullptr;
 	}
 
 }

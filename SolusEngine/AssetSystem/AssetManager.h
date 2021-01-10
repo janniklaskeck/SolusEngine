@@ -2,14 +2,13 @@
 
 #include "Engine/SolusEngine.h"
 
-#include "AssetSystem/Asset.h"
+#include "AssetSystem/SAsset.h"
 #include "AssetSystem/AssetSource.h"
 
 #include "Utility/FileUtils.h"
 
 namespace Solus
 {
-	class SAsset;
 
 	class SOLUS_API AssetManager : public SubSystem
 	{
@@ -24,17 +23,17 @@ namespace Solus
 		void SetEngineAssetRoot(const std::string& engineAssetRoot);
 		void SetProjectAssetRoot(const std::string& projectAssetRoot);
 
-		Asset GetAssetFromPath(const std::string& path);
-		Asset GetAsset(const SUUID assetId) const;
+		SAsset* GetAssetFromPath(const std::string& path);
+		SAsset* GetAsset(const SUUID assetId) const;
 		AssetSource* GetEngineAssetSource() const;
 		AssetSource* GetProjectAssetSource() const;
 
 		const std::vector<std::string>& GetAssetFileTypeFilter() const;
 
 		template<typename T>
-		std::enable_if_t<std::is_base_of_v<SAsset, T>, Asset> ImportAsset(const fs::path filePath);
+		std::enable_if_t<std::is_base_of_v<SAsset, T>, T*> ImportAsset(const fs::path filePath);
 
-		Asset TryImportAsset(const fs::path filePath);
+		SAsset* TryImportAsset(const fs::path filePath);
 
 	private:
 		std::string engineAssetRoot;
@@ -46,10 +45,10 @@ namespace Solus
 	};
 
 	template<typename T>
-	std::enable_if_t<std::is_base_of_v<SAsset, T>, Asset> AssetManager::ImportAsset(const fs::path filePath)
+	std::enable_if_t<std::is_base_of_v<SAsset, T>, T*> AssetManager::ImportAsset(const fs::path filePath)
 	{
-		const Asset asset = GetAssetFromPath(filePath.string());
-		if (asset.IsValid())
+		T* asset = static_cast<T*>(GetAssetFromPath(filePath.string()));
+		if (asset)
 			return asset;
 
 		const fs::path projectRelativePath = fs::relative(filePath, projectAssetSource->GetRootPath());
@@ -59,9 +58,9 @@ namespace Solus
 			if (importedAsset)
 			{
 				projectAssetSource->InitializeAsset(importedAsset, projectRelativePath);
-				return GetAssetFromPath(projectRelativePath.string());
+				return static_cast<T*>(GetAssetFromPath(projectRelativePath.string()));
 			}
-			return Asset();
+			return nullptr;
 		}
 
 		const fs::path engineRelativePath = fs::relative(filePath, engineAssetSource->GetRootPath());
@@ -71,11 +70,11 @@ namespace Solus
 			if (importedAsset)
 			{
 				engineAssetSource->InitializeAsset(importedAsset, engineRelativePath);
-				return GetAssetFromPath(engineRelativePath.string());
+				return static_cast<T*>(GetAssetFromPath(engineRelativePath.string()));
 			}
-			return Asset();
+			return nullptr;
 		}
-		return Asset();
+		return nullptr;
 	}
 
 }

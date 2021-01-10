@@ -3,7 +3,9 @@
 #include "MeshComponent.generated.h"
 
 #include "SComponent.h"
-#include "AssetSystem/Asset.h"
+
+#include "AssetSystem/MeshAsset.h"
+#include "AssetSystem/TextureAsset.h"
 
 namespace Solus
 {
@@ -21,13 +23,13 @@ namespace Solus
 
 	public:
 		SPROPERTY();
-		Asset meshAsset;
+		MeshAsset* meshAsset = nullptr;
 
 		// Used to detect mesh asset changes
-		Asset oldMeshAsset;
+		MeshAsset* oldMeshAsset = nullptr;
 
 		SPROPERTY();
-		std::vector<Asset> textureAssets;
+		std::vector<TextureAsset*> textureAssets;
 
 		RenderMesh* renderMesh = nullptr;
 	};

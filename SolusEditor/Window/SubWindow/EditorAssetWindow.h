@@ -3,7 +3,7 @@
 #include "SubWindow.h"
 
 #include "Render/FreeFlyCamera.h"
-#include "AssetSystem/Asset.h"
+#include "AssetSystem/SAsset.h"
 
 namespace Solus
 {
@@ -28,12 +28,12 @@ namespace Solus
 		void RenderAssets();
 
 		void RenderFiles();
-		void RenderFile(const Asset& asset);
+		void RenderFile(const SAsset* asset);
 
-		void SetClickedAsset(const Asset& asset);
+		void SetClickedAsset(const SAsset* asset);
 
 		fs::path clickedFolderPath;
-		Asset clickedAsset;
+		const SAsset* clickedAsset = nullptr;
 
 		struct AssetEntry
 		{

@@ -4,9 +4,6 @@
 
 #include "Engine/Engine.h"
 
-#include "AssetSystem/MeshAsset.h"
-#include "AssetSystem/TextureAsset.h"
-
 namespace Solus
 {
 
@@ -28,10 +25,9 @@ namespace Solus
 				if (meshAsset)
 				{
 					meshAsset->Load();
-					const MeshAsset* meshAssetPtr = meshAsset.GetAs<MeshAsset>();
-					renderMesh = meshAssetPtr->GetRenderMesh();
+					renderMesh = meshAsset->GetRenderMesh();
 					textureAssets.clear();
-					textureAssets.resize(meshAssetPtr->GetMesh().textureCount);
+					textureAssets.resize(meshAsset->GetMesh().textureCount);
 				}
 			}
 			if (renderMesh)
@@ -39,7 +35,7 @@ namespace Solus
 				for (int i = 0; i < textureAssets.size(); i++)
 				{
 					if (textureAssets[i])
-						renderMesh->SetTexture(i, textureAssets[i].GetAs<TextureAsset>());
+						renderMesh->SetTexture(i, textureAssets[i]);
 				}
 			}
 		}

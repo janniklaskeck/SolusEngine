@@ -3,7 +3,7 @@
 #include "Utility/ClassMetaData.h"
 #include "Object/SObject.h"
 #include "Utility/SerializeUtil.h"
-#include "AssetSystem/Asset.h"
+#include "AssetSystem/SAsset.h"
 
 namespace Solus
 {
@@ -16,22 +16,21 @@ namespace Solus
 		}
 	};
 
-	void ClassMetaData::SetMemberAsset(const SObject* object, const std::string& name, Asset* value)
+	void ClassMetaData::SetMemberAsset(const SObject* object, const std::string& name, SAsset* value)
 	{
 		if (!value)
 			return;
-		Asset* assetPtr = GetMemberPtr<Asset>(object, name);
-		if (assetPtr)
-			assetPtr->Set(value->Get());
+		auto** assetPtr = GetMemberPtr<SAsset*>(object, name);
+		*assetPtr = value;
 	}
 
-	void ClassMetaData::SetMemberAssetVector(const SObject* object, const std::string& name, const uint32_t index, Asset* value)
+	void ClassMetaData::SetMemberAssetVector(const SObject* object, const std::string& name, const uint32_t index, SAsset* value)
 	{
 		if (!value)
 			return;
-		auto* assetVectorPtr = GetMemberPtr<std::vector<Asset>>(object, name);
+		auto* assetVectorPtr = GetMemberPtr<std::vector<SAsset*>>(object, name);
 		if (assetVectorPtr)
-			(*assetVectorPtr)[index].Set(value->Get());
+			(*assetVectorPtr)[index] = value;
 	}
 
 }

@@ -5,6 +5,7 @@
 
 #include "Render/RenderDevice.h"
 
+#include "AssetSystem/AssetManager.h"
 #include "AssetSystem/SAsset.h"
 
 #include "IMGUI/imgui.h"
@@ -96,14 +97,19 @@ namespace Solus
 	{
 		if (!component)
 			return;
+
+
 		auto entityType = component->get_type();
 		Solus::ClassMetaData* metaDataPtr = component->GetClassMetaData();
 		if (entityType.get_properties().size() > 0)
 			ImGui::TextColored(ImVec4(1.f, 0.f, 1.f, 1.f), "%s", std::string(entityType.get_name()).c_str());
-		for (auto& property : entityType.get_properties())
+		for (auto& prop : entityType.get_properties())
 		{
-			const std::string propName = std::string(property.get_name());
-			if (property.get_type() == rttr::type::get<uint64_t>())
+			const auto propertyType = prop.get_type();
+			auto wrappedPropertyType = propertyType.get_wrapped_type();
+			auto p = wrappedPropertyType.get_wrapped_type();
+			const std::string propName = std::string(prop.get_name());
+			if (propertyType == rttr::type::get<uint64_t>())
 			{
 				uint64_t* ptr = metaDataPtr->GetMemberPtr<uint64_t>(component, propName);
 				if (_stricmp(propName.c_str(), "entityId") == 0)
@@ -111,24 +117,24 @@ namespace Solus
 				else
 					ImGui::InputScalar(propName.c_str(), ImGuiDataType_::ImGuiDataType_U64, ptr);
 			}
-			else if (property.get_type() == rttr::type::get<bool>())
+			else if (propertyType == rttr::type::get<bool>())
 			{
 				bool* ptr = metaDataPtr->GetMemberPtr<bool>(component, propName);
 				ImGui::Checkbox(propName.c_str(), ptr);
 			}
-			else if (property.get_type() == rttr::type::get<float>())
+			else if (propertyType == rttr::type::get<float>())
 			{
 				float* ptr = metaDataPtr->GetMemberPtr<float>(component, propName);
 				ImGui::InputFloat(propName.c_str(), ptr);
 			}
-			else if (property.get_type() == rttr::type::get<Vec3f>())
+			else if (propertyType == rttr::type::get<Vec3f>())
 			{
 				Vec3f* ptr = metaDataPtr->GetMemberPtr<Vec3f>(component, propName);
 				ImGui::InputFloat3(propName.c_str(), (float*)ptr);
 			}
-			else if (property.get_type() == rttr::type::get<Asset>())
+			else if (propertyType.is_derived_from(rttr::type::get<SAsset>()))
 			{
-				Asset ptr = *metaDataPtr->GetMemberPtr<Asset>(component, propName);
+				SAsset* ptr = *metaDataPtr->GetMemberPtr<SAsset*>(component, propName);
 				if (ptr)
 				{
 					ImGui::LabelText(propName.c_str(), ptr->GetFileName().c_str());
@@ -141,51 +147,55 @@ namespace Solus
 				{
 					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("TESTDRAG"))
 					{
-						Asset* payload_n = (Asset*)payload->Data;
-						if (payload_n)
-						{
-							auto* asset = (Asset*)(payload_n);
-							metaDataPtr->SetMemberAsset(component, propName, asset);
-						}
+						SUUID* assetID = (SUUID*)(payload->Data);
+						SAsset* draggedAsset = gEngine->GetAssetManager()->GetAsset(*assetID);
+						if (propertyType.get_raw_type() == rttr::type::get(*draggedAsset))
+							metaDataPtr->SetMemberAsset(component, propName, draggedAsset);
 					}
 					ImGui::EndDragDropTarget();
 				}
 			}
-			else if (property.get_type() == rttr::type::get<std::reference_wrapper<std::vector<Asset>>>())
+			else if (wrappedPropertyType.is_sequential_container())
 			{
-				auto* ptr = metaDataPtr->GetMemberPtr<std::vector<Asset>>(component, propName);
-				if (ptr)
+				const rttr::type& containerType = (*wrappedPropertyType.get_template_arguments().begin()).get_raw_type();
+				if (containerType.is_derived_from(rttr::type::get<SAsset>()))
 				{
-					if (ptr->empty())
+					auto* ptr = metaDataPtr->GetMemberPtr<std::vector<SAsset*>>(component, propName);
+					if (ptr)
 					{
-						ImGui::LabelText(propName.c_str(), "No Asset...");
-					}
-					else
-					{
-						for (int i = 0; i < ptr->size(); i++)
+						if (ptr->empty())
 						{
-							ImGui::PushID(i);
-							const Asset& asset = ptr->at(i);
-							if (asset.IsValid())
-								ImGui::LabelText(propName.c_str(), asset->GetFileName().c_str());
-							else
-								ImGui::LabelText(propName.c_str(), "No Asset...");
-
-							if (ImGui::BeginDragDropTarget())
+							ImGui::LabelText(propName.c_str(), "No Asset...");
+						}
+						else
+						{
+							for (int i = 0; i < ptr->size(); i++)
 							{
-								if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("TESTDRAG"))
-								{
-									auto* payload_n = (Asset*)payload->Data;
-									if (payload_n)
-									{
-										auto* asset = (Asset*)(payload_n);
-										metaDataPtr->SetMemberAssetVector(component, propName, i, asset);
-									}
-								}
-								ImGui::EndDragDropTarget();
-							}
+								ImGui::PushID(i);
+								const SAsset* asset = ptr->at(i);
+								if (asset)
+									ImGui::LabelText(propName.c_str(), asset->GetFileName().c_str());
+								else
+									ImGui::LabelText(propName.c_str(), "No Asset...");
 
-							ImGui::PopID();
+								if (ImGui::BeginDragDropTarget())
+								{
+									if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("TESTDRAG"))
+									{
+										SUUID* assetID = (SUUID*)(payload->Data);
+										SAsset* draggedAsset = gEngine->GetAssetManager()->GetAsset(*assetID);
+										if (draggedAsset)
+										{
+											const auto& assetType = rttr::type::get(*draggedAsset);
+											if (assetType == containerType)
+												metaDataPtr->SetMemberAssetVector(component, propName, i, draggedAsset);
+										}
+									}
+									ImGui::EndDragDropTarget();
+								}
+
+								ImGui::PopID();
+							}
 						}
 					}
 				}
@@ -193,7 +203,7 @@ namespace Solus
 				{
 					ImGui::LabelText(propName.c_str(), "No Asset...");
 				}
-				
+
 			}
 		}
 	}
