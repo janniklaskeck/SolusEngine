@@ -1,5 +1,6 @@
 intermediates/
 bin/
+extern/fc_cache
 
 ## IMGUI
 
