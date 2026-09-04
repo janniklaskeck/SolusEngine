@@ -43,6 +43,16 @@ using SColor = SDL_Color;
 using SAssetPath = std::filesystem::path;
 using SAssetID = uint32;
 
+template<typename Archive>
+void serialize(Archive& archive, Vec3& Vector) {
+	archive(Vector.x, Vector.y, Vector.z);
+}
+
+template<typename Archive>
+void serialize(Archive& archive, Quaternion& Quat) {
+	archive(Quat.x, Quat.y, Quat.z, Quat.w);
+}
+
 namespace Vec
 {
 	constexpr Vec3 ForwardVector = Vec3{ 0.f, 0.f, 1.f };
@@ -68,6 +78,7 @@ namespace Solus
 	struct SVertex
 	{
 		Vec3 Position{};
+		Vec3 Normal{};
 		SColor Color{};
 	};
 

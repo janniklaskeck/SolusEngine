@@ -2,6 +2,11 @@
 
 #include "entity/component/STransformComponent.hpp"
 
+#include <cereal/archives/json.hpp>
+#include "../../include/entity/component/SRigidBodyComponent.hpp"
+
+#include <sstream>
+
 namespace Solus
 {
 	SWorld::SWorld()
@@ -21,13 +26,39 @@ namespace Solus
 
 	SEntity SWorld::CreateEntity(glm::vec3 Position)
 	{
-		SEntity Entity = SEntity(Registry.create(), this);
+		SEntity Entity = SEntity({ Registry, Registry.create() }, this);
 
 		STransformComponent& TransformComp = Entity.AddComponent<STransformComponent>();
 		TransformComp.SetTransform({ Position });
 
 
 		return Entity;
+	}
+
+	void SWorld::Serialize()
+	{
+		std::stringstream StringStream;
+		{
+			cereal::JSONOutputArchive Output{ StringStream };
+
+			entt::snapshot{ Registry }
+				.get<entt::entity>(Output)
+				.get<STransformComponent>(Output);
+				//.get<SRigidBodyComponent>(Output);
+		}
+
+		Registry.clear();
+
+		cereal::JSONInputArchive Input{ StringStream };
+
+		entt::snapshot_loader{ Registry }
+			.get<entt::entity>(Input)
+			.get<STransformComponent>(Input);
+	}
+
+	void SWorld::Deserialize()
+	{
+
 	}
 
 }

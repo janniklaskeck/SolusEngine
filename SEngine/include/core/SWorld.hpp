@@ -23,6 +23,11 @@ namespace Solus
 			return Registry;
 		}
 
+		void Serialize();
+
+		void Deserialize();
+
+
 	private:
 
 		entt::registry Registry;

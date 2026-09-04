@@ -12,7 +12,7 @@ namespace Solus
 			return;
 		}
 
-		SAssetManager::Get().ReadFile(GetPath(), Bytes);
+		
 	}
 
 	void SAsset::Unload()
@@ -27,7 +27,7 @@ namespace Solus
 
 	bool SAsset::IsValid() const
 	{
-		return SAssetManager::Get().IsValidPath(Path);
+		return Handle != SOLUS_INVALID_HANDLE;
 	}
 
 }

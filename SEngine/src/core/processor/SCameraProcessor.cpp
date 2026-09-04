@@ -14,6 +14,7 @@
 
 #include "bx/math.h"
 #include "bgfx/bgfx.h"
+#include "../../../include/render/imgui/imgui_bgfx.hpp"
 
 namespace Solus
 {
@@ -58,6 +59,11 @@ namespace Solus
 
 	void SCameraProcessor::TickInput(float DeltaTime, STransformComponent& TransformComponent, SCameraComponent& CameraComponent)
 	{
+		if (ImGui::MouseOverArea())
+		{
+			return;
+		}
+
 		const SInputProcessor& InputManager = gEngine->GetProcessorManager().Get<SInputProcessor>();
 
 		auto& Registry = gEngine->GetWorld().GetRegistry();

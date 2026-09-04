@@ -13,12 +13,12 @@ namespace Solus
 	public:
 
 		SEntity() = default;
-		SEntity(const entt::entity InEntityHandle, SWorld* InWorld);
+		SEntity(const entt::handle InEntityHandle, SWorld* InWorld);
 
 		template<typename T, typename... Args>
 		T& AddComponent(Args&&... args)
 		{
-			T& Component = World->Registry.emplace<T>(EntityHandle, std::forward<Args>(args)...);
+			T& Component = EntityHandle.emplace<T>(std::forward<Args>(args)...);
 			Component.Owner = *this;
 			return Component;
 		}
@@ -26,23 +26,31 @@ namespace Solus
 		template<typename T>
 		T& GetComponent() const
 		{
-			return World->Registry.get<T>(EntityHandle);
+			return EntityHandle.get<T>();
 		}
 
 		template<typename T>
 		bool HasComponent() const
 		{
-			return World->Registry.all_of<T>(EntityHandle);
+			return EntityHandle.all_of<T>();
 		}
 
 		template<typename T>
 		void RemoveComponent()
 		{
-			World->Registry.remove<T>(EntityHandle);
+			EntityHandle.remove<T>();
+		}
+
+		void Destroy();
+
+		bool IsValid() const
+		{
+			return EntityHandle.valid();
 		}
 
 	private:
-		entt::entity EntityHandle = entt::null;
+		entt::handle EntityHandle = {};
+		
 
 		SWorld* World = nullptr;
 	};

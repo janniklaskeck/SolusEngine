@@ -5,10 +5,15 @@ namespace Solus
 
 
 
-	SEntity::SEntity(const entt::entity InEntityHandle, SWorld* InWorld)
+	SEntity::SEntity(const entt::handle InEntityHandle, SWorld* InWorld)
 		: World(InWorld), EntityHandle(InEntityHandle)
 	{
 
+	}
+
+	void SEntity::Destroy()
+	{
+		EntityHandle.erase<entt::entity>();
 	}
 
 }

@@ -22,9 +22,10 @@ int main(int argc, char* argv[])
 	SWorld& ActiveWorld = gEngine->GetWorld();
 	SPhysicsWorld& PhysicsWorld = gEngine->GetPhysicsWorld();
 
-	Ref<SShaderProgramAsset> ProgramAsset = SAssetManager::Get().GetAsset<SShaderProgramAsset>("shaders/vs_mesh.sc");
+	Ref<SShaderProgramAsset> ProgramAsset = SAssetManager::Get().GetAsset<SShaderProgramAsset>();
 	ProgramAsset->SetPaths("shaders/vs_mesh.sc", "shaders/fs_mesh.sc");
-	Ref<SMeshAsset> MeshAsset = SAssetManager::Get().GetAsset<SMeshAsset>("meshes/test.obj");
+	Ref<SMeshAsset> MeshAsset = SAssetManager::Get().GetAsset<SMeshAsset>();
+	MeshAsset->SetPath("meshes/test.obj");
 
 	{
 		SEntity TestFloor = ActiveWorld.CreateEntity({ 0.f, -10.f, 0.f });

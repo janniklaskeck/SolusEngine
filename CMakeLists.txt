@@ -105,6 +105,35 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(nlohmann_json)
 
+set(SKIP_PERFORMANCE_COMPARISON ON) # cereal requires boost if this is off
+set(BUILD_SANDBOX OFF)
+
+FetchContent_Declare(
+        cereal
+        GIT_REPOSITORY "https://github.com/USCiLab/cereal.git"
+        GIT_TAG "v1.3.2"
+)
+FetchContent_MakeAvailable(cereal)
+
+FetchContent_Declare(
+        imgui
+        GIT_REPOSITORY "https://github.com/ocornut/imgui.git"
+        GIT_TAG "v1.92.9b-docking"
+        CONFIGURE_COMMAND ""
+        BUILD_COMMAND ""
+)
+FetchContent_MakeAvailable(imgui)
+
+FetchContent_Declare(
+        imguizmo
+        GIT_REPOSITORY "https://github.com/CedricGuillemet/ImGuizmo.git"
+        GIT_TAG "1.10"
+        CONFIGURE_COMMAND ""
+        BUILD_COMMAND ""
+        SOURCE_SUBDIR "INVALID" #use this so the CMakeLists.txt is not executed
+)
+FetchContent_MakeAvailable(imguizmo)
+
 #set(SHADERC_SKIP_TESTS TRUE)
 #set(SHADERC_SKIP_INSTALL TRUE)
 #set(SHADERC_SKIP_EXAMPLES TRUE)
@@ -135,9 +164,27 @@ file(GLOB_RECURSE sources CONFIGURE_DEPENDS
     ${CMAKE_CURRENT_SOURCE_DIR}/SEngine/src/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/SEngine/src/**/*.cpp)
 
-add_executable(${PROJECT_NAME} WIN32 ${headers} ${sources})
+# IMGUI
 
-#set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})
+add_library(imgui INTERFACE)
+target_include_directories(imgui INTERFACE ${imgui_SOURCE_DIR})
+
+file(GLOB imgui_sources CONFIGURE_DEPENDS 
+    ${imgui_SOURCE_DIR}/*.cpp)
+
+list(APPEND sources ${imgui_sources})
+
+add_library(imguizmo INTERFACE)
+target_include_directories(imguizmo INTERFACE ${imguizmo_SOURCE_DIR}/src)
+
+file(GLOB imguizmo_sources CONFIGURE_DEPENDS 
+    ${imguizmo_SOURCE_DIR}/src/*.cpp)
+
+list(APPEND sources ${imguizmo_sources})
+
+# ~IMGUI
+
+add_executable(${PROJECT_NAME} WIN32 ${headers} ${sources})
 
 target_compile_options(${PROJECT_NAME} PUBLIC "$<$<COMPILE_LANG_AND_ID:CXX,MSVC>:/permissive->")
 
@@ -160,6 +207,9 @@ target_link_libraries(${PROJECT_NAME} PRIVATE Jolt)
 target_link_libraries(${PROJECT_NAME} PRIVATE glm::glm-header-only)
 target_link_libraries(${PROJECT_NAME} PRIVATE EnTT::EnTT)
 target_link_libraries(${PROJECT_NAME} PRIVATE nlohmann_json::nlohmann_json)
+target_link_libraries(${PROJECT_NAME} PRIVATE cereal::cereal)
+target_link_libraries(${PROJECT_NAME} PRIVATE imgui)
+target_link_libraries(${PROJECT_NAME} PRIVATE imguizmo)
 #target_link_libraries(${PROJECT_NAME} PRIVATE shaderc_combined)
 
 if (MSVC)

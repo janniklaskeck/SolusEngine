@@ -10,7 +10,7 @@ namespace Solus
 {
 	void SMeshAsset::Load()
 	{
-		SAsset::Load();
+		SAssetManager::Get().ReadFile(GetPath(), Bytes);
 
 		if (IsLoaded())
 		{
@@ -41,6 +41,7 @@ namespace Solus
 		bgfx::VertexLayout VertexLayout;
 		VertexLayout.begin()
 			.add(bgfx::Attrib::Position, 3, bgfx::AttribType::Float)
+			.add(bgfx::Attrib::Normal, 3, bgfx::AttribType::Float)
 			.add(bgfx::Attrib::Color0, 4, bgfx::AttribType::Uint8, true)
 			.end();
 
@@ -54,9 +55,10 @@ namespace Solus
 		for (int32 i = 0; i < Mesh->mNumVertices; i++)
 		{
 			aiVector3D& Vertex3D = Mesh->mVertices[i];
-
+			aiVector3D& Normal = Mesh->mNormals[i];
 			SVertex Vertex;
 			Vertex.Position = { Vertex3D.x, Vertex3D.y, Vertex3D.z };
+			Vertex.Normal = { Normal.x, Normal.y, Normal.z };
 			Vertex.Color = { 255, 0, 0, 255 };
 
 			VertexData.push_back(Vertex);

@@ -19,6 +19,7 @@
 #include <SDL3/SDL.h>
 
 #include <cstdio>
+#include "../../../include/render/editor/SEditorInterface.hpp"
 
 namespace Solus
 {
@@ -46,9 +47,7 @@ namespace Solus
 
 		bgfx::setDebug(BGFX_DEBUG_TEXT);
 
-		// Clear backbuffer and shadowmap framebuffer at beginning.
-		bgfx::setViewClear(ViewID_Shadow, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH, 0x303030ff, 1.0f, 0);
-		bgfx::setViewClear(ViewID_Default, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH, 0x303030ff, 1.0f, 0);
+		
 
 		TextRenderer = std::make_unique<STextRenderer>(this);
 
@@ -58,7 +57,7 @@ namespace Solus
 		UniformManager.CreateUniform("u_lightMtx", bgfx::UniformType::Mat4);
 		UniformManager.CreateUniform("u_depthScaleOffset", bgfx::UniformType::Vec4);
 
-		ShadowMapProgramAsset = SAssetManager::Get().GetAsset<SShaderProgramAsset>("shaders/vs_shadow.sc");
+		ShadowMapProgramAsset = SAssetManager::Get().GetAsset<SShaderProgramAsset>();
 		ShadowMapProgramAsset->SetPaths("shaders/vs_shadow.sc", "shaders/fs_shadow.sc");
 		ShadowMapProgramHandle = ShaderProgramCache.GetProgramHandle(ShadowMapProgramAsset);
 
@@ -74,22 +73,23 @@ namespace Solus
 		UniformManager.SetUniform("u_depthScaleOffset", depthScaleOffset);
 
 		ShadowMapTextureHandle = bgfx::createTexture2D(
-			ShadowMapSize
-			, ShadowMapSize
-			, false
-			, 1
-			, bgfx::TextureFormat::D16
-			, BGFX_TEXTURE_RT | BGFX_SAMPLER_COMPARE_LEQUAL
+			ShadowMapSize,
+			ShadowMapSize,
+			false,
+			1,
+			bgfx::TextureFormat::D16,
+			BGFX_TEXTURE_RT | BGFX_SAMPLER_COMPARE_LEQUAL
 		);
 
 		ShadowMapFBHandle = bgfx::createFrameBuffer(1, &ShadowMapTextureHandle, true);
 
-		bgfx::setViewRect(ViewID_Shadow, 0, 0, ShadowMapSize, ShadowMapSize);
-		bgfx::setViewFrameBuffer(ViewID_Shadow, ShadowMapFBHandle);
+		SEditorInterface::Init();
 	}
 
 	SRenderingProcessor::~SRenderingProcessor()
 	{
+		SEditorInterface::Destroy();
+
 		UniformManager.Destroy();
 		TextRenderer.reset();
 		bgfx::shutdown();
@@ -138,30 +138,26 @@ namespace Solus
 	*/
 
 	void SRenderingProcessor::Tick(const float DeltaTime)
-	{	
+	{
+		SEditorInterface::RenderInterface(DeltaTime);
+
 		bgfx::touch(0);
 
-		// Setup lights.
-		Vec4 LightPos{ -1.f, 1.f, 0.f, 0.f };
+		Vec4 LightPos{ -1.f, -1.f, 0.f, 0.f };
 
 		UniformManager.SetUniform("u_lightPos", &LightPos);
 
-		// Define matrices.
 		float lightView[16];
+		const bx::Vec3 eye = { -LightPos.x, -LightPos.y, LightPos.z };
 		const bx::Vec3 at = { 0.0f, 0.0f, 0.0f };
-		const bx::Vec3 eye = { LightPos.x, LightPos.y, LightPos.z };
 		bx::mtxLookAt(lightView, eye, at);
 
 		const bgfx::Caps* caps = bgfx::getCaps();
 		float lightProj[16];
-		const float area = 30.0f;
-		bx::mtxOrtho(lightProj, -area, area, -area, area, -100.0f, 100.0f, 0.0f, caps->homogeneousDepth);
+		const float area = 300.0f;
+		bx::mtxOrtho(lightProj, -area, area, -area, area, -1000.0f, 1000.0f, 0.0f, caps->homogeneousDepth);
 
 		bgfx::setViewTransform(ViewID_Shadow, lightView, lightProj);
-
-		// Render.
-		float mtxShadow[16];
-		float lightMtx[16];
 
 		const float sy = caps->originBottomLeft ? 0.5f : -0.5f;
 		const float sz = caps->homogeneousDepth ? 0.5f : 1.0f;
@@ -176,13 +172,20 @@ namespace Solus
 
 		float mtxTmp[16];
 		bx::mtxMul(mtxTmp, lightProj, mtxCrop);
+		float mtxShadow[16];
 		bx::mtxMul(mtxShadow, lightView, mtxTmp);
 
+		bgfx::setViewRect(ViewID_Shadow, 0, 0, ShadowMapSize, ShadowMapSize);
+		bgfx::setViewFrameBuffer(ViewID_Shadow, ShadowMapFBHandle);
+
+		// Clear backbuffer and shadowmap framebuffer at beginning.
+		bgfx::setViewClear(ViewID_Shadow, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH, 0x303030ff, 1.0f, 0);
+		bgfx::setViewClear(ViewID_Default, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH, 0x303030ff, 1.0f, 0);
 
 		TextRenderer->Tick(DeltaTime);
 
 		auto ComponentView = gEngine->GetWorld().GetRegistry().view<STransformComponent, SMeshComponent>();
-		ComponentView.each([this, &lightMtx, &mtxShadow](entt::entity Entity, const STransformComponent& TransformComponent, SMeshComponent& MeshComponent)
+		ComponentView.each([this, &mtxShadow](entt::entity Entity, const STransformComponent& TransformComponent, SMeshComponent& MeshComponent)
 			{
 				MeshComponent.MeshAsset->Load();
 				if (!MeshComponent.MeshAsset->IsLoaded())
@@ -191,12 +194,14 @@ namespace Solus
 				}
 
 				auto TransformMatrix = TransformComponent.GetTransform().GetMatrix();
+
+				float lightMtx[16];
 				bx::mtxMul(lightMtx, (float*)&TransformMatrix, mtxShadow);
 				{
 					bgfx::setTransform(&TransformMatrix);
 					bgfx::setVertexBuffer(0, MeshComponent.MeshAsset->GetVertexBufferHandle());
 					bgfx::setIndexBuffer(MeshComponent.MeshAsset->GetIndexBufferHandle());
-					bgfx::setState(0);
+					bgfx::setState(BGFX_STATE_WRITE_Z | BGFX_STATE_DEPTH_TEST_LESS | BGFX_STATE_CULL_CCW);
 
 					UniformManager.SetUniform("u_lightMtx", lightMtx);
 
@@ -218,8 +223,13 @@ namespace Solus
 					bgfx::setTransform(&TransformMatrix);
 					bgfx::setVertexBuffer(0, MeshComponent.MeshAsset->GetVertexBufferHandle());
 					bgfx::setIndexBuffer(MeshComponent.MeshAsset->GetIndexBufferHandle());
-					bgfx::setTexture(0, UniformManager.GetUniformHandle("s_shadowMap"), ShadowMapTextureHandle, UINT32_MAX);
-					bgfx::setState(BGFX_STATE_DEFAULT);
+					bgfx::setTexture(0, UniformManager.GetUniformHandle("s_shadowMap"), ShadowMapTextureHandle);
+					bgfx::setState(0
+						| BGFX_STATE_WRITE_RGB
+						| BGFX_STATE_WRITE_A
+						| BGFX_STATE_WRITE_Z
+						| BGFX_STATE_DEPTH_TEST_LESS
+						| BGFX_STATE_CULL_CCW);
 
 					UniformManager.SetUniform("u_lightMtx", lightMtx);
 

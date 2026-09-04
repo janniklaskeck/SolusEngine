@@ -2,9 +2,6 @@
 
 #include "core/SThreadPool.hpp"
 
-#include <unordered_map>
-#include <memory>
-
 namespace Solus
 {
 	class SAssetManager final
@@ -27,29 +24,21 @@ namespace Solus
 		bool WriteFile(const SAssetPath& Path, const std::vector<uint8>& Data);
 
 		template<typename T>
-		Ref<T> GetAsset(const SAssetPath& Path) const
+		Ref<T> GetAsset(const SAssetHandle Handle = SOLUS_INVALID_HANDLE) const
 		{
-			if (!IsValidPath(Path))
+			if (Handle != SOLUS_INVALID_HANDLE && AssetCache.contains(Handle))
 			{
-				return {};
-			}
-
-			if (AssetCache.contains(Path))
-			{
-				Ref<T> AssetRef = AssetCache.at(Path).GetAs<T>();
+				Ref<T> AssetRef = AssetCache.at(Handle).GetAs<T>();
 				return AssetRef;
 			}
 
-			T* NewAsset = new T{ Path };
-			Ref<T> NewAssetRef{ NewAsset };
-			AssetCache[Path] = { NewAsset };
-			return NewAssetRef;
-		}
+			T* NewAsset = new T;
+			SAssetHandle NewHandle = AssetCache.size();
+			NewAsset->Handle = NewHandle;
 
-		template<typename T>
-		T& GetAsset() const
-		{
-			return;
+			Ref<T> NewAssetRef{ NewAsset };
+			AssetCache[NewHandle] = { NewAsset };
+			return NewAssetRef;
 		}
 
 		void LoadAsset(const Ref<SAsset>& Asset);
@@ -68,7 +57,7 @@ namespace Solus
 
 		SThreadPool IOThreadPool;
 
-		mutable std::unordered_map<SAssetPath, Ref<SAsset>> AssetCache;
+		mutable std::unordered_map<SAssetHandle, Ref<SAsset>> AssetCache;
 
 		int32 NumHandles = 0;
 	};

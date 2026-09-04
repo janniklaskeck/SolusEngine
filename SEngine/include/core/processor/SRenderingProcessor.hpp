@@ -63,7 +63,7 @@ namespace Solus
 		uint16 CurrentWindowWidth = 1;
 		uint16 CurrentWindowHeight = 1;
 
-		uint16 ShadowMapSize = 512;
+		uint16 ShadowMapSize = 4096;
 
 		bgfx::FrameBufferHandle ShadowMapFBHandle;
 		bgfx::TextureHandle ShadowMapTextureHandle;

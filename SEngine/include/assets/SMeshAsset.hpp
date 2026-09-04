@@ -12,7 +12,7 @@ namespace Solus
 		SMeshAsset() = default;
 
 		SMeshAsset(const SAssetPath& InPath)
-			: SAsset(InPath)
+			: Path(InPath)
 		{
 		}
 
@@ -26,6 +26,16 @@ namespace Solus
 
 	public:
 
+		void SetPath(const SAssetPath& InPath)
+		{
+			Path = InPath;
+		}
+
+		SAssetPath GetPath() const
+		{
+			return Path;
+		}
+
 		bgfx::VertexBufferHandle GetVertexBufferHandle() const
 		{
 			return VertexBufferHandle;
@@ -38,9 +48,12 @@ namespace Solus
 
 	private:
 
+		SAssetPath Path;
+
+		SAABB Bounds{};
+
 		std::vector<SVertex> VertexData;
 		std::vector<uint16> IndexData;
-		SAABB Bounds{};
 
 		bgfx::VertexBufferHandle VertexBufferHandle{ BGFX_INVALID_HANDLE };
 		bgfx::IndexBufferHandle IndexBufferHandle{ BGFX_INVALID_HANDLE };

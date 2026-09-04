@@ -9,11 +9,6 @@ namespace Solus
 
 		SShaderProgramAsset() = default;
 
-		SShaderProgramAsset(const SAssetPath& InPath)
-			: SAsset(InPath)
-		{
-		}
-
 		void Load() override;
 
 		void Unload() override;

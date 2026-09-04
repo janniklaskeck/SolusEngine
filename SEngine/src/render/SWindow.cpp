@@ -18,7 +18,7 @@ namespace Solus
 			SDL_Log("Couldn't create window: %s", SDL_GetError());
 		}
 
-		SDL_SetWindowRelativeMouseMode(Window, true);
+		//SDL_SetWindowRelativeMouseMode(Window, true);
 	}
 
 	SWindow::~SWindow()

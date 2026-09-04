@@ -12,7 +12,11 @@ void main()
 	
 	v_color0 = a_color0;
 
-	vec4 normal = a_normal * 2.0 - 1.0;
+	// packed normals
+	// vec4 normal = a_normal * 2.0 - 1.0;
+
+	// unpacked normals
+	vec4 normal = vec4(a_normal.xyz, 0.0);
 	v_normal = normalize(mul(u_modelView, vec4(normal.xyz, 0.0) ).xyz);
 	v_view = mul(u_modelView, vec4(a_position, 1.0)).xyz;
 

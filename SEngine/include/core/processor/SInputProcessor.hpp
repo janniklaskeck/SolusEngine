@@ -4,6 +4,16 @@
 
 namespace Solus
 {
+	enum class SMouseButtonCode : uint8
+	{
+		None = 0,
+		LeftButton = SDL_BUTTON_LEFT,
+		MiddleButton = SDL_BUTTON_MIDDLE,
+		RightButton = SDL_BUTTON_RIGHT,
+		ExtraButton1 = SDL_BUTTON_X1,
+		ExtraButton2 = SDL_BUTTON_X2
+	};
+
 	class SInputProcessor : public SProcessor
 	{
 	public:
@@ -18,16 +28,20 @@ namespace Solus
 
 		bool IsKeyUp(const SDL_Keycode KeyCode) const;
 
-		bool WasKeyJustPressed(const SDL_Keycode KeyCode) const;
+		bool IsMouseButtonDown(const SMouseButtonCode ButtonCode) const;
 
-		bool WasKeyJustReleased(const SDL_Keycode KeyCode) const;
+		bool IsMouseButtonUp(const SMouseButtonCode ButtonCode) const;
 
 		Vec2 GetMouseMoveDelta() const;
 
+		Vec2 GetMousePos() const;
+
+		int32 GetMouseWheelDelta() const;
+
 	private:
 		std::unordered_map<SDL_Keycode, uint8> KeyState;
-
-		Vec2 MouseMoveDelta{};
-		Vec2 MouseMoveDeltaCache{};
+		uint8 MouseButtonState = 0;
+		int32 MouseWheelDelta = 0;
+		int32 MouseWheelDeltaCache = 0;
 	};
 }

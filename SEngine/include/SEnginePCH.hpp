@@ -13,6 +13,7 @@
 #include "Utils/STypes.hpp"
 
 #include "core/Ref.hpp"
+#include "core/SEngine.hpp"
 
 #include "core/math/SMath.hpp"
 

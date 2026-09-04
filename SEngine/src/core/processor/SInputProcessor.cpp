@@ -5,8 +5,8 @@ namespace Solus
 {
 	void SInputProcessor::Tick(float DeltaTime)
 	{
-		MouseMoveDelta = MouseMoveDeltaCache;
-		MouseMoveDeltaCache = {};
+		MouseWheelDelta = MouseWheelDeltaCache;
+		MouseWheelDeltaCache = 0;
 	}
 
 	void SInputProcessor::QueueEvent(const SDL_Event& Event)
@@ -15,7 +15,6 @@ namespace Solus
 			Event.type != SDL_EVENT_KEY_UP &&
 			Event.type != SDL_EVENT_MOUSE_BUTTON_DOWN &&
 			Event.type != SDL_EVENT_MOUSE_BUTTON_UP &&
-			Event.type != SDL_EVENT_MOUSE_MOTION &&
 			Event.type != SDL_EVENT_MOUSE_WHEEL)
 		{
 			return;
@@ -33,11 +32,23 @@ namespace Solus
 			KeyState[KeyCode] = 0;
 		}
 
-
-		if (Event.type == SDL_EVENT_MOUSE_MOTION)
+		if (Event.type == SDL_EVENT_MOUSE_BUTTON_DOWN)
 		{
-			MouseMoveDeltaCache.x += std::abs(Event.motion.xrel) > 0.f ? Event.motion.xrel : 0.f;
-			MouseMoveDeltaCache.y += std::abs(Event.motion.yrel) > 0.f ? Event.motion.yrel : 0.f;
+			MouseButtonState |= SDL_BUTTON_MASK(Event.button.button);
+		}
+
+		if (Event.type == SDL_EVENT_MOUSE_BUTTON_UP)
+		{
+			MouseButtonState &= ~SDL_BUTTON_MASK(Event.button.button);
+		}
+
+		if (Event.type == SDL_EVENT_MOUSE_WHEEL)
+		{
+			const bool bIsFlipped = Event.wheel.direction == SDL_MOUSEWHEEL_FLIPPED;
+
+			const int32 VerticalDelta = Event.wheel.integer_y;
+
+			MouseWheelDeltaCache += bIsFlipped ? -VerticalDelta : VerticalDelta;
 		}
 	}
 
@@ -61,19 +72,34 @@ namespace Solus
 		return !KeyState.at(KeyCode);
 	}
 
-	bool SInputProcessor::WasKeyJustPressed(const SDL_Keycode KeyCode) const
+	bool SInputProcessor::IsMouseButtonDown(const SMouseButtonCode ButtonCode) const
 	{
-		return false;
+		return (MouseButtonState & SDL_BUTTON_MASK((uint8)ButtonCode)) == 1;
+		
 	}
 
-	bool SInputProcessor::WasKeyJustReleased(const SDL_Keycode KeyCode) const
+	bool SInputProcessor::IsMouseButtonUp(const SMouseButtonCode ButtonCode) const
 	{
-		return false;
+		return (MouseButtonState & SDL_BUTTON_MASK((uint8)ButtonCode)) == 0;
 	}
 
 	Vec2 SInputProcessor::GetMouseMoveDelta() const
 	{
-		return MouseMoveDelta;
+		Vec2 Pos{};
+		SDL_GetRelativeMouseState(&Pos.x, &Pos.y);
+		return Pos;
+	}
+
+	Vec2 SInputProcessor::GetMousePos() const
+	{
+		Vec2 Pos{};
+		SDL_GetMouseState(&Pos.x, &Pos.y);
+		return Pos;
+	}
+
+	int32 SInputProcessor::GetMouseWheelDelta() const
+	{
+		return MouseWheelDelta;
 	}
 
 }

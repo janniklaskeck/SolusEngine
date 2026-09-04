@@ -5,6 +5,7 @@ namespace Solus
 {
 	using SAssetHandle = uint32;
 	const SAssetHandle InvalidAssetHandle = 0xffffffff;
+#define SOLUS_INVALID_HANDLE InvalidAssetHandle
 
 	class SAsset : public RefCounted
 	{
@@ -13,10 +14,6 @@ namespace Solus
 	public:
 
 		SAsset() = default;
-
-		SAsset(const SAssetPath& InPath)
-			: Path(InPath)
-		{}
 
 		virtual void Load();
 
@@ -31,16 +28,6 @@ namespace Solus
 
 	public:
 
-		void SetPath(const SAssetPath& InPath)
-		{
-			Path = InPath;
-		}
-
-		SAssetPath GetPath() const
-		{
-			return Path;
-		}
-
 		const uint8* Data() const
 		{
 			return Bytes.data();
@@ -49,6 +36,11 @@ namespace Solus
 		uint32 Size() const
 		{
 			return Bytes.size();
+		}
+
+		SAssetHandle GetAssetHandle() const
+		{
+			return Handle;
 		}
 
 	protected:
@@ -60,11 +52,10 @@ namespace Solus
 
 	protected:
 
-		SAssetPath Path;
+		SAssetHandle Handle = SOLUS_INVALID_HANDLE;
 
 		std::vector<uint8> Bytes;
 
-		SAssetHandle Handle = InvalidAssetHandle;
 	};
 
 }

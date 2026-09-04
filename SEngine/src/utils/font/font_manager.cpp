@@ -7,6 +7,7 @@
 #include <stb/stb_truetype.h>
 
 #include <bx/bx.h>
+#include <bx/math.h>
 //#include "../common.h"
 #include <bgfx/bgfx.h>
 
@@ -19,11 +20,8 @@ BX_PRAGMA_DIAGNOSTIC_POP()
 
 #include <wchar.h> // wcslen
 
-#include "unordered_map"
-
 #include "utils/font/font_manager.h"
 #include "utils/font/cube_atlas.h"
-#include "bx/math.h"
 
 
 class TrueTypeFont
