@@ -12,7 +12,7 @@ namespace Solus
 
 		void CreateUniform(const SString& UniformName, const bgfx::UniformType::Enum Type);
 
-		void SetUniform(const SString& UniformName, void* ValuePtr);
+		void SetUniform(const SString& UniformName, const void* ValuePtr);
 
 		bgfx::UniformHandle GetUniformHandle(const std::string& UniformName) const;
 

@@ -2,6 +2,7 @@
 #include "render/SWindow.hpp"
 
 #include <SDL3/SDL.h>
+#include "core/processor/SRenderingProcessor.hpp"
 
 namespace Solus
 {
@@ -12,28 +13,44 @@ namespace Solus
 		this->Width = WindowWidth;
 		this->Height = WindowHeight;
 
-		Window = SDL_CreateWindow(WindowName.c_str(), WindowWidth, WindowHeight, SDL_WINDOW_VULKAN/*SDL_WINDOW_FULLSCREEN*/);
-		if (!Window)
+		uint64 WindowFlags = SDL_WINDOW_VULKAN | SDL_WINDOW_RESIZABLE;
+
+		SDLWindow = SDL_CreateWindow(WindowName.c_str(), WindowWidth, WindowHeight, WindowFlags);
+		if (!SDLWindow)
 		{
 			SDL_Log("Couldn't create window: %s", SDL_GetError());
 		}
-
-		//SDL_SetWindowRelativeMouseMode(Window, true);
 	}
 
 	SWindow::~SWindow()
 	{
-		SDL_DestroyWindow(Window);
+		SDL_DestroyWindow(SDLWindow);
 	}
 
 	void SWindow::SetFullscreen(const bool bUseFullscreen)
 	{
-		SDL_SetWindowFullscreen(Window, bUseFullscreen);
+		SDL_SetWindowFullscreen(SDLWindow, bUseFullscreen);
+	}
+
+	bool SWindow::IsFullscreen() const
+	{
+		uint32 Flags = SDL_GetWindowFlags(SDLWindow);
+		return Flags & SDL_WINDOW_FULLSCREEN;
+	}
+
+	void SWindow::SetMouseCaptured(const bool bCaptureMouse)
+	{
+		SDL_SetWindowRelativeMouseMode(SDLWindow, bCaptureMouse);
+	}
+
+	bool SWindow::IsMouseCaptured() const
+	{
+		return SDL_GetWindowRelativeMouseMode(SDLWindow);
 	}
 
 	SDL_Window* SWindow::GetSDLWindow() const
 	{
-		return Window;
+		return SDLWindow;
 	}
 
 	int32 SWindow::GetWindowWidth() const
@@ -44,6 +61,18 @@ namespace Solus
 	int32 SWindow::GetWindowHeight() const
 	{
 		return Height;
+	}
+
+	void SWindow::ProcessEvent(const SDL_Event& Event)
+	{
+		// Exposed catches all(?) kinds of window resize events
+		if (Event.type != SDL_EVENT_WINDOW_EXPOSED)
+		{
+			return;
+		}
+
+		SDL_GetWindowSize(SDLWindow, &Width, &Height);
+		gEngine->GetProcessor<SRenderingProcessor>().Reset();
 	}
 
 }

@@ -26,7 +26,7 @@ namespace Solus
 		SLOG("Uniform %s already exists!", UniformName.c_str());
 	}
 
-	void SUniformManager::SetUniform(const SString& UniformName, void* ValuePtr)
+	void SUniformManager::SetUniform(const SString& UniformName, const void* ValuePtr)
 	{
 		if (!UniformDataMap.contains(UniformName))
 		{

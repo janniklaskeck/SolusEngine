@@ -4,6 +4,7 @@
 #include "entity/component/STransformComponent.hpp"
 #include "entity/component/SRigidBodyComponent.hpp"
 #include "entity/component/SMeshComponent.hpp"
+#include "entity/component/SCameraComponent.hpp"
 #include "core/physics/SPhysicsWorld.hpp"
 #include "core/SWorld.hpp"
 
@@ -21,6 +22,9 @@ int main(int argc, char* argv[])
 
 	SWorld& ActiveWorld = gEngine->GetWorld();
 	SPhysicsWorld& PhysicsWorld = gEngine->GetPhysicsWorld();
+
+	SEntity CameraEntity = ActiveWorld.CreateEntity({ 0.0f, 0.0f, -35.0f });
+	CameraEntity.AddComponent<SCameraComponent>();
 
 	Ref<SShaderProgramAsset> ProgramAsset = SAssetManager::Get().GetAsset<SShaderProgramAsset>();
 	ProgramAsset->SetPaths("shaders/vs_mesh.sc", "shaders/fs_mesh.sc");

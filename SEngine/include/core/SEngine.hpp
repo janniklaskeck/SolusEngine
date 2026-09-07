@@ -42,6 +42,8 @@ namespace Solus
 			return ProcessorManager->Get<T>();
 		}
 
+		bool IsInEditor() const;
+
 	public:
 
 		void ShowDebugMessage(const SString& Msg, const float Duration);
@@ -56,7 +58,7 @@ namespace Solus
 
 	private:
 
-		std::unique_ptr<SWindow> Window;
+		std::unique_ptr<SWindow> MainWindow;
 
 		std::unique_ptr<SWorld> ActiveWorld;
 		std::unique_ptr<SPhysicsWorld> PhysicsWorld;

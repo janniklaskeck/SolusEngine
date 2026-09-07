@@ -16,7 +16,7 @@ namespace Solus
 
 		void Tick(float DeltaTime);
 
-		SEntity CreateEntity(Vec3 Position = {});
+		SEntity CreateEntity(Vec3 Position = {}, const std::string& Tag = "");
 
 		entt::registry& GetRegistry()
 		{

@@ -3,7 +3,7 @@
 #include "entity/component/STransformComponent.hpp"
 
 #include <cereal/archives/json.hpp>
-#include "../../include/entity/component/SRigidBodyComponent.hpp"
+#include "entity/component/SRigidBodyComponent.hpp"
 
 #include <sstream>
 
@@ -21,16 +21,17 @@ namespace Solus
 	void SWorld::Tick(float DeltaTime)
 	{
 		
-
 	}
 
-	SEntity SWorld::CreateEntity(glm::vec3 Position)
+	SEntity SWorld::CreateEntity(glm::vec3 Position, const std::string& Tag)
 	{
 		SEntity Entity = SEntity({ Registry, Registry.create() }, this);
 
 		STransformComponent& TransformComp = Entity.AddComponent<STransformComponent>();
 		TransformComp.SetTransform({ Position });
 
+		STagComponent& TagComp = Entity.AddComponent<STagComponent>();
+		TagComp.Tag = Tag;
 
 		return Entity;
 	}

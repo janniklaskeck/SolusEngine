@@ -287,7 +287,7 @@ struct OcornutImguiContext
 
 		setupStyle(true);
 
-		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable
+		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
 		io.BackendFlags |= 0
 			| ImGuiBackendFlags_RendererHasVtxOffset

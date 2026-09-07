@@ -19,8 +19,6 @@ namespace Solus
 
 	public:
 
-		void Tick(float DeltaTime);
-
 		void ShowDebugText(const SString& Text, const float Duration = -1.f);
 
 		void SubmitDebugText(const bgfx::ViewId ViewID);

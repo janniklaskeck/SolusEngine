@@ -1,16 +1,5 @@
 #pragma once
 
-#include <glm/glm.hpp>
-#include <glm/ext/matrix_transform.hpp> // glm::translate, glm::rotate, glm::scale
-#include "glm/ext/quaternion_float.hpp"
-#include "glm/ext/quaternion_transform.hpp"
-#include "glm/ext/quaternion_geometric.hpp"
-#include "glm/gtc/quaternion.hpp"
-#include <SDL3/SDL.h>
-
-#include <filesystem>
-#include <memory>
-
 using uint8 = uint8_t;
 using uint16 = uint16_t;
 using uint32 = uint32_t;

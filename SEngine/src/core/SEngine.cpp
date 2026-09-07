@@ -42,7 +42,7 @@ namespace Solus
 		SLOG("%s", AssetRootPath.string().c_str());
 		SAssetManager::Get().Init(AssetRootPath, 1);
 
-		Window = std::make_unique<SWindow>("Test", 1280, 720);
+		MainWindow = std::make_unique<SWindow>("Test", 1280, 720);
 
 		ActiveWorld = std::make_unique<SWorld>();
 		PhysicsWorld = std::make_unique<SPhysicsWorld>();
@@ -52,9 +52,6 @@ namespace Solus
 		ProcessorManager->Emplace<SPhysicsProcessor>();
 		ProcessorManager->Emplace<SInputProcessor>();
 		ProcessorManager->Emplace<SRenderingProcessor>();
-
-		SEntity CameraEntity = ActiveWorld->CreateEntity({ 0.0f, 0.0f, -35.0f });
-		CameraEntity.AddComponent<SCameraComponent>();
 
 		TicksCurrent = bx::getNow();
 		TicksStart = TicksCurrent;
@@ -74,10 +71,18 @@ namespace Solus
 		{
 			InputProcessor.QueueEvent(Event);
 
+			MainWindow->ProcessEvent(Event);
+
+
 			if (Event.type == SDL_EVENT_QUIT)
 			{
 				return false;
 			}
+		}
+
+		if (InputProcessor.IsKeyDown(SDLK_F1))
+		{
+			MainWindow->SetFullscreen(!MainWindow->IsFullscreen());
 		}
 
 		if (InputProcessor.IsKeyDown(SDLK_ESCAPE))
@@ -108,14 +113,14 @@ namespace Solus
 
 		ActiveWorld.reset();
 
-		Window.reset();
+		MainWindow.reset();
 
 		SDL_Quit();
 	}
 
 	SWindow* SEngine::GetWindow() const
 	{
-		return Window.get();
+		return MainWindow.get();
 	}
 
 	SWorld& SEngine::GetWorld() const
@@ -131,6 +136,11 @@ namespace Solus
 	SProcessorManager& SEngine::GetProcessorManager() const
 	{
 		return *ProcessorManager;
+	}
+
+	bool SEngine::IsInEditor() const
+	{
+		return true;
 	}
 
 	void SEngine::ShowDebugMessage(const SString& Msg, const float Duration)

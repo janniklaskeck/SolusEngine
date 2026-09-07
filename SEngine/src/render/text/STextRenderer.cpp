@@ -60,11 +60,6 @@ namespace Solus
 		TextBufferManager->destroyTextBuffer(m_transientText);
 	}
 
-	void STextRenderer::Tick(float DeltaTime)
-	{
-
-	}
-
 	void STextRenderer::ShowDebugText(const SString& Text, const float Duration)
 	{
 		Messages.emplace_back(Text + "\n", Duration);

@@ -16,16 +16,23 @@ namespace Solus
 
 		void SetFullscreen(const bool bUseFullscreen);
 
+		bool IsFullscreen() const;
+
+		void SetMouseCaptured(const bool bCaptureMouse);
+
+		bool IsMouseCaptured() const;
+
 		SDL_Window* GetSDLWindow() const;
 
 		int32 GetWindowWidth() const;
 
 		int32 GetWindowHeight() const;
 
+		void ProcessEvent(const SDL_Event& Event);
+
 	private:
 
-		SDL_Window* Window = nullptr;
-		SDL_Renderer* Renderer = nullptr;
+		SDL_Window* SDLWindow = nullptr;
 
 		SString WindowName;
 		int32 Width = -1;

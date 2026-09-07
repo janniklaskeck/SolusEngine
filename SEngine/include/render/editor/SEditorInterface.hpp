@@ -2,6 +2,7 @@
 
 namespace Solus
 {
+	struct SRenderView;
 
 	class SEditorInterface
 	{
@@ -11,7 +12,15 @@ namespace Solus
 
 		static void Destroy();
 
+		static void BeginInterface();
+
 		static void RenderInterface(float DeltaTime);
+
+		static void EndInterface();
+
+		static void RenderEditorScene(const SRenderView& ViewRef);
+
+		static bool IsMouseOverInterface();
 	};
 
 }

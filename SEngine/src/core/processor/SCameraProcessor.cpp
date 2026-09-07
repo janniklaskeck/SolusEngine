@@ -1,27 +1,17 @@
 #include "core/processor/SCameraProcessor.hpp"
 
-#include "core/SEngine.hpp"
-#include "entity/component/STransformComponent.hpp"
-#include "core/SWorld.hpp"
-#include "core/processor/SProcessorManager.hpp"
 #include "core/processor/SInputProcessor.hpp"
-
-#include <bgfx/bgfx.h>
-#include "../../../include/entity/component/SCameraComponent.hpp"
-#include "core/SEngine.hpp"
+#include "core/processor/SProcessorManager.hpp"
 #include "core/SWorld.hpp"
-#include "render/SWindow.hpp"
-
-#include "bx/math.h"
-#include "bgfx/bgfx.h"
-#include "../../../include/render/imgui/imgui_bgfx.hpp"
+#include "entity/component/SCameraComponent.hpp"
+#include "entity/component/STransformComponent.hpp"
+#include "render/editor/SEditorInterface.hpp"
 
 namespace Solus
 {
 
 	SCameraProcessor::SCameraProcessor()
 	{
-		
 	}
 
 	void SCameraProcessor::Tick(float DeltaTime)
@@ -30,7 +20,7 @@ namespace Solus
 
 		CameraCompView.each([this, DeltaTime](entt::entity Entity, STransformComponent& TransformComponent, SCameraComponent& CameraComponent)
 			{
-				TickCamera(DeltaTime, TransformComponent, CameraComponent);
+				TickCamera(DeltaTime, TransformComponent.GetTransform(), CameraComponent);
 			});
 	}
 
@@ -39,27 +29,19 @@ namespace Solus
 		return ProcessorPriority::Physics - 1;
 	}
 
-	void SCameraProcessor::RegisterCameraComponent(SCameraComponent& CameraComponent)
+	void SCameraProcessor::TickCamera(float DeltaTime, STransform& Transform, SCameraComponent& Camera)
 	{
-		SetupProjectionMatrix(CameraComponent);
-	}
+		TickInput(DeltaTime, Transform, Camera);
 
-	void SCameraProcessor::TickCamera(float DeltaTime, STransformComponent& TransformComponent, SCameraComponent& CameraComponent)
-	{
-		TickInput(DeltaTime, TransformComponent, CameraComponent);
-
-		SetViewProjectionMatrices(TransformComponent, CameraComponent);
-
-		const STransform& Transform = TransformComponent.GetTransform();
 		const Vec3 Pos = Transform.GetPosition();
 
 		gEngine->ShowDebugMessage(String::Printf("Camera: (%.2f|%.2f|%.2f)", Pos.x, Pos.y, Pos.z), 0.f);
-		gEngine->ShowDebugMessage(String::Printf("Camera: (%.2f|%.2f|%.2f)", CameraComponent.Pitch, CameraComponent.Yaw, 0.f), 0.f);
+		gEngine->ShowDebugMessage(String::Printf("Camera: (%.2f|%.2f|%.2f)", Camera.Pitch, Camera.Yaw, 0.f), 0.f);
 	}
 
-	void SCameraProcessor::TickInput(float DeltaTime, STransformComponent& TransformComponent, SCameraComponent& CameraComponent)
+	void SCameraProcessor::TickInput(float DeltaTime, STransform& Transform, SCameraComponent& Camera)
 	{
-		if (ImGui::MouseOverArea())
+		if (SEditorInterface::IsMouseOverInterface())
 		{
 			return;
 		}
@@ -68,13 +50,11 @@ namespace Solus
 
 		auto& Registry = gEngine->GetWorld().GetRegistry();
 
-		STransform& Transform = TransformComponent.GetTransform();
-
 		const Vec3 CameraForward = Transform.GetForwardVector();
 		const Vec3 CameraRight = Transform.GetRightVector();
 		const Vec3 CameraUp = Transform.GetUpVector();
 
-		const float Speed = CameraComponent.MoveSpeed * DeltaTime;
+		const float Speed = Camera.MoveSpeed * DeltaTime;
 
 		Vec3 PositionDelta{};
 
@@ -112,47 +92,12 @@ namespace Solus
 
 		if (glm::length(Delta) > 0.1f)
 		{
-			CameraComponent.Yaw += Delta.x * DeltaTime * CameraComponent.RotationSpeed;
-			CameraComponent.Pitch = std::clamp(CameraComponent.Pitch + Delta.y * DeltaTime * CameraComponent.RotationSpeed, -CameraComponent.PitchLimit, CameraComponent.PitchLimit);
-			Transform.SetRotation({ CameraComponent.Pitch, CameraComponent.Yaw, 0.f });
+			Camera.Yaw += Delta.x * DeltaTime * Camera.RotationSpeed;
+			Camera.Pitch = std::clamp(Camera.Pitch + Delta.y * DeltaTime * Camera.RotationSpeed, -Camera.PitchLimit, Camera.PitchLimit);
+			Transform.SetRotation({ Camera.Pitch, Camera.Yaw, 0.f });
 		}
 
 		Transform.AddPosition(PositionDelta);
-	}
-
-	void SCameraProcessor::SetupProjectionMatrix(SCameraComponent& CameraComponent)
-	{
-		SWindow* Window = gEngine->GetWindow();
-
-		const int32 WindowWidth = Window->GetWindowWidth();
-		const int32 WindowHeight = Window->GetWindowHeight();
-
-		bx::mtxProj(CameraComponent.ProjectionMatrix.data(), CameraComponent.FOV_Y, float(WindowWidth) / float(WindowHeight), CameraComponent.NearPlane, CameraComponent.FarPlane, bgfx::getCaps()->homogeneousDepth);
-	}
-
-	void SCameraProcessor::SetViewProjectionMatrices(const STransformComponent& TransformComp, const SCameraComponent& CameraComponent)
-	{
-		const STransform& Transform = TransformComp.GetTransform();
-		const Vec3 CameraPosition = Transform.GetPosition();
-
-		const Vec3 Forward = Transform.GetForwardVector();
-		const Vec3 LookAtTarget = CameraPosition + Forward;
-
-		float ViewMatrix[16];
-
-		const bx::Vec3 bxCameraPosition{ CameraPosition.x, CameraPosition.y, CameraPosition.z };
-		const bx::Vec3 bxLookAtTarget{ LookAtTarget.x, LookAtTarget.y, LookAtTarget.z };
-
-		bx::mtxLookAt(ViewMatrix, bxCameraPosition, bxLookAtTarget);
-
-		bgfx::setViewTransform(CameraComponent.ViewId, ViewMatrix, CameraComponent.ProjectionMatrix.data());
-
-		SWindow* Window = gEngine->GetWindow();
-
-		const int32 WindowWidth = Window->GetWindowWidth();
-		const int32 WindowHeight = Window->GetWindowHeight();
-
-		bgfx::setViewRect(CameraComponent.ViewId, 0, 0, WindowWidth, WindowHeight);
 	}
 
 }
